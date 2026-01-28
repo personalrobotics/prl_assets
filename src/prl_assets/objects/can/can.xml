@@ -3,6 +3,8 @@
 
   <asset>
     <material name="can_red" rgba="0.8 0.1 0.1 1" specular="0.8" shininess="0.9"/>
+    <material name="can_top_green" rgba="0.1 0.8 0.1 1" specular="0.8" shininess="0.9"/>
+    <material name="can_bottom_blue" rgba="0.1 0.1 0.8 1" specular="0.8" shininess="0.9"/>
   </asset>
 
   <worldbody>
@@ -16,6 +18,24 @@
             friction="0.6 0.005 0.0001"
             contype="1"
             conaffinity="1"/>
+      <!-- Top cap (green) - visual only -->
+      <geom name="can_top"
+            type="cylinder"
+            size="0.032 0.003"
+            pos="0 0 0.059"
+            material="can_top_green"
+            contype="0"
+            conaffinity="0"
+            mass="0"/>
+      <!-- Bottom cap (blue) - visual only -->
+      <geom name="can_bottom"
+            type="cylinder"
+            size="0.032 0.003"
+            pos="0 0 -0.059"
+            material="can_bottom_blue"
+            contype="0"
+            conaffinity="0"
+            mass="0"/>
     </body>
   </worldbody>
 </mujoco>
