@@ -2,45 +2,50 @@
 
 Reusable manipulation objects for Personal Robotics Lab projects.
 
-This package provides simulation models and metadata for common manipulation objects like cans, bins, and other graspable items. Objects follow a standardized metadata format for compatibility with perception and planning pipelines.
+This package provides simulation models and metadata for common manipulation objects like cans, bins, and other graspable items. Objects follow the `asset_manager` metadata format for compatibility with perception and planning pipelines.
 
 ## Installation
 
 ```bash
-pip install prl_assets
+uv add prl_assets
 ```
 
 For development:
 ```bash
 git clone https://github.com/personalrobotics/prl_assets.git
 cd prl_assets
-pip install -e ".[dev]"
+uv sync --dev
 ```
 
 ## Quick Start
 
+Use with `asset_manager` to load objects:
+
 ```python
-from prl_assets import list_objects, get_object_path, get_object_metadata
+from asset_manager import AssetManager
+from prl_assets import OBJECTS_DIR
+
+# Initialize asset manager with prl_assets objects
+assets = AssetManager(OBJECTS_DIR)
 
 # List available objects
-print(list_objects())
+print(assets.list())
 # ['can', 'recycle_bin']
 
 # Get path to simulation model
-can_path = get_object_path("can", simulator="mujoco")
+can_path = assets.get_path("can", "mujoco")
 
 # Load in MuJoCo
 import mujoco
-model = mujoco.MjModel.from_xml_path(str(can_path))
+model = mujoco.MjModel.from_xml_path(can_path)
 
 # Get object metadata
-meta = get_object_metadata("can")
+meta = assets.get("can")
 print(meta["dimensions"])  # [0.066, 0.066, 0.123]
 print(meta["mass"])        # 0.05 kg
 
 # Find objects by category
-from prl_assets import get_objects_by_category
-recyclables = get_objects_by_category("recyclable")
+recyclables = assets.by_category("recyclable")
 ```
 
 ## Available Objects
@@ -52,7 +57,7 @@ Standard aluminum soda/beer can for manipulation tasks.
 
 | Property | Value |
 |----------|-------|
-| Dimensions | 6.6cm diameter × 12.3cm height |
+| Dimensions | 6.6cm diameter x 12.3cm height |
 | Mass | 0.05 kg |
 | Material | Aluminum |
 | Categories | container, recyclable, graspable |
@@ -64,7 +69,7 @@ Open-top bin for discarding recyclable items.
 
 | Property | Value |
 |----------|-------|
-| Dimensions | 25cm × 25cm × 30cm |
+| Dimensions | 25cm x 25cm x 30cm |
 | Mass | 0.5 kg |
 | Material | Plastic |
 | Categories | container, receptacle, fixture |
@@ -121,29 +126,12 @@ policy:
     difficulty: easy
 ```
 
-## API Reference
-
-### `list_objects() -> list[str]`
-Returns a list of all available object names.
-
-### `get_object_path(name: str, simulator: str = "mujoco") -> Path`
-Returns the path to an object's simulation model file.
-
-- `name`: Object name (e.g., "can", "recycle_bin")
-- `simulator`: Target simulator ("mujoco" or "isaac")
-
-### `get_object_metadata(name: str) -> dict`
-Returns the full metadata dictionary for an object.
-
-### `get_objects_by_category(category: str) -> list[str]`
-Returns all objects belonging to a specific category.
-
 ## Adding New Objects
 
 1. Create a new directory under `src/prl_assets/objects/`
 2. Add a `meta.yaml` with required fields
 3. Add simulator model files (e.g., `.xml` for MuJoCo)
-4. Run `python scripts/render_objects.py` to generate preview image
+4. Run `uv run python scripts/render_objects.py` to generate preview image
 5. Update this README with the new object
 
 ## License

@@ -5,7 +5,7 @@ This script renders each object and saves a PNG screenshot alongside
 the object's XML file.
 
 Usage:
-    python scripts/render_objects.py
+    uv run python scripts/render_objects.py
 """
 
 import sys
@@ -15,18 +15,21 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
 
 import mujoco
-from PIL import Image
 import numpy as np
+from PIL import Image
 
-from prl_assets import list_objects, get_object_path, get_object_metadata
+from asset_manager import AssetManager
+from prl_assets import OBJECTS_DIR
 
 
-def render_object(name: str, width: int = 640, height: int = 480) -> np.ndarray:
+def render_object(
+    assets: AssetManager, name: str, width: int = 640, height: int = 480
+) -> np.ndarray:
     """Render an object and return the image as a numpy array."""
-    xml_path = get_object_path(name)
-    meta = get_object_metadata(name)
+    xml_path = assets.get_path(name, "mujoco")
+    meta = assets.get(name)
 
-    model = mujoco.MjModel.from_xml_path(str(xml_path))
+    model = mujoco.MjModel.from_xml_path(xml_path)
     data = mujoco.MjData(model)
 
     # Set up offscreen rendering
@@ -60,17 +63,18 @@ def render_object(name: str, width: int = 640, height: int = 480) -> np.ndarray:
 
 def main():
     """Render all objects and save screenshots."""
-    objects = list_objects()
+    assets = AssetManager(OBJECTS_DIR)
+    objects = assets.list()
     print(f"Rendering {len(objects)} objects...")
 
     for name in objects:
         print(f"  Rendering {name}...")
 
         try:
-            pixels = render_object(name)
+            pixels = render_object(assets, name)
 
             # Save alongside the XML file
-            xml_path = get_object_path(name)
+            xml_path = Path(assets.get_path(name, "mujoco"))
             png_path = xml_path.parent / f"{name}.png"
 
             img = Image.fromarray(pixels)

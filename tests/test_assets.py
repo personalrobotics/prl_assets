@@ -3,155 +3,125 @@
 import pytest
 from pathlib import Path
 
-from prl_assets import (
-    list_objects,
-    get_object_path,
-    get_object_metadata,
-    get_objects_by_category,
-)
+from prl_assets import OBJECTS_DIR
 
 
-class TestListObjects:
-    """Tests for list_objects function."""
+@pytest.fixture
+def assets():
+    """Create AssetManager for prl_assets."""
+    from asset_manager import AssetManager
+    return AssetManager(OBJECTS_DIR)
 
-    def test_returns_list(self):
-        """list_objects should return a list."""
-        result = list_objects()
+
+class TestObjectsDir:
+    """Tests for OBJECTS_DIR."""
+
+    def test_exists(self):
+        """OBJECTS_DIR should exist."""
+        assert OBJECTS_DIR.exists()
+
+    def test_is_directory(self):
+        """OBJECTS_DIR should be a directory."""
+        assert OBJECTS_DIR.is_dir()
+
+    def test_contains_objects(self):
+        """OBJECTS_DIR should contain object subdirectories."""
+        subdirs = [d for d in OBJECTS_DIR.iterdir() if d.is_dir()]
+        assert len(subdirs) >= 2
+
+
+class TestAssetManager:
+    """Tests using asset_manager to load objects."""
+
+    def test_list_returns_list(self, assets):
+        """list() should return a list."""
+        result = assets.list()
         assert isinstance(result, list)
 
-    def test_contains_expected_objects(self):
-        """list_objects should contain can and recycle_bin."""
-        result = list_objects()
+    def test_list_contains_expected_objects(self, assets):
+        """list() should contain can and recycle_bin."""
+        result = assets.list()
         assert "can" in result
         assert "recycle_bin" in result
 
-    def test_is_sorted(self):
-        """list_objects should return sorted list."""
-        result = list_objects()
+    def test_list_is_sorted(self, assets):
+        """list() should return sorted list."""
+        result = assets.list()
         assert result == sorted(result)
 
+    def test_get_path_exists(self, assets):
+        """get_path() should return an existing file."""
+        result = assets.get_path("can", "mujoco")
+        assert Path(result).exists()
 
-class TestGetObjectPath:
-    """Tests for get_object_path function."""
-
-    def test_returns_path(self):
-        """get_object_path should return a Path object."""
-        result = get_object_path("can")
-        assert isinstance(result, Path)
-
-    def test_path_exists(self):
-        """get_object_path should return an existing file."""
-        result = get_object_path("can")
-        assert result.exists()
-
-    def test_xml_extension(self):
+    def test_get_path_xml_extension(self, assets):
         """MuJoCo path should have .xml extension."""
-        result = get_object_path("can", simulator="mujoco")
-        assert result.suffix == ".xml"
+        result = assets.get_path("can", "mujoco")
+        assert result.endswith(".xml")
 
-    def test_invalid_object_raises(self):
-        """get_object_path should raise for invalid object."""
-        with pytest.raises(FileNotFoundError):
-            get_object_path("nonexistent_object")
-
-    def test_all_objects_have_paths(self):
-        """All listed objects should have valid paths."""
-        for name in list_objects():
-            path = get_object_path(name)
-            assert path.exists(), f"Path for {name} does not exist"
-
-
-class TestGetObjectMetadata:
-    """Tests for get_object_metadata function."""
-
-    def test_returns_dict(self):
-        """get_object_metadata should return a dictionary."""
-        result = get_object_metadata("can")
+    def test_get_returns_dict(self, assets):
+        """get() should return a dictionary."""
+        result = assets.get("can")
         assert isinstance(result, dict)
 
-    def test_has_required_fields(self):
+    def test_get_has_required_fields(self, assets):
         """Metadata should have required fields."""
         required_fields = ["name", "description", "category", "mass", "dimensions"]
-        for name in list_objects():
-            meta = get_object_metadata(name)
+        for name in assets.list():
+            meta = assets.get(name)
             for field in required_fields:
                 assert field in meta, f"{name} missing field: {field}"
 
-    def test_dimensions_format(self):
+    def test_dimensions_format(self, assets):
         """Dimensions should be a list of 3 numbers."""
-        for name in list_objects():
-            meta = get_object_metadata(name)
+        for name in assets.list():
+            meta = assets.get(name)
             dims = meta["dimensions"]
             assert isinstance(dims, list)
             assert len(dims) == 3
             assert all(isinstance(d, (int, float)) for d in dims)
 
-    def test_mass_is_positive(self):
+    def test_mass_is_positive(self, assets):
         """Mass should be a positive number."""
-        for name in list_objects():
-            meta = get_object_metadata(name)
+        for name in assets.list():
+            meta = assets.get(name)
             assert meta["mass"] > 0
 
-    def test_invalid_object_raises(self):
-        """get_object_metadata should raise for invalid object."""
-        with pytest.raises(FileNotFoundError):
-            get_object_metadata("nonexistent_object")
-
-
-class TestGetObjectsByCategory:
-    """Tests for get_objects_by_category function."""
-
-    def test_returns_list(self):
-        """get_objects_by_category should return a list."""
-        result = get_objects_by_category("container")
-        assert isinstance(result, list)
-
-    def test_container_category(self):
+    def test_by_category_container(self, assets):
         """Container category should include can and recycle_bin."""
-        result = get_objects_by_category("container")
+        result = assets.by_category("container")
         assert "can" in result
         assert "recycle_bin" in result
 
-    def test_recyclable_category(self):
+    def test_by_category_recyclable(self, assets):
         """Recyclable category should include can."""
-        result = get_objects_by_category("recyclable")
+        result = assets.by_category("recyclable")
         assert "can" in result
-
-    def test_empty_category(self):
-        """Nonexistent category should return empty list."""
-        result = get_objects_by_category("nonexistent_category")
-        assert result == []
-
-    def test_is_sorted(self):
-        """Results should be sorted."""
-        result = get_objects_by_category("container")
-        assert result == sorted(result)
 
 
 class TestMuJoCoIntegration:
-    """Integration tests with MuJoCo (requires mujoco package)."""
+    """Integration tests with MuJoCo."""
 
     @pytest.fixture
     def mujoco(self):
         """Import mujoco, skip if not available."""
-        mujoco = pytest.importorskip("mujoco")
-        return mujoco
+        return pytest.importorskip("mujoco")
 
-    def test_can_loads_in_mujoco(self, mujoco):
+    def test_can_loads_in_mujoco(self, assets, mujoco):
         """Can XML should load in MuJoCo."""
-        path = get_object_path("can")
-        model = mujoco.MjModel.from_xml_path(str(path))
+        path = assets.get_path("can", "mujoco")
+        model = mujoco.MjModel.from_xml_path(path)
         assert model.ngeom > 0
 
-    def test_recycle_bin_loads_in_mujoco(self, mujoco):
+    def test_recycle_bin_loads_in_mujoco(self, assets, mujoco):
         """Recycle bin XML should load in MuJoCo."""
-        path = get_object_path("recycle_bin")
-        model = mujoco.MjModel.from_xml_path(str(path))
+        path = assets.get_path("recycle_bin", "mujoco")
+        model = mujoco.MjModel.from_xml_path(path)
         assert model.ngeom > 0
 
-    def test_all_objects_load_in_mujoco(self, mujoco):
+    def test_all_objects_load_in_mujoco(self, assets, mujoco):
         """All objects should load in MuJoCo."""
-        for name in list_objects():
-            path = get_object_path(name)
-            model = mujoco.MjModel.from_xml_path(str(path))
+        for name in assets.list():
+            path = assets.get_path(name, "mujoco")
+            model = mujoco.MjModel.from_xml_path(path)
             assert model.ngeom > 0, f"{name} has no geoms"
