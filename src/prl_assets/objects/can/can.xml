@@ -1,0 +1,21 @@
+<mujoco model="can">
+  <compiler angle="radian"/>
+
+  <asset>
+    <material name="can_red" rgba="0.8 0.1 0.1 1" specular="0.8" shininess="0.9"/>
+  </asset>
+
+  <worldbody>
+    <body name="can" pos="0 0 0.0615">
+      <freejoint name="can_joint"/>
+      <geom name="can_body"
+            type="cylinder"
+            size="0.033 0.0615"
+            mass="0.05"
+            material="can_red"
+            friction="0.6 0.005 0.0001"
+            contype="1"
+            conaffinity="1"/>
+    </body>
+  </worldbody>
+</mujoco>

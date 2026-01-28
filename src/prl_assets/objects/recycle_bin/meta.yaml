@@ -1,0 +1,35 @@
+name: recycle_bin
+description: Open-top bin for discarding recyclable items
+category: [container, receptacle, fixture]
+
+# Physical properties
+mass: 0.5  # kg
+dimensions: [0.25, 0.25, 0.30]  # [width, depth, height] in meters
+color: [0.1, 0.5, 0.2]  # RGB (green)
+material: plastic
+
+# Geometric properties
+geometric_properties:
+  type: open_box
+  outer_dimensions: [0.25, 0.25, 0.30]
+  inner_dimensions: [0.244, 0.244, 0.294]
+  wall_thickness: 0.003
+
+# MuJoCo simulation
+mujoco:
+  xml_path: recycle_bin.xml
+  scale: 1.0
+  friction: [0.8, 0.01, 0.001]
+
+# Perception aliases
+perception:
+  aliases: ["recycle bin", "recycling bin", "green bin", "trash bin", "waste bin"]
+
+# Manipulation policy hints
+policy:
+  placement:
+    accepts: [can, bottle, recyclable]
+    drop_zone_margin: 0.05  # meters - safe zone inside edges
+  manipulation:
+    movable: false  # typically a fixture
+    stable_poses: [upright]
