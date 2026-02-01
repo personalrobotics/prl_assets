@@ -8,6 +8,7 @@
   <worldbody>
     <!-- Bin is centered at its base, walls extend upward -->
     <body name="recycle_bin" pos="0 0 0">
+      <freejoint name="recycle_bin_joint"/>
       <!-- Bottom -->
       <geom name="bin_bottom" type="box" size="0.122 0.122 0.003" pos="0 0 0.003"
             material="bin_blue" friction="0.8 0.01 0.001" contype="1" conaffinity="1"/>

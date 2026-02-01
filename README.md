@@ -134,6 +134,24 @@ policy:
 4. Run `uv run python scripts/render_objects.py` to generate preview image
 5. Update this README with the new object
 
+### MuJoCo Model Requirements
+
+Objects used with `mj_environment` must follow these conventions:
+
+```xml
+<mujoco model="object_name">
+  <worldbody>
+    <body name="object_name" pos="0 0 0">
+      <freejoint name="object_name_joint"/>  <!-- Required for positioning -->
+      <!-- geoms, sites, etc. -->
+    </body>
+  </worldbody>
+</mujoco>
+```
+
+- **freejoint**: Required for `registry.activate()` to set object position/orientation
+- **body name**: Should match the object type (becomes `{type}_{index}` when loaded)
+
 ## License
 
 MIT License - see LICENSE file for details.
