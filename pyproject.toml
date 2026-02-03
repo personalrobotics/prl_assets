@@ -8,7 +8,10 @@ license = "MIT"
 authors = [
     { name = "Personal Robotics Lab" }
 ]
-dependencies = []
+dependencies = [
+    "fast-simplification>=0.1.13",
+    "trimesh>=4.11.1",
+]
 
 [project.optional-dependencies]
 dev = [
