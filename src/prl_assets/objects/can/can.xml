@@ -1,5 +1,5 @@
 <mujoco model="can">
-  <compiler angle="radian" meshdir="."/>
+  <compiler angle="radian"/>
 
   <asset>
     <!-- Visual mesh -->
