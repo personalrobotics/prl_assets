@@ -24,10 +24,7 @@
       <geom name="can_visual"
             type="mesh"
             mesh="can_visual"
-            rgba="0.8 0.1 0.1 1"
-            contype="0"
-            conaffinity="0"
-            mass="0"/>
+            rgba="0.8 0.1 0.1 1"/>
     </body>
   </worldbody>
 </mujoco>
