@@ -4,8 +4,6 @@
   <asset>
     <!-- Visual mesh -->
     <mesh name="can_visual" file="can_visual.stl" scale="1 1 1"/>
-    <!-- Red soda can appearance -->
-    <material name="can_material" rgba="0.8 0.1 0.1 1" specular="0.8" shininess="0.9"/>
   </asset>
 
   <worldbody>
