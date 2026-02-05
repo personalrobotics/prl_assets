@@ -5,7 +5,7 @@ category: [container, recyclable, graspable]
 # Physical properties
 mass: 0.05  # kg (partially full)
 dimensions: [0.066, 0.066, 0.123]  # [diameter, diameter, height] in meters
-color: [0.8, 0.1, 0.1]  # RGB (red)
+# color: managed in can.xml (collision=invisible, visual=red mesh)
 material: aluminum
 
 # Geometric properties for grasp planning
