@@ -3,16 +3,16 @@ description: Open-top bin for discarding recyclable items
 category: [container, receptacle, fixture]
 
 # Physical properties
-mass: 0.5  # kg
-dimensions: [0.25, 0.25, 0.30]  # [width, depth, height] in meters
+mass: 1.5  # kg (taller bin)
+dimensions: [0.25, 0.25, 0.80]  # [width, depth, height] in meters (floor-standing)
 color: [0.1, 0.3, 0.7]  # RGB (blue)
 material: plastic
 
 # Geometric properties
 geometric_properties:
   type: open_box
-  outer_dimensions: [0.25, 0.25, 0.30]
-  inner_dimensions: [0.244, 0.244, 0.294]
+  outer_dimensions: [0.25, 0.25, 0.80]
+  inner_dimensions: [0.244, 0.244, 0.794]
   wall_thickness: 0.003
 
 # MuJoCo simulation
