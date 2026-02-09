@@ -2,6 +2,7 @@
   <compiler angle="radian"/>
 
   <asset>
+    <material name="plastic_plate_mat" rgba="0.8 0.8 0.8 1.0" specular="0.5" shininess="0.5"/>
     <mesh name="plastic_plate_visual" file="plastic_plate_visual.obj" scale="1 1 1"/>
   </asset>
 
@@ -23,6 +24,7 @@
       <geom name="plastic_plate_visual"
             type="mesh"
             mesh="plastic_plate_visual"
+            material="plastic_plate_mat"
             contype="0"
             conaffinity="0"
             pos="0 0 -0.0135"/>

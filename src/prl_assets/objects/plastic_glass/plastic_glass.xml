@@ -2,6 +2,7 @@
   <compiler angle="radian"/>
 
   <asset>
+    <material name="plastic_glass_mat" rgba="0.72 0.72 0.72 1.0" specular="0.5" shininess="0.5"/>
     <mesh name="plastic_glass_visual" file="plastic_glass_visual.obj" scale="1 1 1"/>
   </asset>
 
@@ -23,6 +24,7 @@
       <geom name="plastic_glass_visual"
             type="mesh"
             mesh="plastic_glass_visual"
+            material="plastic_glass_mat"
             contype="0"
             conaffinity="0"
             pos="0 0 -0.0855"/>

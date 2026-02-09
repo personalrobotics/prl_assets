@@ -2,6 +2,7 @@
   <compiler angle="radian"/>
 
   <asset>
+    <material name="plastic_bowl_mat" rgba="0.74 0.74 0.74 1.0" specular="0.5" shininess="0.5"/>
     <mesh name="plastic_bowl_visual" file="plastic_bowl_visual.obj" scale="1 1 1"/>
   </asset>
 
@@ -68,6 +69,7 @@
       <geom name="plastic_bowl_visual"
             type="mesh"
             mesh="plastic_bowl_visual"
+            material="plastic_bowl_mat"
             contype="0"
             conaffinity="0"/>
     </body>
