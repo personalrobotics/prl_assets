@@ -5,6 +5,7 @@ category: [food_package, graspable, can]
 mass: 0.2  # kg
 dimensions: [0.150, 0.032, 0.084]  # meters
 material: metal
+amazon_link: https://www.amazon.com/dp/B00F9XCEMK
 
 geometric_properties:
   type: box

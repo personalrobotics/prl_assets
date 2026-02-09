@@ -5,6 +5,7 @@ category: [container, graspable, box]
 mass: 0.4  # kg
 dimensions: [0.26, 0.098, 0.2]  # meters
 material: fabric
+amazon_link: https://www.amazon.com/dp/B00LIPM7CA
 
 geometric_properties:
   type: box

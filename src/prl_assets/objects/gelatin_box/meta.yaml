@@ -5,6 +5,7 @@ category: [food_package, graspable, box]
 mass: 0.1  # kg
 dimensions: [0.072, 0.088, 0.028]  # meters
 material: cardboard
+amazon_link: https://www.amazon.com/dp/B00I8GFU4E
 
 geometric_properties:
   type: box

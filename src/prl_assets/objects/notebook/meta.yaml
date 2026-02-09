@@ -5,6 +5,7 @@ category: [office, graspable, flat]
 mass: 0.3  # kg
 dimensions: [0.128, 0.212, 0.016]  # meters
 material: paper
+amazon_link: https://www.amazon.com/dp/B01DN8TCEU
 
 geometric_properties:
   type: box
