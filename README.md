@@ -2,7 +2,9 @@
 
 Reusable manipulation objects for Personal Robotics Lab projects.
 
-This package provides simulation models and metadata for common manipulation objects like cans, bins, and other graspable items. Objects follow the `asset_manager` metadata format for compatibility with perception and planning pipelines.
+![Assets Preview](docs/assets_preview.png)
+
+This package provides simulation models and metadata for common manipulation objects like cans, bottles, tableware, and containers. Objects follow the `asset_manager` metadata format for compatibility with perception and planning pipelines.
 
 ## Installation
 
@@ -30,7 +32,8 @@ assets = AssetManager(OBJECTS_DIR)
 
 # List available objects
 print(assets.list())
-# ['can', 'recycle_bin']
+# ['can', 'fuze_bottle', 'plastic_bowl', 'plastic_glass', 'plastic_plate',
+#  'pop_tarts', 'recycle_bin', 'wicker_tray']
 
 # Get path to simulation model
 can_path = assets.get_path("can", "mujoco")
@@ -45,34 +48,21 @@ print(meta["dimensions"])  # [0.066, 0.066, 0.123]
 print(meta["mass"])        # 0.05 kg
 
 # Find objects by category
-recyclables = assets.by_category("recyclable")
+containers = assets.by_category("container")
 ```
 
 ## Available Objects
 
-### can
-![can](src/prl_assets/objects/can/can.png)
-
-Standard aluminum soda/beer can for manipulation tasks.
-
-| Property | Value |
-|----------|-------|
-| Dimensions | 6.6cm diameter x 12.3cm height |
-| Mass | 0.05 kg |
-| Material | Aluminum |
-| Categories | container, recyclable, graspable |
-
-### recycle_bin
-![recycle_bin](src/prl_assets/objects/recycle_bin/recycle_bin.png)
-
-Open-top bin for discarding recyclable items.
-
-| Property | Value |
-|----------|-------|
-| Dimensions | 25cm x 25cm x 30cm |
-| Mass | 0.5 kg |
-| Material | Plastic |
-| Categories | container, receptacle, fixture |
+| Object | Description | Collision |
+|--------|-------------|-----------|
+| `can` | Aluminum soda/beer can | cylinder |
+| `fuze_bottle` | Beverage bottle with texture | cylinder |
+| `plastic_bowl` | Tableware bowl (hollow) | cylinder + 8 angled boxes |
+| `plastic_glass` | Drinking glass | cylinder |
+| `plastic_plate` | Dinner plate | cylinder |
+| `pop_tarts` | Food box with texture | box |
+| `recycle_bin` | Open-top recycling bin (hollow) | 5 boxes |
+| `wicker_tray` | Serving tray (hollow) | 5 boxes |
 
 ## Object Structure
 
@@ -83,8 +73,7 @@ objects/
 └── object_name/
     ├── meta.yaml          # Object metadata
     ├── object_name.xml    # MuJoCo model
-    ├── object_name.usd    # Isaac Sim model (optional)
-    └── object_name.png    # Preview image
+    └── *_visual.obj       # Visual mesh (optional)
 ```
 
 ### Metadata Format
@@ -99,7 +88,6 @@ category: [container, recyclable, graspable]
 # Physical properties
 mass: 0.05  # kg
 dimensions: [0.066, 0.066, 0.123]  # meters
-color: [0.8, 0.1, 0.1]  # RGB
 material: aluminum
 
 # Geometric properties for grasp planning
@@ -131,8 +119,7 @@ policy:
 1. Create a new directory under `src/prl_assets/objects/`
 2. Add a `meta.yaml` with required fields
 3. Add simulator model files (e.g., `.xml` for MuJoCo)
-4. Run `uv run python scripts/render_objects.py` to generate preview image
-5. Update this README with the new object
+4. Update this README with the new object
 
 ### MuJoCo Model Requirements
 

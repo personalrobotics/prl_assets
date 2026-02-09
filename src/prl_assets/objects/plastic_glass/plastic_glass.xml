@@ -1,0 +1,31 @@
+<mujoco model="plastic_glass">
+  <compiler angle="radian"/>
+
+  <asset>
+    <mesh name="plastic_glass_visual" file="plastic_glass_visual.obj" scale="1 1 1"/>
+  </asset>
+
+  <worldbody>
+    <body name="plastic_glass" pos="0 0 0.0855">
+      <freejoint name="plastic_glass_joint"/>
+
+      <!-- Collision geometry - cylinder approximation -->
+      <geom name="plastic_glass_collision"
+            type="cylinder"
+            size="0.048 0.0855"
+            mass="0.08"
+            friction="0.6 0.005 0.0001"
+            contype="1"
+            conaffinity="1"
+            rgba="0 0 0 0"/>
+
+      <!-- Visual mesh -->
+      <geom name="plastic_glass_visual"
+            type="mesh"
+            mesh="plastic_glass_visual"
+            contype="0"
+            conaffinity="0"
+            pos="0 0 -0.0855"/>
+    </body>
+  </worldbody>
+</mujoco>
