@@ -1,0 +1,33 @@
+<mujoco model="potted_meat_can">
+  <compiler angle="radian"/>
+
+  <asset>
+    <texture name="potted_meat_can_tex" type="2d" file="potted_meat_can_texture.png"/>
+    <material name="potted_meat_can_mat" texture="potted_meat_can_tex" specular="0.5" shininess="0.5"/>
+    <mesh name="potted_meat_can_visual" file="potted_meat_can_visual.obj"/>
+  </asset>
+
+  <worldbody>
+    <body name="potted_meat_can" pos="0 0 0.042">
+      <freejoint name="potted_meat_can_joint"/>
+
+      <!-- Collision geometry - box approximation for SPAM can -->
+      <geom name="potted_meat_can_collision"
+            type="box"
+            size="0.051 0.029 0.042"
+            mass="0.35"
+            friction="0.6 0.005 0.0001"
+            contype="1"
+            conaffinity="1"
+            rgba="0 0 0 0"/>
+
+      <!-- Visual mesh -->
+      <geom name="potted_meat_can_visual"
+            type="mesh"
+            mesh="potted_meat_can_visual"
+            material="potted_meat_can_mat"
+            contype="0"
+            conaffinity="0"/>
+    </body>
+  </worldbody>
+</mujoco>

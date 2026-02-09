@@ -32,8 +32,10 @@ assets = AssetManager(OBJECTS_DIR)
 
 # List available objects
 print(assets.list())
-# ['can', 'fuze_bottle', 'plastic_bowl', 'plastic_glass', 'plastic_plate',
-#  'pop_tarts', 'recycle_bin', 'wicker_tray']
+# ['can', 'cracker_box', 'fuze_bottle', 'gelatin_box', 'herring_tin',
+#  'lunchbox', 'notebook', 'plastic_bowl', 'plastic_glass', 'plastic_plate',
+#  'pocky_box', 'pop_tarts', 'potted_meat_can', 'recycle_bin', 'sugar_box',
+#  'wicker_tray', 'yellow_tote']
 
 # Get path to simulation model
 can_path = assets.get_path("can", "mujoco")
@@ -56,13 +58,22 @@ containers = assets.by_category("container")
 | Object | Description | Collision |
 |--------|-------------|-----------|
 | `can` | Aluminum soda/beer can | cylinder |
+| `cracker_box` | Cheez-It crackers box | box |
 | `fuze_bottle` | Beverage bottle with texture | cylinder |
+| `gelatin_box` | Jell-O gelatin box | box |
+| `herring_tin` | MW Polar herring tin | box |
+| `lunchbox` | Wildkin insulated lunch box | box |
+| `notebook` | Amazon Basics hardcover notebook | box |
 | `plastic_bowl` | Tableware bowl (hollow) | cylinder + 8 angled boxes |
 | `plastic_glass` | Drinking glass | cylinder |
 | `plastic_plate` | Dinner plate | cylinder |
-| `pop_tarts` | Food box with texture | box |
+| `pocky_box` | Pocky biscuit sticks box | box |
+| `pop_tarts` | Pop-Tarts food box | box |
+| `potted_meat_can` | SPAM canned meat | box |
 | `recycle_bin` | Open-top recycling bin (hollow) | 5 boxes |
+| `sugar_box` | Domino sugar box | box |
 | `wicker_tray` | Serving tray (hollow) | 5 boxes |
+| `yellow_tote` | Storage tote (hollow) | 5 boxes |
 
 ## Object Structure
 

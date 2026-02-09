@@ -1,0 +1,27 @@
+name: potted_meat_can
+description: SPAM canned meat
+category: [food_package, graspable, can]
+
+mass: 0.35  # kg
+dimensions: [0.102, 0.058, 0.084]  # meters
+material: metal
+
+geometric_properties:
+  type: box
+  size: [0.102, 0.058, 0.084]
+
+mujoco:
+  xml_path: potted_meat_can.xml
+  scale: 1.0
+  friction: [0.6, 0.005, 0.0001]
+
+perception:
+  aliases: ["spam", "potted meat", "canned meat"]
+
+policy:
+  grasping:
+    affordances: [lift, place]
+    preferred_grasp_type: side_grasp
+    difficulty: easy
+  manipulation:
+    stable_poses: [upright, on_side]

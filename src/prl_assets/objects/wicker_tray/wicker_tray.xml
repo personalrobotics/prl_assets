@@ -2,6 +2,7 @@
   <compiler angle="radian"/>
 
   <asset>
+    <material name="wicker_tray_mat" rgba="0.34 0.18 0.12 1.0" specular="0.3" shininess="0.3"/>
     <mesh name="wicker_tray_visual" file="wicker_tray_visual.obj" scale="1 1 1"/>
   </asset>
 
@@ -69,6 +70,7 @@
       <geom name="wicker_tray_visual"
             type="mesh"
             mesh="wicker_tray_visual"
+            material="wicker_tray_mat"
             contype="0"
             conaffinity="0"/>
     </body>
