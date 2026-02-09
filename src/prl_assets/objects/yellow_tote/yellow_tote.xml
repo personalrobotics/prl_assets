@@ -73,7 +73,7 @@
             material="yellow_tote_mat"
             contype="0"
             conaffinity="0"
-            pos="0 0.05 -0.909"/>
+            pos="0 0 0.135"/>
     </body>
   </worldbody>
 </mujoco>
