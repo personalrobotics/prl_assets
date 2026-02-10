@@ -11,11 +11,32 @@
     <body name="herring_tin" pos="0 0 0.016">
       <freejoint name="herring_tin_joint"/>
 
-      <!-- Collision geometry - flat rectangular tin -->
-      <geom name="herring_tin_collision"
+      <!-- Collision geometry - flat tin with rounded ends -->
+      <!-- Central box -->
+      <geom name="herring_tin_collision_box"
             type="box"
-            size="0.075 0.016 0.042"
-            mass="0.2"
+            size="0.033 0.042 0.016"
+            mass="0.12"
+            friction="0.6 0.005 0.0001"
+            contype="1"
+            conaffinity="1"
+            rgba="0 0 0 0"/>
+      <!-- Rounded end +X -->
+      <geom name="herring_tin_collision_end1"
+            type="cylinder"
+            size="0.042 0.016"
+            pos="0.033 0 0"
+            mass="0.04"
+            friction="0.6 0.005 0.0001"
+            contype="1"
+            conaffinity="1"
+            rgba="0 0 0 0"/>
+      <!-- Rounded end -X -->
+      <geom name="herring_tin_collision_end2"
+            type="cylinder"
+            size="0.042 0.016"
+            pos="-0.033 0 0"
+            mass="0.04"
             friction="0.6 0.005 0.0001"
             contype="1"
             conaffinity="1"

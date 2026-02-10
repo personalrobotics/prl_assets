@@ -3,13 +3,13 @@ description: Domino granulated sugar box
 category: [food_package, graspable, box]
 
 mass: 0.5  # kg
-dimensions: [0.048, 0.094, 0.176]  # meters
+dimensions: [0.176, 0.094, 0.048]  # meters [X, Y, Z] in flat resting pose
 material: cardboard
 amazon_link: https://www.amazon.com/dp/B00O60NVHY
 
 geometric_properties:
   type: box
-  size: [0.048, 0.094, 0.176]
+  size: [0.176, 0.094, 0.048]
 
 mujoco:
   xml_path: sugar_box.xml

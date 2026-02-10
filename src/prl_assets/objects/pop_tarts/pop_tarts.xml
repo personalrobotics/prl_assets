@@ -27,8 +27,7 @@
             mesh="pop_tarts_visual"
             material="pop_tarts_mat"
             contype="0"
-            conaffinity="0"
-            pos="0 0 -0.0703"/>
+            conaffinity="0"/>
     </body>
   </worldbody>
 </mujoco>

@@ -8,13 +8,13 @@
   </asset>
 
   <worldbody>
-    <body name="sugar_box" pos="0 0 0.088">
+    <body name="sugar_box" pos="0 0 0.024">
       <freejoint name="sugar_box_joint"/>
 
       <!-- Collision geometry - box -->
       <geom name="sugar_box_collision"
             type="box"
-            size="0.024 0.047 0.088"
+            size="0.088 0.047 0.024"
             mass="0.5"
             friction="0.7 0.005 0.0001"
             contype="1"

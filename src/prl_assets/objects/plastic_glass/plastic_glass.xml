@@ -3,16 +3,17 @@
 
   <asset>
     <material name="plastic_glass_mat" rgba="0.72 0.72 0.72 1.0" specular="0.5" shininess="0.5"/>
-    <mesh name="plastic_glass_visual" file="plastic_glass_visual.obj" scale="1 1 1"/>
+    <mesh name="plastic_glass_mesh" file="plastic_glass_visual.obj"/>
   </asset>
 
   <worldbody>
-    <body name="plastic_glass" pos="0 0 0.0855">
+    <body name="plastic_glass" pos="0 0 0">
       <freejoint name="plastic_glass_joint"/>
 
-      <!-- Collision geometry - cylinder approximation -->
+      <!-- Collision geometry - cylinder (radius=0.048, height=0.171) -->
       <geom name="plastic_glass_collision"
             type="cylinder"
+            pos="0 0 0.0855"
             size="0.048 0.0855"
             mass="0.08"
             friction="0.6 0.005 0.0001"
@@ -23,11 +24,10 @@
       <!-- Visual mesh -->
       <geom name="plastic_glass_visual"
             type="mesh"
-            mesh="plastic_glass_visual"
+            mesh="plastic_glass_mesh"
             material="plastic_glass_mat"
             contype="0"
-            conaffinity="0"
-            pos="0 0 -0.0855"/>
+            conaffinity="0"/>
     </body>
   </worldbody>
 </mujoco>

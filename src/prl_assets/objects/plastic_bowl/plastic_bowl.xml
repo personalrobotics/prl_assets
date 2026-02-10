@@ -3,72 +3,29 @@
 
   <asset>
     <material name="plastic_bowl_mat" rgba="0.74 0.74 0.74 1.0" specular="0.5" shininess="0.5"/>
-    <mesh name="plastic_bowl_visual" file="plastic_bowl_visual.obj" scale="1 1 1"/>
+    <mesh name="plastic_bowl_mesh" file="plastic_bowl_visual.obj"/>
   </asset>
 
   <worldbody>
     <body name="plastic_bowl" pos="0 0 0">
       <freejoint name="plastic_bowl_joint"/>
 
-      <!-- Collision geometry - hollow bowl (floor + 8 angled wall segments) -->
-      <!-- Floor - thin cylinder -->
-      <geom name="plastic_bowl_floor"
-            type="cylinder"
-            pos="0 0 0.003"
-            size="0.045 0.003"
-            mass="0.05"
+      <!-- Collision mesh (enables nesting/stacking) -->
+      <geom name="plastic_bowl_collision"
+            type="mesh"
+            mesh="plastic_bowl_mesh"
+            mass="0.15"
             friction="0.6 0.005 0.0001"
+            solref="0.004 1"
+            solimp="0.95 0.99 0.001"
             contype="1"
             conaffinity="1"
             rgba="0 0 0 0"/>
 
-      <!-- Wall segments (octagon, tilted outward ~30 deg to match bowl curve) -->
-      <!-- Positioned at mid-radius 0.06, tilted 0.52 rad outward -->
-      <!-- Segment at 0 degrees -->
-      <geom name="plastic_bowl_wall_0" type="box"
-            pos="0.062 0 0.04" euler="0.52 0 0"
-            size="0.006 0.033 0.038" mass="0.0125"
-            friction="0.6 0.005 0.0001" contype="1" conaffinity="1" rgba="0 0 0 0"/>
-      <!-- Segment at 45 degrees -->
-      <geom name="plastic_bowl_wall_45" type="box"
-            pos="0.0438 0.0438 0.04" euler="0.368 0.368 0.785"
-            size="0.006 0.033 0.038" mass="0.0125"
-            friction="0.6 0.005 0.0001" contype="1" conaffinity="1" rgba="0 0 0 0"/>
-      <!-- Segment at 90 degrees -->
-      <geom name="plastic_bowl_wall_90" type="box"
-            pos="0 0.062 0.04" euler="0 0.52 1.571"
-            size="0.006 0.033 0.038" mass="0.0125"
-            friction="0.6 0.005 0.0001" contype="1" conaffinity="1" rgba="0 0 0 0"/>
-      <!-- Segment at 135 degrees -->
-      <geom name="plastic_bowl_wall_135" type="box"
-            pos="-0.0438 0.0438 0.04" euler="-0.368 0.368 2.356"
-            size="0.006 0.033 0.038" mass="0.0125"
-            friction="0.6 0.005 0.0001" contype="1" conaffinity="1" rgba="0 0 0 0"/>
-      <!-- Segment at 180 degrees -->
-      <geom name="plastic_bowl_wall_180" type="box"
-            pos="-0.062 0 0.04" euler="-0.52 0 3.142"
-            size="0.006 0.033 0.038" mass="0.0125"
-            friction="0.6 0.005 0.0001" contype="1" conaffinity="1" rgba="0 0 0 0"/>
-      <!-- Segment at 225 degrees -->
-      <geom name="plastic_bowl_wall_225" type="box"
-            pos="-0.0438 -0.0438 0.04" euler="-0.368 -0.368 3.927"
-            size="0.006 0.033 0.038" mass="0.0125"
-            friction="0.6 0.005 0.0001" contype="1" conaffinity="1" rgba="0 0 0 0"/>
-      <!-- Segment at 270 degrees -->
-      <geom name="plastic_bowl_wall_270" type="box"
-            pos="0 -0.062 0.04" euler="0 -0.52 4.712"
-            size="0.006 0.033 0.038" mass="0.0125"
-            friction="0.6 0.005 0.0001" contype="1" conaffinity="1" rgba="0 0 0 0"/>
-      <!-- Segment at 315 degrees -->
-      <geom name="plastic_bowl_wall_315" type="box"
-            pos="0.0438 -0.0438 0.04" euler="0.368 -0.368 5.498"
-            size="0.006 0.033 0.038" mass="0.0125"
-            friction="0.6 0.005 0.0001" contype="1" conaffinity="1" rgba="0 0 0 0"/>
-
       <!-- Visual mesh -->
       <geom name="plastic_bowl_visual"
             type="mesh"
-            mesh="plastic_bowl_visual"
+            mesh="plastic_bowl_mesh"
             material="plastic_bowl_mat"
             contype="0"
             conaffinity="0"/>
