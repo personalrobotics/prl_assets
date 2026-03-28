@@ -15,7 +15,7 @@ GRID_SPACING = 0.5
 OBJECTS = [
     "can", "cracker_box", "fuze_bottle", "gelatin_box", "herring_tin",
     "lunchbox", "notebook", "plastic_bowl", "plastic_glass", "plastic_plate",
-    "pocky_box", "pop_tarts", "potted_meat_can", "recycle_bin", "sugar_box",
+    "pocky_box", "pop_tarts_case", "spam_can", "recycle_bin", "sugar_box",
     "wicker_tray", "yellow_tote"
 ]
 

@@ -34,7 +34,7 @@ assets = AssetManager(OBJECTS_DIR)
 print(assets.list())
 # ['can', 'cracker_box', 'fuze_bottle', 'gelatin_box', 'herring_tin',
 #  'lunchbox', 'notebook', 'plastic_bowl', 'plastic_glass', 'plastic_plate',
-#  'pocky_box', 'pop_tarts', 'potted_meat_can', 'recycle_bin', 'sugar_box',
+#  'pocky_box', 'pop_tarts_case', 'spam_can', 'recycle_bin', 'sugar_box',
 #  'wicker_tray', 'yellow_tote']
 
 # Get path to simulation model
@@ -68,8 +68,8 @@ containers = assets.by_category("container")
 | `plastic_glass` | Drinking glass | cylinder |
 | `plastic_plate` | Dinner plate (stackable) | mesh |
 | `pocky_box` | Pocky biscuit sticks box | box |
-| `pop_tarts` | Pop-Tarts food box | box |
-| `potted_meat_can` | SPAM canned meat | box |
+| `pop_tarts_case` | Pop-Tarts food box | box |
+| `spam_can` | SPAM canned meat | box |
 | `recycle_bin` | Open-top recycling bin (hollow) | 5 boxes |
 | `sugar_box` | Domino sugar box | box |
 | `wicker_tray` | Serving tray (hollow) | 5 boxes |
