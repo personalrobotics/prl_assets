@@ -7,13 +7,12 @@
   </asset>
 
   <worldbody>
-    <body name="plastic_glass" pos="0 0 0">
+    <body name="plastic_glass" pos="0 0 0.0855">
       <freejoint name="plastic_glass_joint"/>
 
       <!-- Collision geometry - cylinder (radius=0.048, height=0.171) -->
       <geom name="plastic_glass_collision"
             type="cylinder"
-            pos="0 0 0.0855"
             size="0.048 0.0855"
             mass="0.08"
             friction="0.6 0.005 0.0001"
