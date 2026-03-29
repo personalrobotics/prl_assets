@@ -20,10 +20,11 @@
             conaffinity="1"
             rgba="0 0 0 0"/>
 
-      <!-- Visual mesh -->
+      <!-- Visual mesh (mesh origin at bottom, shift down to center on body) -->
       <geom name="plastic_glass_visual"
             type="mesh"
             mesh="plastic_glass_mesh"
+            pos="0 0 -0.0855"
             material="plastic_glass_mat"
             contype="0"
             conaffinity="0"/>
