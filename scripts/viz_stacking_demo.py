@@ -68,7 +68,7 @@ def main():
     # Load all needed objects
     objects_needed = [
         "plastic_bowl", "plastic_plate", "plastic_glass", "wicker_tray", "yellow_tote",
-        "can", "sugar_box", "pop_tarts", "gelatin_box", "pocky_box"
+        "can", "sugar_box", "pop_tarts_case", "gelatin_box", "pocky_box"
     ]
 
     obj_data = {}
@@ -107,7 +107,7 @@ def main():
     tote_items = [
         ("can", (0.35, -0.05, 0.20)),
         ("sugar_box", (0.45, 0.05, 0.28)),
-        ("pop_tarts", (0.38, 0.08, 0.36)),
+        ("pop_tarts_case", (0.38, 0.08, 0.36)),
         ("gelatin_box", (0.42, -0.08, 0.44)),
         ("pocky_box", (0.4, 0, 0.52)),
     ]
