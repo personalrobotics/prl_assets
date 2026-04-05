@@ -1,4 +1,7 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: MIT
+# Copyright (c) 2025 Siddhartha Srinivasa
+
 """Render screenshots of all prl_assets objects.
 
 This script renders each object and saves a PNG screenshot alongside
@@ -16,15 +19,13 @@ sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
 
 import mujoco
 import numpy as np
+from asset_manager import AssetManager
 from PIL import Image
 
-from asset_manager import AssetManager
 from prl_assets import OBJECTS_DIR
 
 
-def render_object(
-    assets: AssetManager, name: str, width: int = 640, height: int = 480
-) -> np.ndarray:
+def render_object(assets: AssetManager, name: str, width: int = 640, height: int = 480) -> np.ndarray:
     """Render an object and return the image as a numpy array."""
     xml_path = assets.get_path(name, "mujoco")
     meta = assets.get(name)

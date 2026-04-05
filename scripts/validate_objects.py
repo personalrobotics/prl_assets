@@ -1,4 +1,7 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: MIT
+# Copyright (c) 2025 Siddhartha Srinivasa
+
 """Validate and fix prl_assets objects for coordinate frame and alignment standards.
 
 Usage:
@@ -157,7 +160,7 @@ def check_collision_geom(obj_name: str, meta: dict, tree: ET.ElementTree) -> dic
                     return result
                 if expected_height and abs(2 * half_height - expected_height) > 0.002:
                     result["pass"] = False
-                    result["message"] = f"height={2*half_height}, expected {expected_height}"
+                    result["message"] = f"height={2 * half_height}, expected {expected_height}"
                     return result
 
     result["message"] = f"{actual_type} geometry OK"
@@ -222,9 +225,6 @@ def load_mesh_vertices(mesh_path: Path) -> np.ndarray | None:
                     vertices.append([float(parts[1]), float(parts[2]), float(parts[3])])
     elif ext == ".stl":
         with open(mesh_path, "rb") as f:
-            # Try to detect binary vs ASCII
-            header = f.read(80)
-            f.seek(0)
             try:
                 content = f.read().decode("utf-8")
                 for line in content.split("\n"):
@@ -378,7 +378,7 @@ def check_mesh_height(obj_dir: Path, obj_name: str, meta: dict, tree: ET.Element
         result["pass"] = False
         result["message"] = (
             f"mesh Z={mesh_height:.4f}m, meta dimensions[2]={meta_height:.4f}m "
-            f"(diff={abs(mesh_height - meta_height)*1000:.1f}mm)"
+            f"(diff={abs(mesh_height - meta_height) * 1000:.1f}mm)"
         )
     else:
         result["message"] = f"mesh Z={mesh_height:.4f}m matches dimensions[2]"

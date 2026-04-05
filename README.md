@@ -1,6 +1,6 @@
 # prl_assets
 
-Reusable manipulation objects for Personal Robotics Lab projects.
+Reusable manipulation objects (cans, bins, tableware, containers) for MuJoCo simulation.
 
 ![Assets Preview](docs/assets_preview.png)
 

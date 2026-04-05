@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 """Test can rendering with assets dict."""
 
+from pathlib import Path
+
 import mujoco
 import mujoco.viewer
-from pathlib import Path
 
 # Read can XML
 can_xml = Path("src/prl_assets/objects/can/can.xml").read_text()
@@ -16,7 +17,7 @@ mesh_data = mesh_path.read_bytes()
 assets = {"can_visual.stl": mesh_data}
 
 # Create wrapper XML
-xml = f"""
+xml = """
 <mujoco model="test_can">
   <compiler angle="radian"/>
   <option gravity="0 0 -9.81"/>
@@ -64,7 +65,7 @@ print("Loading model with assets dict...", flush=True)
 model = mujoco.MjModel.from_xml_string(xml, assets=assets)
 data = mujoco.MjData(model)
 
-print(f"Model loaded successfully", flush=True)
+print("Model loaded successfully", flush=True)
 print(f"  Geoms: {model.ngeom}", flush=True)
 for i in range(model.ngeom):
     geom_name = mujoco.mj_id2name(model, mujoco.mjtObj.mjOBJ_GEOM, i)

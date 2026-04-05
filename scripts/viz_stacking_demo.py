@@ -1,10 +1,14 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: MIT
+# Copyright (c) 2025 Siddhartha Srinivasa
+
 """Demo scene: stacked bowls/plates/glasses, objects in yellow tote - with physics."""
+
+import tempfile
+from pathlib import Path
 
 import mujoco
 import mujoco.viewer
-import tempfile
-from pathlib import Path
 
 OBJECTS_DIR = Path(__file__).parent.parent / "src" / "prl_assets" / "objects"
 
@@ -18,10 +22,11 @@ def load_object_xml(obj_name):
         return None, None
 
     import re
+
     xml_content = xml_path.read_text()
 
     # Extract asset section - prefix with obj_name to avoid conflicts
-    asset_match = re.search(r'<asset>(.*?)</asset>', xml_content, re.DOTALL)
+    asset_match = re.search(r"<asset>(.*?)</asset>", xml_content, re.DOTALL)
     asset_content = ""
     if asset_match:
         asset_content = asset_match.group(1)
@@ -46,14 +51,16 @@ def load_object_xml(obj_name):
 def create_body(instance_name, pos, body_content, with_joint=True):
     """Create a body element with given position."""
     import re
+
     # Make geom names unique by prefixing with instance_name
     def replace_name(m):
         return f'name="{instance_name}_{m.group(1)}"'
+
     unique_content = re.sub(r'name="([^"]*)"', replace_name, body_content)
     # Remove any existing freejoint
-    unique_content = re.sub(r'<freejoint[^/]*/>', '', unique_content)
+    unique_content = re.sub(r"<freejoint[^/]*/>", "", unique_content)
 
-    joint = f'<freejoint name="{instance_name}_joint"/>' if with_joint else ''
+    joint = f'<freejoint name="{instance_name}_joint"/>' if with_joint else ""
     return f'''
     <body name="{instance_name}" pos="{pos[0]} {pos[1]} {pos[2]}">
       {joint}
@@ -67,8 +74,16 @@ def main():
 
     # Load all needed objects
     objects_needed = [
-        "plastic_bowl", "plastic_plate", "plastic_glass", "wicker_tray", "yellow_tote",
-        "can", "sugar_box", "pop_tarts_case", "gelatin_box", "pocky_box"
+        "plastic_bowl",
+        "plastic_plate",
+        "plastic_glass",
+        "wicker_tray",
+        "yellow_tote",
+        "can",
+        "sugar_box",
+        "pop_tarts_case",
+        "gelatin_box",
+        "pocky_box",
     ]
 
     obj_data = {}
@@ -117,7 +132,7 @@ def main():
             bodies.append(create_body(f"tote_item_{i}", pos, obj_data[obj_name]))
 
     # Build scene XML
-    scene_xml = f'''<mujoco model="stacking_demo">
+    scene_xml = f"""<mujoco model="stacking_demo">
   <compiler angle="radian"/>
 
   <option gravity="0 0 -9.81" timestep="0.001" iterations="50" integrator="implicitfast" viscosity="2.0"/>
@@ -143,10 +158,10 @@ def main():
 
     {"".join(bodies)}
   </worldbody>
-</mujoco>'''
+</mujoco>"""
 
     # Write to temp file
-    with tempfile.NamedTemporaryFile(mode='w', suffix='.xml', delete=False) as f:
+    with tempfile.NamedTemporaryFile(mode="w", suffix=".xml", delete=False) as f:
         f.write(scene_xml)
         xml_path = f.name
 

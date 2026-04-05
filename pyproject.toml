@@ -1,12 +1,15 @@
 [project]
 name = "prl_assets"
 version = "0.1.0"
-description = "Reusable manipulation objects for Personal Robotics Lab projects"
+description = "Reusable manipulation objects (cans, bins, tableware, containers) for MuJoCo"
 readme = "README.md"
 requires-python = ">=3.10"
 license = "MIT"
 authors = [
-    { name = "Personal Robotics Lab" }
+    {name = "Siddhartha Srinivasa", email = "siddhartha.srinivasa@gmail.com"},
+]
+maintainers = [
+    {name = "Siddhartha Srinivasa", email = "siddhartha.srinivasa@gmail.com"},
 ]
 dependencies = [
     "fast-simplification>=0.1.13",
@@ -27,8 +30,20 @@ build-backend = "hatchling.build"
 [tool.hatch.build.targets.wheel]
 packages = ["src/prl_assets"]
 
+[project.urls]
+Homepage = "https://github.com/personalrobotics/prl_assets"
+Repository = "https://github.com/personalrobotics/prl_assets"
+Issues = "https://github.com/personalrobotics/prl_assets/issues"
+
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 
 [tool.ruff]
-line-length = 100
+line-length = 120
+extend-exclude = ["scripts"]
+
+[tool.ruff.lint]
+select = ["F", "E", "W", "I"]
+
+[tool.ruff.lint.per-file-ignores]
+"src/prl_assets/__init__.py" = ["F401"]

@@ -1,4 +1,7 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: MIT
+# Copyright (c) 2025 Siddhartha Srinivasa
+
 """Re-center mesh files to have origin at bottom-center.
 
 This script moves mesh vertices so that:
@@ -53,7 +56,13 @@ def save_obj(filepath: Path, vertices: np.ndarray, faces: list, other_lines: lis
         # Write other data (normals, texture coords, etc.)
         for line in other_lines:
             if not line.startswith("#") and not line.startswith("mtllib"):
-                if line.startswith("vt ") or line.startswith("vn ") or line.startswith("usemtl") or line.startswith("g ") or line.startswith("s "):
+                if (
+                    line.startswith("vt ")
+                    or line.startswith("vn ")
+                    or line.startswith("usemtl")
+                    or line.startswith("g ")
+                    or line.startswith("s ")
+                ):
                     f.write(line + "\n")
 
         # Write faces
@@ -240,7 +249,7 @@ def print_result(result: dict):
     print(f"Format: {result['format']}")
 
     bb = result["bounds_before"]
-    print(f"\nBefore:")
+    print("\nBefore:")
     print(f"  Min: [{bb['min'][0]:.4f}, {bb['min'][1]:.4f}, {bb['min'][2]:.4f}]")
     print(f"  Max: [{bb['max'][0]:.4f}, {bb['max'][1]:.4f}, {bb['max'][2]:.4f}]")
     print(f"  Size: [{bb['size'][0]:.4f}, {bb['size'][1]:.4f}, {bb['size'][2]:.4f}]")
@@ -249,7 +258,7 @@ def print_result(result: dict):
     print(f"\nTranslation to apply: [{t[0]:.4f}, {t[1]:.4f}, {t[2]:.4f}]")
 
     ba = result["bounds_after"]
-    print(f"\nAfter:")
+    print("\nAfter:")
     print(f"  Min: [{ba['min'][0]:.4f}, {ba['min'][1]:.4f}, {ba['min'][2]:.4f}]")
     print(f"  Max: [{ba['max'][0]:.4f}, {ba['max'][1]:.4f}, {ba['max'][2]:.4f}]")
     print(f"  Size: [{ba['size'][0]:.4f}, {ba['size'][1]:.4f}, {ba['size'][2]:.4f}]")
@@ -257,7 +266,7 @@ def print_result(result: dict):
     if result["applied"]:
         print(f"\n✓ Changes applied to {result['file']}")
     else:
-        print(f"\nDry run - use --apply to save changes")
+        print("\nDry run - use --apply to save changes")
 
 
 def main():
