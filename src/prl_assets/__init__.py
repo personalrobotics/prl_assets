@@ -1,4 +1,7 @@
-"""Reusable manipulation objects for Personal Robotics Lab projects.
+# SPDX-License-Identifier: MIT
+# Copyright (c) 2025 Siddhartha Srinivasa
+
+"""Reusable manipulation objects for MuJoCo simulation.
 
 This package provides simulation models and metadata for common manipulation
 objects like cans, bins, and other graspable items. Objects follow the

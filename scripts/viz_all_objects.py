@@ -1,10 +1,14 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: MIT
+# Copyright (c) 2025 Siddhartha Srinivasa
+
 """Visualize all prl_assets objects with collision geometry and coordinate frames."""
+
+import tempfile
+from pathlib import Path
 
 import mujoco
 import mujoco.viewer
-import tempfile
-from pathlib import Path
 
 OBJECTS_DIR = Path(__file__).parent.parent / "src" / "prl_assets" / "objects"
 
@@ -13,10 +17,23 @@ GRID_COLS = 5
 GRID_SPACING = 0.5
 
 OBJECTS = [
-    "can", "cracker_box", "fuze_bottle", "gelatin_box", "herring_tin",
-    "lunchbox", "notebook", "plastic_bowl", "plastic_glass", "plastic_plate",
-    "pocky_box", "pop_tarts_case", "spam_can", "recycle_bin", "sugar_box",
-    "wicker_tray", "yellow_tote"
+    "can",
+    "cracker_box",
+    "fuze_bottle",
+    "gelatin_box",
+    "herring_tin",
+    "lunchbox",
+    "notebook",
+    "plastic_bowl",
+    "plastic_glass",
+    "plastic_plate",
+    "pocky_box",
+    "pop_tarts_case",
+    "spam_can",
+    "recycle_bin",
+    "sugar_box",
+    "wicker_tray",
+    "yellow_tote",
 ]
 
 
@@ -45,7 +62,8 @@ def create_scene_xml():
 
         # Extract asset section
         import re
-        asset_match = re.search(r'<asset>(.*?)</asset>', xml_content, re.DOTALL)
+
+        asset_match = re.search(r"<asset>(.*?)</asset>", xml_content, re.DOTALL)
         if asset_match:
             asset_content = asset_match.group(1)
             # Prefix names to avoid collisions and fix file paths
@@ -56,11 +74,13 @@ def create_scene_xml():
             assets.append(asset_content)
 
         # Extract body section - preserve the original z offset
-        body_match = re.search(r'<body name="[^"]*"\s+pos="([^"]*)"\s*>(.*?)</body>\s*</worldbody>', xml_content, re.DOTALL)
+        body_match = re.search(
+            r'<body name="[^"]*"\s+pos="([^"]*)"\s*>(.*?)</body>\s*</worldbody>', xml_content, re.DOTALL
+        )
         if body_match:
             orig_pos = body_match.group(1).split()
             orig_z = float(orig_pos[2]) if len(orig_pos) >= 3 else 0
-            body_content = body_match.group(0).replace('</worldbody>', '')
+            body_content = body_match.group(0).replace("</worldbody>", "")
             # Update position preserving original z offset
             body_content = re.sub(r'pos="([^"]*)"', f'pos="{x} {y} {orig_z}"', body_content, count=1)
             body_content = body_content.replace('name="', f'name="{obj_name}_')
@@ -68,18 +88,18 @@ def create_scene_xml():
             body_content = body_content.replace('material="', f'material="{obj_name}_')
             body_content = body_content.replace('texture="', f'texture="{obj_name}_')
             # Remove freejoint for static display
-            body_content = re.sub(r'<freejoint[^/]*/>', '', body_content)
+            body_content = re.sub(r"<freejoint[^/]*/>", "", body_content)
             bodies.append(body_content)
 
             # Add coordinate frame axes at object position
             axis_len = 0.05
             bodies.append(f'''
-    <geom name="{obj_name}_x_axis" type="cylinder" fromto="{x} {y} 0.001 {x+axis_len} {y} 0.001" size="0.002" rgba="1 0 0 1"/>
-    <geom name="{obj_name}_y_axis" type="cylinder" fromto="{x} {y} 0.001 {x} {y+axis_len} 0.001" size="0.002" rgba="0 1 0 1"/>
-    <geom name="{obj_name}_z_axis" type="cylinder" fromto="{x} {y} 0.001 {x} {y} {0.001+axis_len}" size="0.002" rgba="0 0 1 1"/>''')
+    <geom name="{obj_name}_x_axis" type="cylinder" fromto="{x} {y} 0.001 {x + axis_len} {y} 0.001" size="0.002" rgba="1 0 0 1"/>
+    <geom name="{obj_name}_y_axis" type="cylinder" fromto="{x} {y} 0.001 {x} {y + axis_len} 0.001" size="0.002" rgba="0 1 0 1"/>
+    <geom name="{obj_name}_z_axis" type="cylinder" fromto="{x} {y} 0.001 {x} {y} {0.001 + axis_len}" size="0.002" rgba="0 0 1 1"/>''')
 
     # Build complete scene XML
-    scene_xml = f'''<mujoco model="all_objects">
+    scene_xml = f"""<mujoco model="all_objects">
   <compiler angle="radian"/>
 
   <option gravity="0 0 0"/>
@@ -106,7 +126,7 @@ def create_scene_xml():
 
     {"".join(bodies)}
   </worldbody>
-</mujoco>'''
+</mujoco>"""
 
     return scene_xml
 
@@ -115,7 +135,7 @@ def main():
     scene_xml = create_scene_xml()
 
     # Write to temp file
-    with tempfile.NamedTemporaryFile(mode='w', suffix='.xml', delete=False) as f:
+    with tempfile.NamedTemporaryFile(mode="w", suffix=".xml", delete=False) as f:
         f.write(scene_xml)
         xml_path = f.name
 

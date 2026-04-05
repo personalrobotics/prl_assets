@@ -1,7 +1,11 @@
+# SPDX-License-Identifier: MIT
+# Copyright (c) 2025 Siddhartha Srinivasa
+
 """Tests for prl_assets package."""
 
-import pytest
 from pathlib import Path
+
+import pytest
 
 from prl_assets import OBJECTS_DIR
 
@@ -10,6 +14,7 @@ from prl_assets import OBJECTS_DIR
 def assets():
     """Create AssetManager for prl_assets."""
     from asset_manager import AssetManager
+
     return AssetManager(OBJECTS_DIR)
 
 
