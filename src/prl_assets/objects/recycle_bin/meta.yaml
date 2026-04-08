@@ -11,8 +11,8 @@ material: plastic
 # Geometric properties
 geometric_properties:
   type: open_box
-  outer_dimensions: [0.25, 0.25, 0.80]
-  inner_dimensions: [0.244, 0.244, 0.794]
+  outer_size: [0.25, 0.25, 0.80]
+  inner_size: [0.244, 0.244, 0.794]
   wall_thickness: 0.003
 
 # MuJoCo simulation
