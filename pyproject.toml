@@ -21,6 +21,7 @@ dev = [
     "pytest>=7.0",
     "mujoco>=3.0",
     "pillow>=10.0",
+    "ruff>=0.4",
 ]
 
 [build-system]

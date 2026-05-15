@@ -12,9 +12,13 @@ from prl_assets import OBJECTS_DIR
 
 @pytest.fixture
 def assets():
-    """Create AssetManager for prl_assets."""
-    from asset_manager import AssetManager
+    """Create AssetManager for prl_assets.
 
+    asset_manager is a sibling workspace package and not a prl_assets
+    dependency; skip the tests that rely on it when run in isolation
+    (e.g. prl_assets' standalone CI).
+    """
+    AssetManager = pytest.importorskip("asset_manager").AssetManager
     return AssetManager(OBJECTS_DIR)
 
 
