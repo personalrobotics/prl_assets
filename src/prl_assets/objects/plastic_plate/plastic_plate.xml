@@ -31,7 +31,7 @@
             conaffinity="1"/>
 
       <!-- Visual mesh -->
-      <geom name="plastic_plate_visual" group="2"
+      <geom name="plastic_plate_visual" group="2" mass="0"
             type="mesh"
             mesh="plastic_plate_mesh"
             pos="0 0 -0.0135"

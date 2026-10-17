@@ -62,7 +62,7 @@
             conaffinity="1"/>
 
       <!-- Visual mesh -->
-      <geom name="yellow_tote_visual" group="2"
+      <geom name="yellow_tote_visual" group="2" mass="0"
             type="mesh"
             mesh="yellow_tote_visual"
             material="yellow_tote_mat"

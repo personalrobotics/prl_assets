@@ -21,7 +21,7 @@
             conaffinity="1"/>
 
       <!-- Visual mesh -->
-      <geom name="fuze_bottle_visual" group="2"
+      <geom name="fuze_bottle_visual" group="2" mass="0"
             type="mesh"
             mesh="fuze_bottle_visual"
             material="fuze_bottle_mat"

@@ -21,7 +21,7 @@
             conaffinity="1"/>
 
       <!-- Visual mesh -->
-      <geom name="cracker_box_visual" group="2"
+      <geom name="cracker_box_visual" group="2" mass="0"
             type="mesh"
             mesh="cracker_box_visual"
             material="cracker_box_mat"

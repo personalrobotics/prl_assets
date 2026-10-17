@@ -62,7 +62,7 @@
             conaffinity="1"/>
 
       <!-- Visual mesh -->
-      <geom name="wicker_tray_visual" group="2"
+      <geom name="wicker_tray_visual" group="2" mass="0"
             type="mesh"
             mesh="wicker_tray_visual"
             material="wicker_tray_mat"
