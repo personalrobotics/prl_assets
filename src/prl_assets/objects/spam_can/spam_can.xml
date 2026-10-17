@@ -21,7 +21,7 @@
             conaffinity="1"/>
 
       <!-- Visual mesh -->
-      <geom name="spam_can_visual" group="2"
+      <geom name="spam_can_visual" group="2" mass="0"
             type="mesh"
             mesh="spam_can_visual"
             material="spam_can_mat"

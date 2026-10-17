@@ -20,7 +20,7 @@
             conaffinity="1"/>
 
       <!-- Visual mesh (mesh origin at bottom, shift down to center on body) -->
-      <geom name="plastic_glass_visual" group="2"
+      <geom name="plastic_glass_visual" group="2" mass="0"
             type="mesh"
             mesh="plastic_glass_mesh"
             pos="0 0 -0.0855"

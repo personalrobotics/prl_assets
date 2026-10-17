@@ -134,3 +134,22 @@ class TestMuJoCoIntegration:
             path = assets.get_path(name, "mujoco")
             model = mujoco.MjModel.from_xml_path(path)
             assert model.ngeom > 0, f"{name} has no geoms"
+
+
+def _object_dirs() -> list[Path]:
+    return sorted(d for d in OBJECTS_DIR.iterdir() if (d / "meta.yaml").exists())
+
+
+@pytest.mark.parametrize("obj_dir", _object_dirs(), ids=lambda d: d.name)
+def test_compiled_mass_matches_meta(obj_dir: Path) -> None:
+    """An object's compiled MuJoCo mass is the real mass declared in its meta.yaml.
+
+    A geom that leaves mass unset takes MuJoCo's default density (1000 kg/m^3), even
+    when it does not collide; visual meshes once made the yellow tote weigh 90 kg
+    instead of 0.7 kg.
+    """
+    mujoco = pytest.importorskip("mujoco")
+    yaml = pytest.importorskip("yaml")
+    meta = yaml.safe_load((obj_dir / "meta.yaml").read_text())
+    model = mujoco.MjModel.from_xml_path(str(obj_dir / meta["mujoco"]["xml_path"]))
+    assert model.body_mass[1:].sum() == pytest.approx(meta["mass"], abs=1e-6)

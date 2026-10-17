@@ -21,7 +21,7 @@
             conaffinity="1"/>
 
       <!-- Visual: UV-mapped box with per-face textures from atlas -->
-      <geom name="pop_tarts_case_visual" group="2"
+      <geom name="pop_tarts_case_visual" group="2" mass="0"
             type="mesh"
             mesh="pop_tarts_case_visual"
             material="pop_tarts_case_mat"

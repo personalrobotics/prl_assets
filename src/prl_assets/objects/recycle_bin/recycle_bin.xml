@@ -11,19 +11,19 @@
     <body name="recycle_bin" pos="0 0 0">
       <freejoint name="recycle_bin_joint"/>
       <!-- Bottom -->
-      <geom name="bin_bottom" type="box" size="0.122 0.122 0.003" pos="0 0 0.003"
+      <geom name="bin_bottom" type="box" size="0.122 0.122 0.003" pos="0 0 0.003" mass="0.031638"
             material="bin_blue" friction="0.8 0.01 0.001" contype="1" conaffinity="1"/>
       <!-- Front wall (2cm thick, inner edge at y=0.119) -->
-      <geom name="bin_front" type="box" size="0.132 0.01 0.397" pos="0 0.129 0.40"
+      <geom name="bin_front" type="box" size="0.132 0.01 0.397" pos="0 0.129 0.40" mass="0.37131"
             material="bin_blue" friction="0.8 0.01 0.001" contype="1" conaffinity="1"/>
       <!-- Back wall (2cm thick, inner edge at y=-0.119) -->
-      <geom name="bin_back" type="box" size="0.132 0.01 0.397" pos="0 -0.129 0.40"
+      <geom name="bin_back" type="box" size="0.132 0.01 0.397" pos="0 -0.129 0.40" mass="0.37131"
             material="bin_blue" friction="0.8 0.01 0.001" contype="1" conaffinity="1"/>
       <!-- Left wall (2cm thick, inner edge at x=-0.119) -->
-      <geom name="bin_left" type="box" size="0.01 0.129 0.397" pos="-0.129 0 0.40"
+      <geom name="bin_left" type="box" size="0.01 0.129 0.397" pos="-0.129 0 0.40" mass="0.362871"
             material="bin_blue" friction="0.8 0.01 0.001" contype="1" conaffinity="1"/>
       <!-- Right wall (2cm thick, inner edge at x=0.119) -->
-      <geom name="bin_right" type="box" size="0.01 0.129 0.397" pos="0.129 0 0.40"
+      <geom name="bin_right" type="box" size="0.01 0.129 0.397" pos="0.129 0 0.40" mass="0.362871"
             material="bin_blue" friction="0.8 0.01 0.001" contype="1" conaffinity="1"/>
     </body>
   </worldbody>
