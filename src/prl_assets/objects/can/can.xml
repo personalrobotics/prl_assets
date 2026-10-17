@@ -20,10 +20,13 @@
             conaffinity="1"/>  <!-- Collision proxy: group 3, hidden by default -->
 
       <!-- Visual mesh -->
-      <geom name="can_visual"
+      <geom name="can_visual" group="2"
             type="mesh"
             mesh="can_visual"
-            rgba="0.8 0.1 0.1 1"/>
+            rgba="0.8 0.1 0.1 1"
+            contype="0"
+            conaffinity="0"
+            mass="0"/>
     </body>
   </worldbody>
 </mujoco>
