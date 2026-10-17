@@ -12,62 +12,57 @@
 
       <!-- Collision geometry - hollow tray (floor + 4 walls) -->
       <!-- Floor -->
-      <geom name="wicker_tray_floor"
+      <geom name="wicker_tray_floor" group="3"
             type="box"
             pos="0 0 0.005"
             size="0.23 0.33 0.005"
             mass="0.2"
             friction="0.8 0.005 0.0001"
             contype="1"
-            conaffinity="1"
-            rgba="0 0 0 0"/>
+            conaffinity="1"/>
 
       <!-- Left wall (negative X) -->
-      <geom name="wicker_tray_wall_left"
+      <geom name="wicker_tray_wall_left" group="3"
             type="box"
             pos="-0.225 0 0.0425"
             size="0.005 0.33 0.0325"
             mass="0.075"
             friction="0.8 0.005 0.0001"
             contype="1"
-            conaffinity="1"
-            rgba="0 0 0 0"/>
+            conaffinity="1"/>
 
       <!-- Right wall (positive X) -->
-      <geom name="wicker_tray_wall_right"
+      <geom name="wicker_tray_wall_right" group="3"
             type="box"
             pos="0.225 0 0.0425"
             size="0.005 0.33 0.0325"
             mass="0.075"
             friction="0.8 0.005 0.0001"
             contype="1"
-            conaffinity="1"
-            rgba="0 0 0 0"/>
+            conaffinity="1"/>
 
       <!-- Front wall (negative Y) -->
-      <geom name="wicker_tray_wall_front"
+      <geom name="wicker_tray_wall_front" group="3"
             type="box"
             pos="0 -0.325 0.0425"
             size="0.22 0.005 0.0325"
             mass="0.075"
             friction="0.8 0.005 0.0001"
             contype="1"
-            conaffinity="1"
-            rgba="0 0 0 0"/>
+            conaffinity="1"/>
 
       <!-- Back wall (positive Y) -->
-      <geom name="wicker_tray_wall_back"
+      <geom name="wicker_tray_wall_back" group="3"
             type="box"
             pos="0 0.325 0.0425"
             size="0.22 0.005 0.0325"
             mass="0.075"
             friction="0.8 0.005 0.0001"
             contype="1"
-            conaffinity="1"
-            rgba="0 0 0 0"/>
+            conaffinity="1"/>
 
       <!-- Visual mesh -->
-      <geom name="wicker_tray_visual"
+      <geom name="wicker_tray_visual" group="2"
             type="mesh"
             mesh="wicker_tray_visual"
             material="wicker_tray_mat"

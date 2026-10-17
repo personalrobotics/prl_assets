@@ -19,7 +19,7 @@
            that placement TSRs assume (subject body origin = COM). -->
 
       <!-- Collision mesh (enables stacking) -->
-      <geom name="plastic_plate_collision"
+      <geom name="plastic_plate_collision" group="3"
             type="mesh"
             mesh="plastic_plate_mesh"
             pos="0 0 -0.0135"
@@ -28,11 +28,10 @@
             solref="0.004 1"
             solimp="0.95 0.99 0.001"
             contype="1"
-            conaffinity="1"
-            rgba="0 0 0 0"/>
+            conaffinity="1"/>
 
       <!-- Visual mesh -->
-      <geom name="plastic_plate_visual"
+      <geom name="plastic_plate_visual" group="2"
             type="mesh"
             mesh="plastic_plate_mesh"
             pos="0 0 -0.0135"

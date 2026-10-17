@@ -12,62 +12,57 @@
 
       <!-- Collision geometry - hollow tote (floor + 4 walls) -->
       <!-- Floor -->
-      <geom name="yellow_tote_floor"
+      <geom name="yellow_tote_floor" group="3"
             type="box"
             pos="0 0 0.005"
             size="0.3 0.19 0.005"
             mass="0.3"
             friction="0.7 0.005 0.0001"
             contype="1"
-            conaffinity="1"
-            rgba="0 0 0 0"/>
+            conaffinity="1"/>
 
       <!-- Front wall (negative Y) -->
-      <geom name="yellow_tote_wall_front"
+      <geom name="yellow_tote_wall_front" group="3"
             type="box"
             pos="0 -0.19 0.145"
             size="0.3 0.02 0.14"
             mass="0.1"
             friction="0.7 0.005 0.0001"
             contype="1"
-            conaffinity="1"
-            rgba="0 0 0 0"/>
+            conaffinity="1"/>
 
       <!-- Back wall (positive Y) -->
-      <geom name="yellow_tote_wall_back"
+      <geom name="yellow_tote_wall_back" group="3"
             type="box"
             pos="0 0.19 0.145"
             size="0.3 0.02 0.14"
             mass="0.1"
             friction="0.7 0.005 0.0001"
             contype="1"
-            conaffinity="1"
-            rgba="0 0 0 0"/>
+            conaffinity="1"/>
 
       <!-- Left wall (negative X) -->
-      <geom name="yellow_tote_wall_left"
+      <geom name="yellow_tote_wall_left" group="3"
             type="box"
             pos="-0.27 0 0.145"
             size="0.03 0.17 0.14"
             mass="0.1"
             friction="0.7 0.005 0.0001"
             contype="1"
-            conaffinity="1"
-            rgba="0 0 0 0"/>
+            conaffinity="1"/>
 
       <!-- Right wall (positive X) -->
-      <geom name="yellow_tote_wall_right"
+      <geom name="yellow_tote_wall_right" group="3"
             type="box"
             pos="0.27 0 0.145"
             size="0.03 0.17 0.14"
             mass="0.1"
             friction="0.7 0.005 0.0001"
             contype="1"
-            conaffinity="1"
-            rgba="0 0 0 0"/>
+            conaffinity="1"/>
 
       <!-- Visual mesh -->
-      <geom name="yellow_tote_visual"
+      <geom name="yellow_tote_visual" group="2"
             type="mesh"
             mesh="yellow_tote_visual"
             material="yellow_tote_mat"

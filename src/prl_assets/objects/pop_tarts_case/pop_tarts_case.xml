@@ -12,17 +12,16 @@
       <freejoint name="pop_tarts_case_joint"/>
 
       <!-- Collision geometry -->
-      <geom name="pop_tarts_case_collision"
+      <geom name="pop_tarts_case_collision" group="3"
             type="box"
             size="0.0953 0.0508 0.0825"
             mass="0.62"
             friction="0.7 0.005 0.0001"
             contype="1"
-            conaffinity="1"
-            rgba="0 0 0 0"/>
+            conaffinity="1"/>
 
       <!-- Visual: UV-mapped box with per-face textures from atlas -->
-      <geom name="pop_tarts_case_visual"
+      <geom name="pop_tarts_case_visual" group="2"
             type="mesh"
             mesh="pop_tarts_case_visual"
             material="pop_tarts_case_mat"

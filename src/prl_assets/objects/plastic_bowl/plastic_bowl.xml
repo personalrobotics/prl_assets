@@ -11,7 +11,7 @@
       <freejoint name="plastic_bowl_joint"/>
 
       <!-- Collision mesh (enables nesting/stacking) -->
-      <geom name="plastic_bowl_collision"
+      <geom name="plastic_bowl_collision" group="3"
             type="mesh"
             mesh="plastic_bowl_mesh"
             mass="0.15"
@@ -19,11 +19,10 @@
             solref="0.004 1"
             solimp="0.95 0.99 0.001"
             contype="1"
-            conaffinity="1"
-            rgba="0 0 0 0"/>
+            conaffinity="1"/>
 
       <!-- Visual mesh -->
-      <geom name="plastic_bowl_visual"
+      <geom name="plastic_bowl_visual" group="2"
             type="mesh"
             mesh="plastic_bowl_mesh"
             material="plastic_bowl_mat"

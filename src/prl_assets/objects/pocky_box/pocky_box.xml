@@ -12,17 +12,16 @@
       <freejoint name="pocky_box_joint"/>
 
       <!-- Collision geometry - thin tall box -->
-      <geom name="pocky_box_collision"
+      <geom name="pocky_box_collision" group="3"
             type="box"
             size="0.079 0.014 0.042"
             mass="0.15"
             friction="0.7 0.005 0.0001"
             contype="1"
-            conaffinity="1"
-            rgba="0 0 0 0"/>
+            conaffinity="1"/>
 
       <!-- Visual mesh -->
-      <geom name="pocky_box_visual"
+      <geom name="pocky_box_visual" group="2"
             type="mesh"
             mesh="pocky_box_visual"
             material="pocky_box_mat"

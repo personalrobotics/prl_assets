@@ -12,17 +12,16 @@
       <freejoint name="cracker_box_joint"/>
 
       <!-- Collision geometry - box -->
-      <geom name="cracker_box_collision"
+      <geom name="cracker_box_collision" group="3"
             type="box"
             size="0.031 0.081 0.104"
             mass="0.4"
             friction="0.7 0.005 0.0001"
             contype="1"
-            conaffinity="1"
-            rgba="0 0 0 0"/>
+            conaffinity="1"/>
 
       <!-- Visual mesh -->
-      <geom name="cracker_box_visual"
+      <geom name="cracker_box_visual" group="2"
             type="mesh"
             mesh="cracker_box_visual"
             material="cracker_box_mat"

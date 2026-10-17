@@ -13,37 +13,34 @@
 
       <!-- Collision geometry - flat tin with rounded ends -->
       <!-- Central box -->
-      <geom name="herring_tin_collision_box"
+      <geom name="herring_tin_collision_box" group="3"
             type="box"
             size="0.033 0.042 0.016"
             mass="0.12"
             friction="0.6 0.005 0.0001"
             contype="1"
-            conaffinity="1"
-            rgba="0 0 0 0"/>
+            conaffinity="1"/>
       <!-- Rounded end +X -->
-      <geom name="herring_tin_collision_end1"
+      <geom name="herring_tin_collision_end1" group="3"
             type="cylinder"
             size="0.042 0.016"
             pos="0.033 0 0"
             mass="0.04"
             friction="0.6 0.005 0.0001"
             contype="1"
-            conaffinity="1"
-            rgba="0 0 0 0"/>
+            conaffinity="1"/>
       <!-- Rounded end -X -->
-      <geom name="herring_tin_collision_end2"
+      <geom name="herring_tin_collision_end2" group="3"
             type="cylinder"
             size="0.042 0.016"
             pos="-0.033 0 0"
             mass="0.04"
             friction="0.6 0.005 0.0001"
             contype="1"
-            conaffinity="1"
-            rgba="0 0 0 0"/>
+            conaffinity="1"/>
 
       <!-- Visual mesh -->
-      <geom name="herring_tin_visual"
+      <geom name="herring_tin_visual" group="2"
             type="mesh"
             mesh="herring_tin_visual"
             material="herring_tin_mat"

@@ -12,17 +12,16 @@
       <freejoint name="spam_can_joint"/>
 
       <!-- Collision geometry - box approximation for SPAM can -->
-      <geom name="spam_can_collision"
+      <geom name="spam_can_collision" group="3"
             type="box"
             size="0.051 0.029 0.042"
             mass="0.35"
             friction="0.6 0.005 0.0001"
             contype="1"
-            conaffinity="1"
-            rgba="0 0 0 0"/>
+            conaffinity="1"/>
 
       <!-- Visual mesh -->
-      <geom name="spam_can_visual"
+      <geom name="spam_can_visual" group="2"
             type="mesh"
             mesh="spam_can_visual"
             material="spam_can_mat"

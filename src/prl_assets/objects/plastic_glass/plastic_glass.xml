@@ -11,17 +11,16 @@
       <freejoint name="plastic_glass_joint"/>
 
       <!-- Collision geometry - cylinder (radius=0.048, height=0.171) -->
-      <geom name="plastic_glass_collision"
+      <geom name="plastic_glass_collision" group="3"
             type="cylinder"
             size="0.048 0.0855"
             mass="0.08"
             friction="0.6 0.005 0.0001"
             contype="1"
-            conaffinity="1"
-            rgba="0 0 0 0"/>
+            conaffinity="1"/>
 
       <!-- Visual mesh (mesh origin at bottom, shift down to center on body) -->
-      <geom name="plastic_glass_visual"
+      <geom name="plastic_glass_visual" group="2"
             type="mesh"
             mesh="plastic_glass_mesh"
             pos="0 0 -0.0855"
