@@ -12,17 +12,16 @@
       <freejoint name="lunchbox_joint"/>
 
       <!-- Collision geometry - box -->
-      <geom name="lunchbox_collision"
+      <geom name="lunchbox_collision" group="3"
             type="box"
             size="0.13 0.1 0.049"
             mass="0.4"
             friction="0.7 0.005 0.0001"
             contype="1"
-            conaffinity="1"
-            rgba="0 0 0 0"/>
+            conaffinity="1"/>
 
       <!-- Visual mesh -->
-      <geom name="lunchbox_visual"
+      <geom name="lunchbox_visual" group="2"
             type="mesh"
             mesh="lunchbox_visual"
             material="lunchbox_mat"

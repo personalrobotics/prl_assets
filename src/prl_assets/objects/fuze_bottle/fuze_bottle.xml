@@ -12,17 +12,16 @@
       <freejoint name="fuze_bottle_joint"/>
 
       <!-- Collision geometry - cylinder approximation -->
-      <geom name="fuze_bottle_collision"
+      <geom name="fuze_bottle_collision" group="3"
             type="cylinder"
             size="0.037 0.1075"
             mass="0.4"
             friction="0.8 0.005 0.0001"
             contype="1"
-            conaffinity="1"
-            rgba="0 0 0 0"/>
+            conaffinity="1"/>
 
       <!-- Visual mesh -->
-      <geom name="fuze_bottle_visual"
+      <geom name="fuze_bottle_visual" group="2"
             type="mesh"
             mesh="fuze_bottle_visual"
             material="fuze_bottle_mat"

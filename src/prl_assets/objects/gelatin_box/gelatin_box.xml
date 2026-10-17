@@ -12,17 +12,16 @@
       <freejoint name="gelatin_box_joint"/>
 
       <!-- Collision geometry - box (small Jell-O box) -->
-      <geom name="gelatin_box_collision"
+      <geom name="gelatin_box_collision" group="3"
             type="box"
             size="0.036 0.044 0.014"
             mass="0.1"
             friction="0.7 0.005 0.0001"
             contype="1"
-            conaffinity="1"
-            rgba="0 0 0 0"/>
+            conaffinity="1"/>
 
       <!-- Visual mesh -->
-      <geom name="gelatin_box_visual"
+      <geom name="gelatin_box_visual" group="2"
             type="mesh"
             mesh="gelatin_box_visual"
             material="gelatin_box_mat"

@@ -12,17 +12,16 @@
       <freejoint name="sugar_box_joint"/>
 
       <!-- Collision geometry - box -->
-      <geom name="sugar_box_collision"
+      <geom name="sugar_box_collision" group="3"
             type="box"
             size="0.088 0.047 0.024"
             mass="0.5"
             friction="0.7 0.005 0.0001"
             contype="1"
-            conaffinity="1"
-            rgba="0 0 0 0"/>
+            conaffinity="1"/>
 
       <!-- Visual mesh -->
-      <geom name="sugar_box_visual"
+      <geom name="sugar_box_visual" group="2"
             type="mesh"
             mesh="sugar_box_visual"
             material="sugar_box_mat"

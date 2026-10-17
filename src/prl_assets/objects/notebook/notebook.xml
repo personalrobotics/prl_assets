@@ -12,17 +12,16 @@
       <freejoint name="notebook_joint"/>
 
       <!-- Collision geometry - flat rectangular book -->
-      <geom name="notebook_collision"
+      <geom name="notebook_collision" group="3"
             type="box"
             size="0.064 0.106 0.008"
             mass="0.3"
             friction="0.7 0.005 0.0001"
             contype="1"
-            conaffinity="1"
-            rgba="0 0 0 0"/>
+            conaffinity="1"/>
 
       <!-- Visual mesh -->
-      <geom name="notebook_visual"
+      <geom name="notebook_visual" group="2"
             type="mesh"
             mesh="notebook_visual"
             material="notebook_mat"

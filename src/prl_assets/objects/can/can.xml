@@ -11,14 +11,13 @@
       <freejoint name="can_joint"/>
 
       <!-- Collision geometry - simple cylinder for efficiency -->
-      <geom name="can_collision"
+      <geom name="can_collision" group="3"
             type="cylinder"
             size="0.033 0.0615"
             mass="0.05"
             friction="0.6 0.005 0.0001"
             contype="1"
-            conaffinity="1"
-            rgba="0 0 0 0"/>  <!-- Invisible - visual mesh will show -->
+            conaffinity="1"/>  <!-- Collision proxy: group 3, hidden by default -->
 
       <!-- Visual mesh -->
       <geom name="can_visual"
