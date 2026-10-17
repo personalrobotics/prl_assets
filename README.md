@@ -42,12 +42,13 @@ can_path = assets.get_path("can", "mujoco")
 
 # Load in MuJoCo
 import mujoco
+
 model = mujoco.MjModel.from_xml_path(can_path)
 
 # Get object metadata
 meta = assets.get("can")
 print(meta["dimensions"])  # [0.066, 0.066, 0.123]
-print(meta["mass"])        # 0.05 kg
+print(meta["mass"])  # 0.05 kg
 
 # Find objects by category
 containers = assets.by_category("container")
