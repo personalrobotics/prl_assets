@@ -12,7 +12,7 @@
       <freejoint name="spam_can_joint"/>
 
       <!-- Collision geometry - box approximation for SPAM can -->
-      <geom name="spam_can_collision" group="3"
+      <geom condim="4" name="spam_can_collision" group="3"
             type="box"
             size="0.051 0.029 0.042"
             mass="0.35"

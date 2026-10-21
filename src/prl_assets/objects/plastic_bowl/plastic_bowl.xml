@@ -11,7 +11,7 @@
       <freejoint name="plastic_bowl_joint"/>
 
       <!-- Collision mesh (enables nesting/stacking) -->
-      <geom name="plastic_bowl_collision" group="3"
+      <geom condim="4" name="plastic_bowl_collision" group="3"
             type="mesh"
             mesh="plastic_bowl_mesh"
             mass="0.15"

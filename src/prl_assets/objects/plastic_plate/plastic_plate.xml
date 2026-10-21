@@ -19,7 +19,7 @@
            that placement TSRs assume (subject body origin = COM). -->
 
       <!-- Collision mesh (enables stacking) -->
-      <geom name="plastic_plate_collision" group="3"
+      <geom condim="4" name="plastic_plate_collision" group="3"
             type="mesh"
             mesh="plastic_plate_mesh"
             pos="0 0 -0.0135"

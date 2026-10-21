@@ -12,7 +12,7 @@
       <freejoint name="fuze_bottle_joint"/>
 
       <!-- Collision geometry - cylinder approximation -->
-      <geom name="fuze_bottle_collision" group="3"
+      <geom condim="4" name="fuze_bottle_collision" group="3"
             type="cylinder"
             size="0.037 0.1075"
             mass="0.4"

@@ -12,7 +12,7 @@
       <freejoint name="gelatin_box_joint"/>
 
       <!-- Collision geometry - box (small Jell-O box) -->
-      <geom name="gelatin_box_collision" group="3"
+      <geom condim="4" name="gelatin_box_collision" group="3"
             type="box"
             size="0.036 0.044 0.014"
             mass="0.1"
