@@ -12,7 +12,7 @@
       <freejoint name="sugar_box_joint"/>
 
       <!-- Collision geometry - box -->
-      <geom name="sugar_box_collision" group="3"
+      <geom condim="4" name="sugar_box_collision" group="3"
             type="box"
             size="0.088 0.047 0.024"
             mass="0.5"

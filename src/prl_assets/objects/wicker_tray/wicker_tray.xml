@@ -12,7 +12,7 @@
 
       <!-- Collision geometry - hollow tray (floor + 4 walls) -->
       <!-- Floor -->
-      <geom name="wicker_tray_floor" group="3"
+      <geom condim="4" name="wicker_tray_floor" group="3"
             type="box"
             pos="0 0 0.005"
             size="0.23 0.33 0.005"
@@ -22,7 +22,7 @@
             conaffinity="1"/>
 
       <!-- Left wall (negative X) -->
-      <geom name="wicker_tray_wall_left" group="3"
+      <geom condim="4" name="wicker_tray_wall_left" group="3"
             type="box"
             pos="-0.225 0 0.0425"
             size="0.005 0.33 0.0325"
@@ -32,7 +32,7 @@
             conaffinity="1"/>
 
       <!-- Right wall (positive X) -->
-      <geom name="wicker_tray_wall_right" group="3"
+      <geom condim="4" name="wicker_tray_wall_right" group="3"
             type="box"
             pos="0.225 0 0.0425"
             size="0.005 0.33 0.0325"
@@ -42,7 +42,7 @@
             conaffinity="1"/>
 
       <!-- Front wall (negative Y) -->
-      <geom name="wicker_tray_wall_front" group="3"
+      <geom condim="4" name="wicker_tray_wall_front" group="3"
             type="box"
             pos="0 -0.325 0.0425"
             size="0.22 0.005 0.0325"
@@ -52,7 +52,7 @@
             conaffinity="1"/>
 
       <!-- Back wall (positive Y) -->
-      <geom name="wicker_tray_wall_back" group="3"
+      <geom condim="4" name="wicker_tray_wall_back" group="3"
             type="box"
             pos="0 0.325 0.0425"
             size="0.22 0.005 0.0325"

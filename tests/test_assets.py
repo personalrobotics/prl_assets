@@ -5,7 +5,9 @@
 
 from pathlib import Path
 
+import numpy as np
 import pytest
+import yaml
 
 from prl_assets import OBJECTS_DIR
 
@@ -153,3 +155,97 @@ def test_compiled_mass_matches_meta(obj_dir: Path) -> None:
     meta = yaml.safe_load((obj_dir / "meta.yaml").read_text())
     model = mujoco.MjModel.from_xml_path(str(obj_dir / meta["mujoco"]["xml_path"]))
     assert model.body_mass[1:].sum() == pytest.approx(meta["mass"], abs=1e-6)
+
+
+class TestPinchTorsion:
+    """Every graspable object resists twisting in a two-point pinch.
+
+    Two small spheres, at MuJoCo's default contact settings (condim 3, as a gripper's
+    finger geoms commonly are), press on opposite sides of the object along a line
+    through its centre of mass, with gravity off and the solver settings MuJoCo recommends
+    for grasping (an elliptic friction cone, impratio 10; with its soft default, friction
+    creeps well short of its limit). A torque about that line, 10% of the contacts'
+    torsional friction capacity (the torsional coefficient times the normal force), then
+    acts for 0.5 s. A contact resists turning about its normal only with
+    condim 4 or 6, and a contact takes the larger condim of its two geoms, so the object's
+    own geoms must carry it: with condim 3 everywhere the object spins between the
+    spheres as on an axle.
+    """
+
+    _PROBE_RADIUS = 0.005
+    _PRESS = 0.001  # m of penetration per probe
+    _SETTLE_STEPS, _TORQUE_STEPS = 100, 250
+    _FRACTION = 0.1
+    # Measured with the two-point pinch below: 0.42-3.04 rad with condim 3; 0.024 rad with
+    # condim 4 (0.059 for the bowl, a convex-hull mesh).
+    _MAX_SPIN = 0.1  # rad
+
+    @staticmethod
+    def _graspable() -> list[str]:
+        out = []
+        for d in sorted(OBJECTS_DIR.iterdir()):
+            meta = d / "meta.yaml"
+            if meta.is_file() and "graspable" in (yaml.safe_load(meta.read_text()).get("category") or []):
+                out.append(d.name)
+        return out
+
+    @pytest.mark.parametrize("name", _graspable.__func__())
+    def test_a_pinched_object_does_not_spin(self, name):
+        mujoco = pytest.importorskip("mujoco")
+        meta = yaml.safe_load((OBJECTS_DIR / name / "meta.yaml").read_text())
+        spec = mujoco.MjSpec.from_file(str(OBJECTS_DIR / name / meta["mujoco"]["xml_path"]))
+        spec.option.gravity = [0.0, 0.0, 0.0]
+        spec.option.cone = mujoco.mjtCone.mjCONE_ELLIPTIC
+        spec.option.impratio = 10.0
+        model = spec.compile()
+        data = mujoco.MjData(model)
+        mujoco.mj_forward(model, data)
+        body = next(b for b in range(1, model.nbody) if model.body_jntnum[b])
+        centre = data.xipos[body].copy()
+        for i in range(2):
+            probe = spec.worldbody.add_body(name=f"probe{i}", mocap=True, pos=centre)
+            probe.add_geom(name=f"probe{i}", type=mujoco.mjtGeom.mjGEOM_SPHERE, size=[self._PROBE_RADIUS, 0, 0])
+        model = spec.compile()
+        data = mujoco.MjData(model)
+        mujoco.mj_forward(model, data)
+        solids = [
+            g
+            for g in range(model.ngeom)
+            if model.geom_bodyid[g] == body and (model.geom_contype[g] or model.geom_conaffinity[g])
+        ]
+        # Each probe comes in along x, through the centre of mass, until it presses
+        # _PRESS into the object's collision shapes (meshes collide as convex hulls).
+        for i, direction in enumerate((1.0, -1.0)):
+            probe = mujoco.mj_name2id(model, mujoco.mjtObj.mjOBJ_GEOM, f"probe{i}")
+            mocap = model.body_mocapid[model.geom_bodyid[probe]]
+            near, far = 0.0, 1.0
+            for _ in range(60):
+                middle = (near + far) / 2
+                data.mocap_pos[mocap] = centre + direction * np.array([middle, 0.0, 0.0])
+                mujoco.mj_kinematics(model, data)
+                gap = min(mujoco.mj_geomDistance(model, data, probe, g, 1.0, None) for g in solids)
+                near, far = (middle, far) if gap < -self._PRESS else (near, middle)
+            data.mocap_pos[mocap] = centre + direction * np.array([far, 0.0, 0.0])
+        mujoco.mj_forward(model, data)
+        for _ in range(self._SETTLE_STEPS):
+            mujoco.mj_step(model, data)
+        force, normal_sum, torsional = np.zeros(6), 0.0, []
+        for i in range(data.ncon):
+            mujoco.mj_contactForce(model, data, i, force)
+            normal_sum += force[0]
+            torsional.append(float(data.contact[i].friction[2]))
+        if normal_sum <= 0:
+            # A thin plate or a shallow tray slips out of a pinch along this line.
+            pytest.skip(f"{name}: no two-point pinch along x through its centre of mass holds it")
+        torque = self._FRACTION * min(torsional) * normal_sum
+        start = data.xquat[body].copy()
+        for _ in range(self._TORQUE_STEPS):
+            data.xfrc_applied[body, 3:] = [torque, 0.0, 0.0]
+            mujoco.mj_step(model, data)
+        change = np.zeros(3)
+        mujoco.mju_subQuat(change, data.xquat[body], start)
+        spin = float(np.linalg.norm(change))
+        assert spin < self._MAX_SPIN, (
+            f"{name}: spun {spin:.3f} rad under {torque:.2e} N*m with {normal_sum:.2f} N of pinch "
+            f"(contact condim {sorted({int(c.dim) for c in data.contact[: data.ncon]})})"
+        )

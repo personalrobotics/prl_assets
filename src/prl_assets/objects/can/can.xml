@@ -11,7 +11,7 @@
       <freejoint name="can_joint"/>
 
       <!-- Collision geometry - simple cylinder for efficiency -->
-      <geom name="can_collision" group="3"
+      <geom condim="4" name="can_collision" group="3"
             type="cylinder"
             size="0.033 0.0615"
             mass="0.05"

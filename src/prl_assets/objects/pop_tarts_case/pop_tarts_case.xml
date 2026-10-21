@@ -12,7 +12,7 @@
       <freejoint name="pop_tarts_case_joint"/>
 
       <!-- Collision geometry -->
-      <geom name="pop_tarts_case_collision" group="3"
+      <geom condim="4" name="pop_tarts_case_collision" group="3"
             type="box"
             size="0.0953 0.0508 0.0825"
             mass="0.62"

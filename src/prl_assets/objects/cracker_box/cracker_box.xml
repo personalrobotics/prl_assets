@@ -12,7 +12,7 @@
       <freejoint name="cracker_box_joint"/>
 
       <!-- Collision geometry - box -->
-      <geom name="cracker_box_collision" group="3"
+      <geom condim="4" name="cracker_box_collision" group="3"
             type="box"
             size="0.031 0.081 0.104"
             mass="0.4"

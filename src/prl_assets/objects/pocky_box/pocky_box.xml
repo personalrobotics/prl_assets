@@ -12,7 +12,7 @@
       <freejoint name="pocky_box_joint"/>
 
       <!-- Collision geometry - thin tall box -->
-      <geom name="pocky_box_collision" group="3"
+      <geom condim="4" name="pocky_box_collision" group="3"
             type="box"
             size="0.079 0.014 0.042"
             mass="0.15"

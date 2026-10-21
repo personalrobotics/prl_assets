@@ -12,7 +12,7 @@
       <freejoint name="lunchbox_joint"/>
 
       <!-- Collision geometry - box -->
-      <geom name="lunchbox_collision" group="3"
+      <geom condim="4" name="lunchbox_collision" group="3"
             type="box"
             size="0.13 0.1 0.049"
             mass="0.4"
