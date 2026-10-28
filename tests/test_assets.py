@@ -249,3 +249,89 @@ class TestPinchTorsion:
             f"{name}: spun {spin:.3f} rad under {torque:.2e} N*m with {normal_sum:.2f} N of pinch "
             f"(contact condim {sorted({int(c.dim) for c in data.contact[: data.ncon]})})"
         )
+
+
+class TestBinCatches:
+    """Every graspable object whose upright footprint fits inside the recycle bin's inner
+    walls, dropped into the bin, comes to rest inside it, above its floor.
+
+    The bin stands fixed on a ground plane, under MuJoCo's settings for a robot that
+    drops into it: Geodude's 2 ms timestep, implicitfast, an elliptic cone, impratio 10.
+    Each object is released at rest, upright, centred over the bin, its centre 0.25 m
+    above the rim, the least height the recycling demo releases from. It falls about 1 m
+    and lands at about 4.5 m/s. With the floor at MuJoCo's default contact softness, a
+    thin object (the 28 mm gelatin box) sank through the 6 mm floor and came to rest
+    beneath the bin (personalrobotics/geodude#201).
+    """
+
+    _ABOVE_RIM = 0.25  # m, the object's centre at release
+    _SETTLE_STEPS = 750  # 1.5 s at 2 ms
+    _SUNK = 0.001  # m: how far into the floor a resting object's lowest point may be
+
+    @staticmethod
+    def _fitting() -> list[str]:
+        bin_meta = yaml.safe_load((OBJECTS_DIR / "recycle_bin" / "meta.yaml").read_text())
+        inner = bin_meta["geometric_properties"]["inner_size"]
+        out = []
+        for name in TestPinchTorsion._graspable():
+            g = yaml.safe_load((OBJECTS_DIR / name / "meta.yaml").read_text())["geometric_properties"]
+            if g["type"] == "box":
+                footprint = g["size"][:2]
+            elif g["type"] == "cylinder":
+                footprint = [2 * g["radius"]] * 2
+            elif g["type"] == "bowl":
+                footprint = [2 * g["outer_radius"]] * 2
+            else:
+                footprint = g["outer_size"][:2]
+            if footprint[0] < inner[0] and footprint[1] < inner[1]:
+                out.append(name)
+        return out
+
+    @pytest.mark.parametrize("name", _fitting.__func__())
+    def test_a_dropped_object_rests_inside_the_bin(self, name):
+        mujoco = pytest.importorskip("mujoco")
+        bin_meta = yaml.safe_load((OBJECTS_DIR / "recycle_bin" / "meta.yaml").read_text())
+        outer = bin_meta["geometric_properties"]["outer_size"]
+        inner = bin_meta["geometric_properties"]["inner_size"]
+        floor = outer[2] - inner[2]
+        spec = mujoco.MjSpec()
+        spec.option.timestep = 0.002
+        spec.option.integrator = mujoco.mjtIntegrator.mjINT_IMPLICITFAST
+        spec.option.cone = mujoco.mjtCone.mjCONE_ELLIPTIC
+        spec.option.impratio = 10.0
+        spec.worldbody.add_geom(type=mujoco.mjtGeom.mjGEOM_PLANE, size=[2, 2, 0.1])
+        container = mujoco.MjSpec.from_file(str(OBJECTS_DIR / "recycle_bin" / "recycle_bin.xml"))
+        stand = spec.worldbody.add_frame()
+        stand.attach_body(container.body("recycle_bin"), "bin/", "")
+        for joint in list(spec.joints):
+            if joint.name.startswith("bin/"):
+                spec.delete(joint)
+        meta = yaml.safe_load((OBJECTS_DIR / name / "meta.yaml").read_text())
+        source = mujoco.MjSpec.from_file(str(OBJECTS_DIR / name / meta["mujoco"]["xml_path"]))
+        top = next(b for b in source.worldbody.bodies)
+        drop = spec.worldbody.add_frame(pos=[0.0, 0.0, outer[2] + self._ABOVE_RIM])
+        dropped = drop.attach_body(top, "obj/", "")
+        dropped.pos = [0.0, 0.0, 0.0]
+        model = spec.compile()
+        data = mujoco.MjData(model)
+        for _ in range(self._SETTLE_STEPS):
+            mujoco.mj_step(model, data)
+        body = mujoco.mj_name2id(model, mujoco.mjtObj.mjOBJ_BODY, dropped.name)
+        x, y, _ = data.xpos[body]
+        assert abs(x) <= inner[0] / 2 and abs(y) <= inner[1] / 2, (x, y)
+        # The lowest corner of its collision geoms' bounding boxes: on the floor, not in it.
+        corners = np.array(np.meshgrid([-1, 1], [-1, 1], [-1, 1])).T.reshape(-1, 3)
+        lowest = min(
+            float(
+                (
+                    data.geom_xpos[g][:, None]
+                    + data.geom_xmat[g].reshape(3, 3)
+                    @ (model.geom_aabb[g][:3][:, None] + (corners * model.geom_aabb[g][3:]).T)
+                )[2].min()
+            )
+            for g in range(model.ngeom)
+            if model.geom_bodyid[g] == body and model.geom_contype[g]
+        )
+        assert floor - self._SUNK <= lowest < outer[2], (
+            f"its lowest point rests at {lowest:.4f} m, the floor's top at {floor:.4f} m"
+        )
