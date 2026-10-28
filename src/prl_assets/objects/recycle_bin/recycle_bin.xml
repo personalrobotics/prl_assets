@@ -10,9 +10,18 @@
     <!-- Height: 0.80m (floor-standing, reachable by robot) -->
     <body name="recycle_bin" pos="0 0 0">
       <freejoint name="recycle_bin_joint"/>
-      <!-- Bottom -->
-      <geom name="bin_bottom" type="box" size="0.122 0.122 0.003" pos="0 0 0.003" mass="0.031638"
-            material="bin_blue" friction="0.8 0.01 0.001" contype="1" conaffinity="1"/>
+      <!-- Bottom, 40 mm thick and rigid, so that an object dropped in comes to rest on it.
+           Dropped from 0.25 m above the rim, an object lands at about 4.5 m/s. Even at the
+           4 ms contact time constant here, the least MuJoCo allows at a 2 ms timestep (it
+           raises it to two timesteps on coarser ones), its lowest point sinks up to 18 mm
+           into the floor before it stops. A floor whose half-thickness is less than that
+           lets a thin object pass through it: with the 6 mm floor this bin had, at the
+           default 20 ms, a 28 mm box came to rest beneath the bin
+           (personalrobotics/geodude#201; tests/test_assets.py, TestBinCatches). Its mass
+           is the 6 mm floor's, so the bin weighs what it did. -->
+      <geom name="bin_bottom" type="box" size="0.122 0.122 0.020" pos="0 0 0.020" mass="0.031638"
+            material="bin_blue" friction="0.8 0.01 0.001" solref="0.004 1" contype="1"
+            conaffinity="1"/>
       <!-- Front wall (2cm thick, inner edge at y=0.119) -->
       <geom name="bin_front" type="box" size="0.132 0.01 0.397" pos="0 0.129 0.40" mass="0.37131"
             material="bin_blue" friction="0.8 0.01 0.001" contype="1" conaffinity="1"/>
