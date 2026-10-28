@@ -335,3 +335,38 @@ class TestBinCatches:
         assert floor - self._SUNK <= lowest < outer[2], (
             f"its lowest point rests at {lowest:.4f} m, the floor's top at {floor:.4f} m"
         )
+
+
+@pytest.mark.parametrize(
+    "obj_dir",
+    [
+        d
+        for d in _object_dirs()
+        if yaml.safe_load((d / "meta.yaml").read_text())["geometric_properties"]["type"] == "open_box"
+    ],
+    ids=lambda d: d.name,
+)
+def test_open_box_geometry_matches_its_model(obj_dir: Path) -> None:
+    """An open box's declared ``outer_size``, ``inner_size`` and ``wall_thickness`` are its
+    compiled collision geometry's: consumers compute drop zones and interiors from them.
+    The recycle bin once declared a 0.244 m opening its 2 cm walls narrow to 0.238 m."""
+    mujoco = pytest.importorskip("mujoco")
+    meta = yaml.safe_load((obj_dir / "meta.yaml").read_text())
+    model = mujoco.MjModel.from_xml_path(str(obj_dir / meta["mujoco"]["xml_path"]))
+    data = mujoco.MjData(model)
+    mujoco.mj_forward(model, data)
+    boxes = [
+        (data.geom_xpos[g] - model.geom_size[g], data.geom_xpos[g] + model.geom_size[g])
+        for g in range(model.ngeom)
+        if model.geom_type[g] == mujoco.mjtGeom.mjGEOM_BOX and model.geom_contype[g]
+    ]
+    floor = min(boxes, key=lambda b: b[0][2])
+    walls = [b for b in boxes if b is not floor]
+    low = np.min([b[0] for b in walls], axis=0)
+    high = np.max([b[1] for b in walls], axis=0)
+    # The opening: between the innermost faces of the walls on either side of the centre.
+    inner = [min(b[0][i] for b in walls if b[0][i] > 0) - max(b[1][i] for b in walls if b[1][i] < 0) for i in range(2)]
+    g = meta["geometric_properties"]
+    assert g["outer_size"] == pytest.approx([*(high - low)[:2], high[2]], abs=1e-6)
+    assert g["inner_size"] == pytest.approx([*inner, high[2] - floor[1][2]], abs=1e-6)
+    assert g["wall_thickness"] == pytest.approx(((high - low)[0] - inner[0]) / 2, abs=1e-6)
