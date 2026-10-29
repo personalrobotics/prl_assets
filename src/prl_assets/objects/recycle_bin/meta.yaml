@@ -4,16 +4,16 @@ category: [container, receptacle, fixture]
 
 # Physical properties
 mass: 1.5  # kg (taller bin)
-dimensions: [0.25, 0.25, 0.80]  # [width, depth, height] in meters (floor-standing)
+dimensions: [0.278, 0.278, 0.797]  # [width, depth, height] in meters (floor-standing)
 color: [0.1, 0.3, 0.7]  # RGB (blue)
 material: plastic
 
 # Geometric properties
 geometric_properties:
   type: open_box
-  outer_size: [0.25, 0.25, 0.80]
-  inner_size: [0.244, 0.244, 0.76]
-  wall_thickness: 0.003
+  outer_size: [0.278, 0.278, 0.797]
+  inner_size: [0.238, 0.238, 0.757]
+  wall_thickness: 0.02
 
 # MuJoCo simulation
 mujoco:
