@@ -45,3 +45,6 @@ uv.lock
 
 # Test and audit outputs
 artifacts/
+
+# Cooperative importer lock (not an asset)
+.import.lock

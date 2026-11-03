@@ -153,3 +153,27 @@ provenance:
 
 The full notices for the YCB-V collection are in `objects/ycbv/NOTICE.md`, which ships
 with the package. The package's MIT license does not relicense object data.
+
+## Imported YCB-V geometry and physical properties
+
+New objects retain the BOP model frame and use `T_asset_bop = identity`; their
+visual geometry is converted from millimetres to metres without recentering or
+simplification. Texture coordinates are retained and PNG textures are resampled
+to 1024 by 1024. Their model file's body position supplies the resting offset.
+
+The importer validates the source archive before parsing, reads only fixed model
+and texture members, and rejects unsupported external resource paths in retained
+objects before compiling them. Existing YCB-V identities are never overwritten.
+Staging metadata is named `.meta.yaml.pending`; it becomes `meta.yaml` only after
+all requested new objects validate. A failed publication removes only newly created
+objects and preserves existing ones. The POSIX authoring tool uses a cooperative
+collection lock; individual assets are published atomically, not an entire batch
+snapshot for simultaneous readers.
+
+`provenance` records the archive/member hashes, decomposition version and settings,
+reference mass source, and the assumptions behind inertia and friction. New
+compound collision models distribute mass by convex-part volume; overlapping
+parts are counted. This is a uniform-density inertia estimate, not a measurement.
+Their box-shaped `geometric_properties` is a grasp envelope whose dimensions match
+the collision bounds. It is not a claim that the object has solid box collision
+geometry. Concave collision pieces remain separate mesh geoms in MuJoCo.

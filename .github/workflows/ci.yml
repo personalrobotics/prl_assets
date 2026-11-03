@@ -49,12 +49,12 @@ jobs:
             echo "No tests/ directory; skipping pytest."
           fi
 
-      - name: Keep the collision-fit measurements
+      - name: Keep the asset validation measurements
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: collision-fit-${{ matrix.python-version }}
-          path: artifacts/collision_fit.json
+          path: artifacts/
           if-no-files-found: ignore
 
   ycbv-audit:
@@ -91,6 +91,12 @@ jobs:
           path: ~/.cache/prl_assets
           key: bop-ycbv-models-1e517a9b513cadb8eaf406ac3ce3c5f1d6fc4a80161c866b4e2a73d13de5e554
 
+      - name: Import a real YCB-V object without changing existing assets
+        timeout-minutes: 10
+        run: >-
+          PRL_ASSETS_YCBV_ARCHIVE="$HOME/.cache/prl_assets/ycbv_models.zip"
+          uv run pytest tests/test_ycbv_import.py -q
+
       - name: YCB-V frames agree with the BOP models
         timeout-minutes: 15
         run: uv run python scripts/audit_ycbv.py --out artifacts/ycbv_audit.json
@@ -100,7 +106,9 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: ycbv-audit
-          path: artifacts/ycbv_audit.json
+          path: |
+            artifacts/ycbv_audit.json
+            artifacts/ycbv_import_validation.json
 
   notify-robot-code:
     needs: [test, ycbv-audit]

@@ -300,3 +300,45 @@ uv run --extra authoring python scripts/validate_objects.py
 The code is MIT licensed; see LICENSE. Object data keeps its source's terms: the YCB-V
 scans are CC BY 4.0, as stated in
 [objects/ycbv/NOTICE.md](src/prl_assets/objects/ycbv/NOTICE.md).
+
+## Importing YCB-V objects
+
+The importer requires the optional `ycbv` dependencies:
+
+```bash
+uv sync --extra ycbv --extra dev
+uv run python -m prl_assets.import_ycbv \
+  --objects cracker_box mustard_bottle \
+  --output src/prl_assets/objects/ycbv
+```
+
+It verifies and caches the pinned 525 MB BOP model archive before reading models.
+Use `--archive /path/to/ycbv_models.zip` to reuse an existing copy. The initial
+validated recipe adds `mustard_bottle`; the four audited overlaps are retained
+without modifying their geometry, frames, aliases, or physical properties.
+Other new-object recipes are added only after their collision geometry is checked.
+
+New objects are converted and validated without discoverable metadata, then
+published with `meta.yaml` last. Existing directories are never overwritten.
+The JSON report (`artifacts/ycbv_import.json`, configurable with `--report`) records
+source and output hashes, conversion settings, and collision measurements.
+
+The imported visual mesh is the original BOP geometry converted to metres, with
+UVs preserved and the texture resized to 1024 by 1024. Convex collision pieces are
+created with pinned CoACD settings. Mass comes from the cited YCB reference object;
+inertia and friction are estimates, not measured properties of a lab copy.
+`geometric_properties.type: box` describes an axis-aligned grasp envelope; it does
+not replace the actual compound collision geometry or certify a grasp policy.
+
+The independent real-archive integration check is run once in the cached audit job:
+
+```bash
+PRL_ASSETS_YCBV_ARCHIVE="$HOME/.cache/prl_assets/ycbv_models.zip" \
+  uv run --extra ycbv --extra dev pytest tests/test_ycbv_import.py -q
+```
+
+It retains the existing cracker box, imports the mustard bottle, checks its frame
+and texture against the source with the independent audit, verifies every reported
+output hash, and confirms invalid requests leave all assets unchanged. Inspect
+`artifacts/ycbv_import_validation.json`; no dataset download occurs in the default
+test suite.

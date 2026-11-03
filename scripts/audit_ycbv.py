@@ -32,7 +32,6 @@ import os
 import platform
 import sys
 import tempfile
-import urllib.request
 import xml.etree.ElementTree as ET
 import zipfile
 from pathlib import Path
@@ -46,12 +45,7 @@ from scipy.spatial import cKDTree
 from scipy.spatial.transform import Rotation
 
 from prl_assets.ycbv import BOP_YCB_NAMES
-
-ARCHIVE_URL = (
-    "https://huggingface.co/datasets/bop-benchmark/ycbv/resolve/"
-    "5c2c4aa229800355648cd268040aa814f8dc94f0/ycbv_models.zip"
-)
-ARCHIVE_SHA256 = "1e517a9b513cadb8eaf406ac3ce3c5f1d6fc4a80161c866b4e2a73d13de5e554"
+from prl_assets.ycbv_source import ARCHIVE_SHA256, ARCHIVE_URL, fetch_archive, verify_archive
 
 # Two remeshings of one scan differ by about a millimetre; a wrong transform or a
 # different object differs by centimetres.
@@ -62,39 +56,10 @@ MAX_RESIDUAL_MM = 1.0
 # Median absolute RGB difference (0-255, averaged over channels) between the two textures
 # at nearest surface points. Correct frames measure 1.7-5.3; 180-degree flips 26-62.
 MAX_COLOUR_MEDIAN = 12.0
-DOWNLOAD_TIMEOUT_S = 60
 
 ROOT = Path(__file__).resolve().parent.parent
 YCBV_DIR = ROOT / "src" / "prl_assets" / "objects" / "ycbv"
 RECORD = ROOT / "docs" / "ycbv_audit.json"
-
-
-def sha256(path: Path) -> str:
-    h = hashlib.sha256()
-    with open(path, "rb") as f:
-        for chunk in iter(lambda: f.read(1 << 20), b""):
-            h.update(chunk)
-    return h.hexdigest()
-
-
-def fetch_archive(cache: Path) -> Path:
-    """Download the pinned archive into ``cache`` unless a verified copy is already there."""
-    path = cache / "ycbv_models.zip"
-    if path.is_file() and sha256(path) == ARCHIVE_SHA256:
-        return path
-    cache.mkdir(parents=True, exist_ok=True)
-    fd, part = tempfile.mkstemp(dir=cache, suffix=".part")
-    try:
-        with os.fdopen(fd, "wb") as out, urllib.request.urlopen(ARCHIVE_URL, timeout=DOWNLOAD_TIMEOUT_S) as r:
-            for chunk in iter(lambda: r.read(1 << 20), b""):
-                out.write(chunk)
-        if sha256(Path(part)) != ARCHIVE_SHA256:
-            raise SystemExit(f"Downloaded archive does not match the pinned SHA-256 {ARCHIVE_SHA256}")
-        os.replace(part, path)
-    finally:
-        if os.path.exists(part):
-            os.unlink(part)
-    return path
 
 
 def _inside(obj_dir: Path, file: str | None, what: str) -> Path:
@@ -262,13 +227,10 @@ def main() -> int:
     parser.add_argument("--fetch-only", action="store_true", help="Download and verify the archive, then exit")
     args = parser.parse_args()
 
-    if args.archive:
-        if sha256(args.archive) != ARCHIVE_SHA256:
-            print(f"{args.archive} does not match the pinned SHA-256 {ARCHIVE_SHA256}", file=sys.stderr)
-            return 1
-        path = args.archive
-    else:
-        path = fetch_archive(args.cache)
+    try:
+        path = verify_archive(args.archive) if args.archive else fetch_archive(args.cache)
+    except (OSError, ValueError) as error:
+        parser.exit(1, f"YCB-V source unavailable: {error}\n")
     if args.fetch_only:
         print(f"Verified {path}")
         return 0

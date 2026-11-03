@@ -14,7 +14,7 @@ license (CC BY 4.0, <https://creativecommons.org/licenses/by/4.0/>).
 > Set," IEEE Robotics & Automation Magazine, 22(3), 2015.
 > Source: <https://ycb-benchmarks.s3.amazonaws.com/index.html>
 
-Changes made here: the meshes are remeshed and expressed in metres; some are rotated
+Changes made here: the four pre-existing meshes are remeshed and expressed in metres; some are rotated
 into the asset frame declared in each `meta.yaml` (`frames.T_asset_bop`); textures are
 resampled to 1024 × 1024; collision geometry, mass and contact parameters are added.
 
@@ -33,3 +33,7 @@ declares the MIT license.
 > SHA-256 `1e517a9b513cadb8eaf406ac3ce3c5f1d6fc4a80161c866b4e2a73d13de5e554`.
 
 The SHA-256 of each reference model file used is recorded in `docs/ycbv_audit.json`.
+
+New imports retain the BOP visual vertices and UVs, converted from millimetres to metres,
+with 1024 by 1024 textures and separate convex collision pieces. Reference YCB masses
+come from Calli et al. (2015), Table 2; inertia and friction are explicitly estimated.

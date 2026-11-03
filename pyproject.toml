@@ -17,6 +17,14 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
+ycbv = [
+    "coacd==1.0.14",
+    "mujoco>=3.3",
+    "pyyaml>=6.0",
+    "scipy>=1.10",
+    "pillow>=10.0",
+]
+
 # prl_assets.authoring: measuring, fitting and writing object models.
 authoring = [
     "mujoco>=3.3",
