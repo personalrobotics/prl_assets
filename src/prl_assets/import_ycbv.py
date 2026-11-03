@@ -151,7 +151,7 @@ def _obj(mesh, path: Path, textured: bool) -> None:
     path.write_text(text)
 
 
-def _build(archive: zipfile.ZipFile, stage: Path, bop_id: int) -> dict:
+def _build(archive: zipfile.ZipFile, stage: Path, bop_id: int, recipe: dict | None = None) -> dict:
     import xml.etree.ElementTree as ET
 
     import coacd
@@ -166,7 +166,7 @@ def _build(archive: zipfile.ZipFile, stage: Path, bop_id: int) -> dict:
     if importlib.metadata.version("coacd") != COACD_VERSION:
         raise ValueError(f"reproducible conversion requires coacd=={COACD_VERSION}")
     name = canonical_name(bop_id)
-    recipe = RECIPES[bop_id]
+    recipe = RECIPES[bop_id] if recipe is None else recipe
     source = stage / ".source"
     source.mkdir()
     members = [f"models/obj_{bop_id:06d}.{ext}" for ext in ("ply", "png")]
@@ -199,6 +199,7 @@ def _build(archive: zipfile.ZipFile, stage: Path, bop_id: int) -> dict:
     if recipe.get("open"):
         # Preserve thin walls and open interiors in the manifold preprocessing.
         settings["preprocess_resolution"] = 100
+    settings.update(recipe.get("decomposition", {}))
     method = recipe.get("collision", "decomposition")
     if method == "hull":
         hulls = [collision_input.convex_hull]
@@ -413,11 +414,136 @@ def import_objects(objects: list[str], output: Path, archive: Path) -> dict:
     return dict(source=dict(url=ARCHIVE_URL, sha256=ARCHIVE_SHA256), objects=rows)
 
 
+def _dump_like(meta: dict, previous: str) -> str:
+    """``meta`` as YAML, keeping the blank lines that separated top-level sections in
+    ``previous``, so a rebuild's diff shows only the values that changed."""
+    import yaml
+
+    lines = previous.splitlines()
+    spaced = {
+        lines[i + 1].split(":", 1)[0]
+        for i in range(len(lines) - 1)
+        if not lines[i].strip() and lines[i + 1][:1].isalpha()
+    }
+    out = []
+    for line in yaml.safe_dump(meta, sort_keys=False).splitlines():
+        if line[:1].isalpha() and line.split(":", 1)[0] in spaced:
+            out.append("")
+        out.append(line)
+    return "\n".join(out) + "\n"
+
+
+def rebuild_collisions(objects: list[str], output: Path, archive: Path) -> dict:
+    """Rebuild existing assets' collision models from their current recipes.
+
+    Only the collision parts are replaced: the collision mesh files, the collision
+    geoms and resting body position in the model file, ``dimensions`` and a legacy box
+    ``geometric_properties.size`` that tracked them, and ``provenance.conversion``.
+    Every other file and metadata section, including hand-authored ones such as
+    ``grasp_regions``, is kept. The regenerated visual mesh must equal the committed
+    one, so the collider is derived from the geometry that is shown. Each object is
+    validated before it replaces the old directory, which survives any failure.
+    """
+    import xml.etree.ElementTree as ET
+
+    import yaml
+
+    from prl_assets import authoring
+
+    allowed = {canonical_name(i): i for i in BOP_YCB_NAMES}
+    if not objects or len(set(objects)) != len(objects) or any(name not in allowed for name in objects):
+        raise ValueError("select distinct canonical YCB-V names (no paths or unknown names)")
+    archive = verify_archive(archive)
+    output = Path(output).resolve()
+    rows = []
+    with _lock(output), tempfile.TemporaryDirectory(dir=output, prefix=".ycbv-stage-") as temporary:
+        existing = _existing(output)
+        with zipfile.ZipFile(archive) as z:
+            for name in objects:
+                bop_id = allowed[name]
+                if bop_id not in existing or bop_id not in RECIPES:
+                    raise ValueError(f"{name} is not an imported asset with a recipe")
+                directory = existing[bop_id]
+                built = Path(temporary) / f"{name}.built"
+                built.mkdir()
+                _build(z, built, bop_id)
+                visual = f"{name}_visual.obj"
+                if (built / visual).read_bytes() != (directory / visual).read_bytes():
+                    raise ValueError(f"{name}: the regenerated visual mesh differs from the committed one")
+
+                old_meta = yaml.safe_load((directory / "meta.yaml").read_text())
+                new_meta = yaml.safe_load((built / ".meta.yaml.pending").read_text())
+                meta = dict(old_meta)
+                gp = dict(meta.get("geometric_properties") or {})
+                if gp.get("type") == "box" and gp.get("size") == old_meta.get("dimensions"):
+                    gp["size"] = new_meta["dimensions"]
+                meta["geometric_properties"] = gp
+                meta["dimensions"] = new_meta["dimensions"]
+                meta["provenance"] = {**old_meta["provenance"], "conversion": new_meta["provenance"]["conversion"]}
+
+                # The model file is regenerated whole; everything but its collision
+                # parts and resting position must be what is committed.
+                def shape(path):
+                    tree = ET.parse(path).getroot()
+                    for parent in tree.iter():
+                        for child in list(parent):
+                            collision = child.get("mesh", "").startswith("collision_") or child.get(
+                                "name", ""
+                            ).startswith("collision_")
+                            if child.tag in ("mesh", "geom") and collision:
+                                parent.remove(child)
+                    for body in tree.iter("body"):
+                        body.attrib.pop("pos", None)
+                    return ET.tostring(tree)
+
+                xml = meta["mujoco"]["xml_path"]
+                if shape(built / f"{name}.xml") != shape(directory / xml):
+                    raise ValueError(f"{name}: the model file differs outside its collision geometry")
+
+                stage = Path(temporary) / name
+                shutil.copytree(directory, stage, symlinks=True)
+                for old in stage.glob("collision_*.obj"):
+                    old.unlink()
+                for new in built.glob("collision_*.obj"):
+                    shutil.copyfile(new, stage / new.name)
+                shutil.copyfile(built / f"{name}.xml", stage / xml)
+                (stage / "meta.yaml").write_text(_dump_like(meta, (directory / "meta.yaml").read_text()))
+                report = authoring.check(stage)
+                if not report.ok:
+                    raise ValueError(f"{name} failed collision validation: {report.failures}")
+
+                retired = Path(temporary) / f"{name}.retired"
+                os.rename(directory, retired)
+                try:
+                    os.rename(stage, directory)
+                except OSError:
+                    os.rename(retired, directory)
+                    raise
+                rows.append(
+                    dict(
+                        name=name,
+                        bop_id=bop_id,
+                        action="collision rebuilt",
+                        hulls=len(list(directory.glob("collision_*.obj"))),
+                        previous_hulls=len(list(retired.glob("collision_*.obj"))),
+                        dimensions_changed=new_meta["dimensions"] != old_meta.get("dimensions"),
+                        fit=asdict(report.fit),
+                        files={p.name: sha256(p) for p in sorted(directory.iterdir()) if p.is_file()},
+                    )
+                )
+    return dict(source=dict(url=ARCHIVE_URL, sha256=ARCHIVE_SHA256), objects=rows)
+
+
 def main() -> int:
     p = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     p.add_argument("--objects", nargs="+", required=True, choices=sorted(canonical_name(i) for i in BOP_YCB_NAMES))
     p.add_argument(
         "--output", type=Path, required=True, help="YCB-V collection directory; existing assets are retained"
+    )
+    p.add_argument(
+        "--rebuild-collision",
+        action="store_true",
+        help="Rebuild existing assets' collision models from their recipes, keeping everything else",
     )
     p.add_argument("--archive", type=Path)
     p.add_argument("--cache", type=Path, default=Path.home() / ".cache/prl_assets")
@@ -431,7 +557,8 @@ def main() -> int:
         p.error("select distinct object names")
     try:
         archive = verify_archive(args.archive) if args.archive else fetch_archive(args.cache)
-        result = import_objects(args.objects, args.output, archive)
+        run = rebuild_collisions if args.rebuild_collision else import_objects
+        result = run(args.objects, args.output, archive)
     except (OSError, ValueError, zipfile.BadZipFile) as error:
         p.exit(1, f"YCB-V import failed: {error}\n")
     try:
