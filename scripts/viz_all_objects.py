@@ -5,6 +5,7 @@
 """Visualize all prl_assets objects with collision geometry and coordinate frames."""
 
 import tempfile
+import xml.etree.ElementTree as ET
 
 import mujoco
 import mujoco.viewer
@@ -13,7 +14,11 @@ from prl_assets import OBJECTS_DIR
 
 GRID_COLS = 5
 GRID_SPACING = 0.5
-OBJECTS = sorted(meta.parent.name for meta in OBJECTS_DIR.rglob("meta.yaml"))
+# Display movable objects; furniture such as ada_table has no free joint.
+OBJECTS = sorted(
+    meta.parent.name for meta in OBJECTS_DIR.rglob("meta.yaml")
+    if ET.parse(meta.parent / f"{meta.parent.name}.xml").find(".//freejoint") is not None
+)
 GRID_ROWS = (len(OBJECTS) + GRID_COLS - 1) // GRID_COLS
 
 
@@ -122,7 +127,7 @@ def main():
         xml_path = f.name
 
     print(f"Scene XML: {xml_path}")
-    print(f"\nAll {len(OBJECTS)} objects arranged in grid with collision overlays.")
+    print(f"\nAll {len(OBJECTS)} movable objects arranged in grid with collision overlays.")
     print("Controls: Mouse to rotate/pan/zoom, Esc to quit")
 
     # Load and display

@@ -317,7 +317,7 @@ uv run --extra authoring python scripts/validate_objects.py
 | Script | Description |
 |--------|-------------|
 | `inspect_object.py` | Visualize single object with collision overlay and coordinate axes |
-| `viz_all_objects.py` | Display the catalog in a grid with collision geometry |
+| `viz_all_objects.py` | Display movable catalog objects in a grid with collision geometry |
 | `viz_stacking_demo.py` | Physics demo: stacked dishes on tray, objects in tote |
 | `validate_objects.py` | Check objects the way CI does: conventions, mass, collision geometry against the visual mesh, open interiors |
 | `recenter_mesh.py` | Utility to re-center mesh origin to centroid |
