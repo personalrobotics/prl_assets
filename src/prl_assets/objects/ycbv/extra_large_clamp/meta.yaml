@@ -5,9 +5,9 @@ category:
 - graspable
 mass: 0.202
 dimensions: &id001
-- 0.20979326857052
-- 0.16435945195737078
-- 0.03633153965052543
+- 0.20978687867023837
+- 0.1643578826178691
+- 0.036333002700100675
 material: unspecified
 geometric_properties:
   type: box
@@ -84,7 +84,7 @@ provenance:
     coacd: 1.0.14
     method: decomposition
     settings:
-      threshold: 0.002
+      threshold: 0.01
       real_metric: true
       seed: 0
       preprocess_mode: auto
@@ -96,12 +96,13 @@ provenance:
       merge: true
       decimate: true
       max_ch_vertex: 128
+      max_convex_hull: 16
     texture_size:
     - 1024
     - 1024
     environment:
-      numpy: 2.4.6
+      numpy: 2.5.4
       trimesh: 5.2.0
       mujoco: 3.17.0
       pillow: 13.0.0
-      scipy: 1.17.1
+      scipy: 1.18.1

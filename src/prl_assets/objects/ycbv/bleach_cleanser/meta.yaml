@@ -5,9 +5,9 @@ category:
 - graspable
 mass: 1.131
 dimensions: &id001
-- 0.10239536993125647
-- 0.06770392857276965
-- 0.25063977530002646
+- 0.10240599822998048
+- 0.06771199798583985
+- 0.2506399993896484
 material: plastic
 geometric_properties:
   type: box
@@ -66,26 +66,14 @@ provenance:
     friction: Unmeasured nominal contact parameters
   conversion:
     coacd: 1.0.14
-    method: decomposition
-    settings:
-      threshold: 0.002
-      real_metric: true
-      seed: 0
-      preprocess_mode: auto
-      preprocess_resolution: 50
-      resolution: 2000
-      mcts_nodes: 20
-      mcts_iterations: 150
-      mcts_max_depth: 3
-      merge: true
-      decimate: true
-      max_ch_vertex: 128
+    method: hull
+    settings: {}
     texture_size:
     - 1024
     - 1024
     environment:
-      numpy: 2.4.6
+      numpy: 2.5.4
       trimesh: 5.2.0
       mujoco: 3.17.0
       pillow: 13.0.0
-      scipy: 1.17.1
+      scipy: 1.18.1

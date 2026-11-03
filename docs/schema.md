@@ -30,7 +30,7 @@ object with no visual mesh renders its collision geoms, which are then its shape
 | `collision_excess`: 99th percentile of the collision surface's distance outside the visual mesh's convex hull (oversized) | 3 mm |
 | `sink`: how far the visual mesh reaches below the collision geometry's bottom | 1 mm |
 | `resting`: the collision geometry's bottom at the model file's pose, which must rest on z = 0 | 1 mm |
-| `floor_gap`: for open objects, a 1 cm sphere dropped on the axis rests this far from the visual surface beneath it | 3 mm |
+| `floor_gap`: for open objects, a 1 cm sphere dropped on the axis rests this far from the visual surface beneath its resting point; a sphere that comes to rest off the object (rolled off a filled top) fails | 3 mm |
 
 The model must also have a free joint on its top-level body (unless `category` includes
 `fixture`), and its compiled mass must equal `mass`.
@@ -179,6 +179,16 @@ Their box-shaped `geometric_properties` is a deprecated legacy approximation who
 dimensions match the collision bounds. New grasp readers use only `grasp_regions`;
 the importer and catalog-wide migration remain follow-up work after consumers migrate.
 This legacy approximation is not a claim of solid box collision geometry. Concave collision pieces remain separate mesh geoms in MuJoCo.
+
+Collision models are as coarse as their interactions allow. A closed, nearly convex
+object is one convex hull. Each decomposed object uses the coarsest CoACD setting in
+its recipe that passes `authoring.check`, including the floor probe of an open
+interior, keeps the reference silhouette's apertures open (below), and bridges the
+scan's concavities by at most about 13 mm at the 99th percentile. Collision cost grows
+with the parts in contact, so a finer decomposition than this buys nothing a task can
+use and multiplies the cost of every contact-rich scene. CoACD's output depends on the
+platform; the committed colliders are reproduced on Linux x86-64 with the locked
+dependencies, and `provenance.conversion` records the settings.
 
 ## Installed asset verification
 

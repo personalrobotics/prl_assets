@@ -6,35 +6,13 @@
     <mesh name="visual_mesh" file="banana_visual.obj" />
     <mesh name="collision_0" file="collision_000.obj" />
     <mesh name="collision_1" file="collision_001.obj" />
-    <mesh name="collision_2" file="collision_002.obj" />
-    <mesh name="collision_3" file="collision_003.obj" />
-    <mesh name="collision_4" file="collision_004.obj" />
-    <mesh name="collision_5" file="collision_005.obj" />
-    <mesh name="collision_6" file="collision_006.obj" />
-    <mesh name="collision_7" file="collision_007.obj" />
-    <mesh name="collision_8" file="collision_008.obj" />
-    <mesh name="collision_9" file="collision_009.obj" />
-    <mesh name="collision_10" file="collision_010.obj" />
-    <mesh name="collision_11" file="collision_011.obj" />
-    <mesh name="collision_12" file="collision_012.obj" />
   </asset>
   <worldbody>
-    <body name="banana" pos="0 0 0.0183336324">
+    <body name="banana" pos="0 0 0.0181949985">
       <freejoint name="banana_joint" />
       <geom name="visual" type="mesh" mesh="visual_mesh" material="visual_mat" group="2" mass="0" contype="0" conaffinity="0" />
-      <geom name="banana_collision_0" type="mesh" mesh="collision_0" mass="0.00377494908521" friction="0.6 0.005 0.0001" group="3" condim="4" />
-      <geom name="banana_collision_1" type="mesh" mesh="collision_1" mass="0.00855589016278" friction="0.6 0.005 0.0001" group="3" condim="4" />
-      <geom name="banana_collision_2" type="mesh" mesh="collision_2" mass="0.00714378825096" friction="0.6 0.005 0.0001" group="3" condim="4" />
-      <geom name="banana_collision_3" type="mesh" mesh="collision_3" mass="0.00546895501315" friction="0.6 0.005 0.0001" group="3" condim="4" />
-      <geom name="banana_collision_4" type="mesh" mesh="collision_4" mass="0.00240845692081" friction="0.6 0.005 0.0001" group="3" condim="4" />
-      <geom name="banana_collision_5" type="mesh" mesh="collision_5" mass="0.00818431348284" friction="0.6 0.005 0.0001" group="3" condim="4" />
-      <geom name="banana_collision_6" type="mesh" mesh="collision_6" mass="0.0165391170604" friction="0.6 0.005 0.0001" group="3" condim="4" />
-      <geom name="banana_collision_7" type="mesh" mesh="collision_7" mass="0.00187194947126" friction="0.6 0.005 0.0001" group="3" condim="4" />
-      <geom name="banana_collision_8" type="mesh" mesh="collision_8" mass="0.0014376860376" friction="0.6 0.005 0.0001" group="3" condim="4" />
-      <geom name="banana_collision_9" type="mesh" mesh="collision_9" mass="0.00350781417821" friction="0.6 0.005 0.0001" group="3" condim="4" />
-      <geom name="banana_collision_10" type="mesh" mesh="collision_10" mass="0.00612460609552" friction="0.6 0.005 0.0001" group="3" condim="4" />
-      <geom name="banana_collision_11" type="mesh" mesh="collision_11" mass="0.000407997134932" friction="0.6 0.005 0.0001" group="3" condim="4" />
-      <geom name="banana_collision_12" type="mesh" mesh="collision_12" mass="0.000574477106322" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="banana_collision_0" type="mesh" mesh="collision_0" mass="0.0491535383674" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="banana_collision_1" type="mesh" mesh="collision_1" mass="0.0168464616326" friction="0.6 0.005 0.0001" group="3" condim="4" />
     </body>
   </worldbody>
 </mujoco>

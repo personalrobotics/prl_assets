@@ -12,81 +12,19 @@
     <mesh name="collision_5" file="collision_005.obj" />
     <mesh name="collision_6" file="collision_006.obj" />
     <mesh name="collision_7" file="collision_007.obj" />
-    <mesh name="collision_8" file="collision_008.obj" />
-    <mesh name="collision_9" file="collision_009.obj" />
-    <mesh name="collision_10" file="collision_010.obj" />
-    <mesh name="collision_11" file="collision_011.obj" />
-    <mesh name="collision_12" file="collision_012.obj" />
-    <mesh name="collision_13" file="collision_013.obj" />
-    <mesh name="collision_14" file="collision_014.obj" />
-    <mesh name="collision_15" file="collision_015.obj" />
-    <mesh name="collision_16" file="collision_016.obj" />
-    <mesh name="collision_17" file="collision_017.obj" />
-    <mesh name="collision_18" file="collision_018.obj" />
-    <mesh name="collision_19" file="collision_019.obj" />
-    <mesh name="collision_20" file="collision_020.obj" />
-    <mesh name="collision_21" file="collision_021.obj" />
-    <mesh name="collision_22" file="collision_022.obj" />
-    <mesh name="collision_23" file="collision_023.obj" />
-    <mesh name="collision_24" file="collision_024.obj" />
-    <mesh name="collision_25" file="collision_025.obj" />
-    <mesh name="collision_26" file="collision_026.obj" />
-    <mesh name="collision_27" file="collision_027.obj" />
-    <mesh name="collision_28" file="collision_028.obj" />
-    <mesh name="collision_29" file="collision_029.obj" />
-    <mesh name="collision_30" file="collision_030.obj" />
-    <mesh name="collision_31" file="collision_031.obj" />
-    <mesh name="collision_32" file="collision_032.obj" />
-    <mesh name="collision_33" file="collision_033.obj" />
-    <mesh name="collision_34" file="collision_034.obj" />
-    <mesh name="collision_35" file="collision_035.obj" />
-    <mesh name="collision_36" file="collision_036.obj" />
-    <mesh name="collision_37" file="collision_037.obj" />
-    <mesh name="collision_38" file="collision_038.obj" />
   </asset>
   <worldbody>
-    <body name="scissors" pos="0 0 0.00784676715">
+    <body name="scissors" pos="0 0 0.00785233516">
       <freejoint name="scissors_joint" />
       <geom name="visual" type="mesh" mesh="visual_mesh" material="visual_mat" group="2" mass="0" contype="0" conaffinity="0" />
-      <geom name="scissors_collision_0" type="mesh" mesh="collision_0" mass="0.0010724453177" friction="0.6 0.005 0.0001" group="3" condim="4" />
-      <geom name="scissors_collision_1" type="mesh" mesh="collision_1" mass="0.00186940566739" friction="0.6 0.005 0.0001" group="3" condim="4" />
-      <geom name="scissors_collision_2" type="mesh" mesh="collision_2" mass="0.00259735715407" friction="0.6 0.005 0.0001" group="3" condim="4" />
-      <geom name="scissors_collision_3" type="mesh" mesh="collision_3" mass="0.00179903037753" friction="0.6 0.005 0.0001" group="3" condim="4" />
-      <geom name="scissors_collision_4" type="mesh" mesh="collision_4" mass="0.00221025098104" friction="0.6 0.005 0.0001" group="3" condim="4" />
-      <geom name="scissors_collision_5" type="mesh" mesh="collision_5" mass="0.00169629691473" friction="0.6 0.005 0.0001" group="3" condim="4" />
-      <geom name="scissors_collision_6" type="mesh" mesh="collision_6" mass="0.00129981854835" friction="0.6 0.005 0.0001" group="3" condim="4" />
-      <geom name="scissors_collision_7" type="mesh" mesh="collision_7" mass="0.00180471875026" friction="0.6 0.005 0.0001" group="3" condim="4" />
-      <geom name="scissors_collision_8" type="mesh" mesh="collision_8" mass="0.0016714681342" friction="0.6 0.005 0.0001" group="3" condim="4" />
-      <geom name="scissors_collision_9" type="mesh" mesh="collision_9" mass="0.00564009254144" friction="0.6 0.005 0.0001" group="3" condim="4" />
-      <geom name="scissors_collision_10" type="mesh" mesh="collision_10" mass="0.00132480023233" friction="0.6 0.005 0.0001" group="3" condim="4" />
-      <geom name="scissors_collision_11" type="mesh" mesh="collision_11" mass="0.000262010850832" friction="0.6 0.005 0.0001" group="3" condim="4" />
-      <geom name="scissors_collision_12" type="mesh" mesh="collision_12" mass="0.000223438399587" friction="0.6 0.005 0.0001" group="3" condim="4" />
-      <geom name="scissors_collision_13" type="mesh" mesh="collision_13" mass="0.00016732805182" friction="0.6 0.005 0.0001" group="3" condim="4" />
-      <geom name="scissors_collision_14" type="mesh" mesh="collision_14" mass="0.00260160022944" friction="0.6 0.005 0.0001" group="3" condim="4" />
-      <geom name="scissors_collision_15" type="mesh" mesh="collision_15" mass="0.000445591653397" friction="0.6 0.005 0.0001" group="3" condim="4" />
-      <geom name="scissors_collision_16" type="mesh" mesh="collision_16" mass="0.00102806073034" friction="0.6 0.005 0.0001" group="3" condim="4" />
-      <geom name="scissors_collision_17" type="mesh" mesh="collision_17" mass="0.00591679562368" friction="0.6 0.005 0.0001" group="3" condim="4" />
-      <geom name="scissors_collision_18" type="mesh" mesh="collision_18" mass="0.00201181697115" friction="0.6 0.005 0.0001" group="3" condim="4" />
-      <geom name="scissors_collision_19" type="mesh" mesh="collision_19" mass="0.00029097967767" friction="0.6 0.005 0.0001" group="3" condim="4" />
-      <geom name="scissors_collision_20" type="mesh" mesh="collision_20" mass="0.00465221707278" friction="0.6 0.005 0.0001" group="3" condim="4" />
-      <geom name="scissors_collision_21" type="mesh" mesh="collision_21" mass="0.00204391248178" friction="0.6 0.005 0.0001" group="3" condim="4" />
-      <geom name="scissors_collision_22" type="mesh" mesh="collision_22" mass="0.00368531079456" friction="0.6 0.005 0.0001" group="3" condim="4" />
-      <geom name="scissors_collision_23" type="mesh" mesh="collision_23" mass="0.00644319332472" friction="0.6 0.005 0.0001" group="3" condim="4" />
-      <geom name="scissors_collision_24" type="mesh" mesh="collision_24" mass="0.00144445601869" friction="0.6 0.005 0.0001" group="3" condim="4" />
-      <geom name="scissors_collision_25" type="mesh" mesh="collision_25" mass="0.00420766933772" friction="0.6 0.005 0.0001" group="3" condim="4" />
-      <geom name="scissors_collision_26" type="mesh" mesh="collision_26" mass="0.000551003527137" friction="0.6 0.005 0.0001" group="3" condim="4" />
-      <geom name="scissors_collision_27" type="mesh" mesh="collision_27" mass="0.000434833903639" friction="0.6 0.005 0.0001" group="3" condim="4" />
-      <geom name="scissors_collision_28" type="mesh" mesh="collision_28" mass="0.000441484834613" friction="0.6 0.005 0.0001" group="3" condim="4" />
-      <geom name="scissors_collision_29" type="mesh" mesh="collision_29" mass="0.00215251216542" friction="0.6 0.005 0.0001" group="3" condim="4" />
-      <geom name="scissors_collision_30" type="mesh" mesh="collision_30" mass="0.00109379938825" friction="0.6 0.005 0.0001" group="3" condim="4" />
-      <geom name="scissors_collision_31" type="mesh" mesh="collision_31" mass="0.000952065642972" friction="0.6 0.005 0.0001" group="3" condim="4" />
-      <geom name="scissors_collision_32" type="mesh" mesh="collision_32" mass="0.000903651077191" friction="0.6 0.005 0.0001" group="3" condim="4" />
-      <geom name="scissors_collision_33" type="mesh" mesh="collision_33" mass="0.0015493577028" friction="0.6 0.005 0.0001" group="3" condim="4" />
-      <geom name="scissors_collision_34" type="mesh" mesh="collision_34" mass="0.00130972324423" friction="0.6 0.005 0.0001" group="3" condim="4" />
-      <geom name="scissors_collision_35" type="mesh" mesh="collision_35" mass="0.00167947209294" friction="0.6 0.005 0.0001" group="3" condim="4" />
-      <geom name="scissors_collision_36" type="mesh" mesh="collision_36" mass="0.00311743753842" friction="0.6 0.005 0.0001" group="3" condim="4" />
-      <geom name="scissors_collision_37" type="mesh" mesh="collision_37" mass="0.00686199204202" friction="0.6 0.005 0.0001" group="3" condim="4" />
-      <geom name="scissors_collision_38" type="mesh" mesh="collision_38" mass="0.00254260100319" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="scissors_collision_0" type="mesh" mesh="collision_0" mass="0.00443632007402" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="scissors_collision_1" type="mesh" mesh="collision_1" mass="0.00390580902233" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="scissors_collision_2" type="mesh" mesh="collision_2" mass="0.00390924008686" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="scissors_collision_3" type="mesh" mesh="collision_3" mass="0.00732966291294" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="scissors_collision_4" type="mesh" mesh="collision_4" mass="0.00244990256447" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="scissors_collision_5" type="mesh" mesh="collision_5" mass="0.0458824798456" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="scissors_collision_6" type="mesh" mesh="collision_6" mass="0.00909375726265" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="scissors_collision_7" type="mesh" mesh="collision_7" mass="0.00499282823108" friction="0.6 0.005 0.0001" group="3" condim="4" />
     </body>
   </worldbody>
 </mujoco>
