@@ -1,0 +1,107 @@
+name: extra_large_clamp
+description: YCB-V 052_extra_large_clamp
+category:
+- tool
+- graspable
+mass: 0.202
+dimensions: &id001
+- 0.20979326857052
+- 0.16435945195737078
+- 0.03633153965052543
+material: unspecified
+geometric_properties:
+  type: box
+  size: *id001
+mujoco:
+  xml_path: extra_large_clamp.xml
+  scale: 1.0
+  friction:
+  - 0.6
+  - 0.005
+  - 0.0001
+perception:
+  aliases:
+  - 052_extra_large_clamp
+  - YCB extra large clamp
+dataset:
+  ycbv:
+    bop_id: 20
+    ycb_name: 052_extra_large_clamp
+frames:
+  T_asset_bop:
+  - - 1.0
+    - 0.0
+    - 0.0
+    - 0.0
+  - - 0.0
+    - 1.0
+    - 0.0
+    - 0.0
+  - - 0.0
+    - 0.0
+    - 1.0
+    - 0.0
+  - - 0.0
+    - 0.0
+    - 0.0
+    - 1.0
+symmetries:
+  frame: bop
+  discrete:
+  - - 0.971917
+    - 0.235286
+    - -0.00430644
+    - 2.32402
+    - 0.235287
+    - -0.971926
+    - -0.000412312
+    - -19.4767
+    - -0.00428255
+    - -0.000612514
+    - -0.999991
+    - 0.15415
+    - 0
+    - 0
+    - 0
+    - 1
+  continuous: []
+provenance:
+  geometry: Pinned BOP PLY converted mm to m without alignment or simplification;
+    texture resized to 1024x1024
+  reference_model: models/obj_000020.ply in the pinned BOP ycbv_models.zip
+  license: CC-BY-4.0
+  attribution: YCB Object and Model Set; see collection NOTICE.md
+  archive_sha256: 1e517a9b513cadb8eaf406ac3ce3c5f1d6fc4a80161c866b4e2a73d13de5e554
+  source_members:
+    models/obj_000020.ply: 26bda75feff6cddb68872781b3b3e38e986d69276e7a20182186e97e3890497c
+    models/obj_000020.png: 31384fbe397576a88032465631bdad37b7cf57d98ce52b8eacbd8262bd0ca325
+  physical_properties:
+    mass_source: https://personalrobotics.cs.washington.edu/publications/calli2015ycb.pdf#page=5
+    mass_note: Reference YCB object mass, not a measurement of a lab copy
+    inertia: Estimated by MuJoCo from uniformly dense convex parts; overlaps are counted
+    friction: Unmeasured nominal contact parameters
+  conversion:
+    coacd: 1.0.14
+    method: decomposition
+    settings:
+      threshold: 0.002
+      real_metric: true
+      seed: 0
+      preprocess_mode: auto
+      preprocess_resolution: 50
+      resolution: 2000
+      mcts_nodes: 20
+      mcts_iterations: 150
+      mcts_max_depth: 3
+      merge: true
+      decimate: true
+      max_ch_vertex: 128
+    texture_size:
+    - 1024
+    - 1024
+    environment:
+      numpy: 2.4.6
+      trimesh: 5.2.0
+      mujoco: 3.17.0
+      pillow: 13.0.0
+      scipy: 1.17.1

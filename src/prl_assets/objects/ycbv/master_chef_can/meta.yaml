@@ -1,0 +1,95 @@
+name: master_chef_can
+description: YCB-V 002_master_chef_can
+category:
+- food_package
+- graspable
+mass: 0.414
+dimensions: &id001
+- 0.10228900146484375
+- 0.10244599914550781
+- 0.14014399719238282
+material: metal
+geometric_properties:
+  type: box
+  size: *id001
+mujoco:
+  xml_path: master_chef_can.xml
+  scale: 1.0
+  friction:
+  - 0.6
+  - 0.005
+  - 0.0001
+perception:
+  aliases:
+  - 002_master_chef_can
+  - YCB master chef can
+dataset:
+  ycbv:
+    bop_id: 1
+    ycb_name: 002_master_chef_can
+frames:
+  T_asset_bop:
+  - - 1.0
+    - 0.0
+    - 0.0
+    - 0.0
+  - - 0.0
+    - 1.0
+    - 0.0
+    - 0.0
+  - - 0.0
+    - 0.0
+    - 1.0
+    - 0.0
+  - - 0.0
+    - 0.0
+    - 0.0
+    - 1.0
+symmetries:
+  frame: bop
+  discrete:
+  - - -1
+    - -4.31991e-14
+    - 0
+    - 0
+    - 4.31991e-14
+    - -1
+    - 0
+    - 0
+    - 0
+    - 0
+    - 1
+    - 0
+    - 0
+    - 0
+    - 0
+    - 1
+  continuous: []
+provenance:
+  geometry: Pinned BOP PLY converted mm to m without alignment or simplification;
+    texture resized to 1024x1024
+  reference_model: models/obj_000001.ply in the pinned BOP ycbv_models.zip
+  license: CC-BY-4.0
+  attribution: YCB Object and Model Set; see collection NOTICE.md
+  archive_sha256: 1e517a9b513cadb8eaf406ac3ce3c5f1d6fc4a80161c866b4e2a73d13de5e554
+  source_members:
+    models/obj_000001.ply: af8774fe78b700e5ac7f55e48411c3389813753293d20dba420704c89fed6285
+    models/obj_000001.png: 58dd75e68ee169389471f1cc53011736fb08e3d2efd75e246cd7543a97696173
+  physical_properties:
+    mass_source: https://personalrobotics.cs.washington.edu/publications/calli2015ycb.pdf#page=5
+    mass_note: Reference YCB object mass, not a measurement of a lab copy
+    inertia: Estimated by MuJoCo from uniformly dense convex parts; overlaps are counted
+    friction: Unmeasured nominal contact parameters
+  conversion:
+    coacd: 1.0.14
+    method: hull
+    settings: {}
+    texture_size:
+    - 1024
+    - 1024
+    environment:
+      numpy: 2.4.6
+      trimesh: 5.2.0
+      mujoco: 3.17.0
+      pillow: 13.0.0
+      scipy: 1.17.1

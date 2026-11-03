@@ -5,36 +5,17 @@
 """Visualize all prl_assets objects with collision geometry and coordinate frames."""
 
 import tempfile
-from pathlib import Path
 
 import mujoco
 import mujoco.viewer
 
-OBJECTS_DIR = Path(__file__).parent.parent / "src" / "prl_assets" / "objects"
+from prl_assets import OBJECTS_DIR
 
-# Grid layout for 17 objects (5 columns x 4 rows)
 GRID_COLS = 5
 GRID_SPACING = 0.5
+OBJECTS = sorted(meta.parent.name for meta in OBJECTS_DIR.rglob("meta.yaml"))
+GRID_ROWS = (len(OBJECTS) + GRID_COLS - 1) // GRID_COLS
 
-OBJECTS = [
-    "can",
-    "cracker_box",
-    "fuze_bottle",
-    "gelatin_box",
-    "herring_tin",
-    "lunchbox",
-    "notebook",
-    "plastic_bowl",
-    "plastic_glass",
-    "plastic_plate",
-    "pocky_box",
-    "pop_tarts_case",
-    "spam_can",
-    "recycle_bin",
-    "sugar_box",
-    "wicker_tray",
-    "yellow_tote",
-]
 
 
 def create_scene_xml():
@@ -49,13 +30,14 @@ def create_scene_xml():
         meta = next(OBJECTS_DIR.rglob(f"{obj_name}/meta.yaml"), None)
         if meta is None or not (meta.parent / f"{obj_name}.xml").exists():
             continue
-        xml_path = meta.parent / f"{obj_name}.xml"
+        obj_dir = meta.parent
+        xml_path = obj_dir / f"{obj_name}.xml"
 
         # Calculate grid position
         col = i % GRID_COLS
         row = i // GRID_COLS
         x = (col - GRID_COLS / 2 + 0.5) * GRID_SPACING
-        y = (row - 2) * GRID_SPACING
+        y = (row - (GRID_ROWS - 1) / 2) * GRID_SPACING
 
         # Read and parse the object XML
         xml_content = xml_path.read_text()
@@ -140,7 +122,7 @@ def main():
         xml_path = f.name
 
     print(f"Scene XML: {xml_path}")
-    print("\nAll 17 objects arranged in grid with collision overlays.")
+    print(f"\nAll {len(OBJECTS)} objects arranged in grid with collision overlays.")
     print("Controls: Mouse to rotate/pan/zoom, Esc to quit")
 
     # Load and display

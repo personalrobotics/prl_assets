@@ -1,0 +1,622 @@
+<mujoco model="extra_large_clamp">
+  <compiler angle="radian" />
+  <asset>
+    <texture name="visual_tex" type="2d" file="extra_large_clamp_texture.png" />
+    <material name="visual_mat" texture="visual_tex" />
+    <mesh name="visual_mesh" file="extra_large_clamp_visual.obj" />
+    <mesh name="collision_0" file="collision_000.obj" />
+    <mesh name="collision_1" file="collision_001.obj" />
+    <mesh name="collision_2" file="collision_002.obj" />
+    <mesh name="collision_3" file="collision_003.obj" />
+    <mesh name="collision_4" file="collision_004.obj" />
+    <mesh name="collision_5" file="collision_005.obj" />
+    <mesh name="collision_6" file="collision_006.obj" />
+    <mesh name="collision_7" file="collision_007.obj" />
+    <mesh name="collision_8" file="collision_008.obj" />
+    <mesh name="collision_9" file="collision_009.obj" />
+    <mesh name="collision_10" file="collision_010.obj" />
+    <mesh name="collision_11" file="collision_011.obj" />
+    <mesh name="collision_12" file="collision_012.obj" />
+    <mesh name="collision_13" file="collision_013.obj" />
+    <mesh name="collision_14" file="collision_014.obj" />
+    <mesh name="collision_15" file="collision_015.obj" />
+    <mesh name="collision_16" file="collision_016.obj" />
+    <mesh name="collision_17" file="collision_017.obj" />
+    <mesh name="collision_18" file="collision_018.obj" />
+    <mesh name="collision_19" file="collision_019.obj" />
+    <mesh name="collision_20" file="collision_020.obj" />
+    <mesh name="collision_21" file="collision_021.obj" />
+    <mesh name="collision_22" file="collision_022.obj" />
+    <mesh name="collision_23" file="collision_023.obj" />
+    <mesh name="collision_24" file="collision_024.obj" />
+    <mesh name="collision_25" file="collision_025.obj" />
+    <mesh name="collision_26" file="collision_026.obj" />
+    <mesh name="collision_27" file="collision_027.obj" />
+    <mesh name="collision_28" file="collision_028.obj" />
+    <mesh name="collision_29" file="collision_029.obj" />
+    <mesh name="collision_30" file="collision_030.obj" />
+    <mesh name="collision_31" file="collision_031.obj" />
+    <mesh name="collision_32" file="collision_032.obj" />
+    <mesh name="collision_33" file="collision_033.obj" />
+    <mesh name="collision_34" file="collision_034.obj" />
+    <mesh name="collision_35" file="collision_035.obj" />
+    <mesh name="collision_36" file="collision_036.obj" />
+    <mesh name="collision_37" file="collision_037.obj" />
+    <mesh name="collision_38" file="collision_038.obj" />
+    <mesh name="collision_39" file="collision_039.obj" />
+    <mesh name="collision_40" file="collision_040.obj" />
+    <mesh name="collision_41" file="collision_041.obj" />
+    <mesh name="collision_42" file="collision_042.obj" />
+    <mesh name="collision_43" file="collision_043.obj" />
+    <mesh name="collision_44" file="collision_044.obj" />
+    <mesh name="collision_45" file="collision_045.obj" />
+    <mesh name="collision_46" file="collision_046.obj" />
+    <mesh name="collision_47" file="collision_047.obj" />
+    <mesh name="collision_48" file="collision_048.obj" />
+    <mesh name="collision_49" file="collision_049.obj" />
+    <mesh name="collision_50" file="collision_050.obj" />
+    <mesh name="collision_51" file="collision_051.obj" />
+    <mesh name="collision_52" file="collision_052.obj" />
+    <mesh name="collision_53" file="collision_053.obj" />
+    <mesh name="collision_54" file="collision_054.obj" />
+    <mesh name="collision_55" file="collision_055.obj" />
+    <mesh name="collision_56" file="collision_056.obj" />
+    <mesh name="collision_57" file="collision_057.obj" />
+    <mesh name="collision_58" file="collision_058.obj" />
+    <mesh name="collision_59" file="collision_059.obj" />
+    <mesh name="collision_60" file="collision_060.obj" />
+    <mesh name="collision_61" file="collision_061.obj" />
+    <mesh name="collision_62" file="collision_062.obj" />
+    <mesh name="collision_63" file="collision_063.obj" />
+    <mesh name="collision_64" file="collision_064.obj" />
+    <mesh name="collision_65" file="collision_065.obj" />
+    <mesh name="collision_66" file="collision_066.obj" />
+    <mesh name="collision_67" file="collision_067.obj" />
+    <mesh name="collision_68" file="collision_068.obj" />
+    <mesh name="collision_69" file="collision_069.obj" />
+    <mesh name="collision_70" file="collision_070.obj" />
+    <mesh name="collision_71" file="collision_071.obj" />
+    <mesh name="collision_72" file="collision_072.obj" />
+    <mesh name="collision_73" file="collision_073.obj" />
+    <mesh name="collision_74" file="collision_074.obj" />
+    <mesh name="collision_75" file="collision_075.obj" />
+    <mesh name="collision_76" file="collision_076.obj" />
+    <mesh name="collision_77" file="collision_077.obj" />
+    <mesh name="collision_78" file="collision_078.obj" />
+    <mesh name="collision_79" file="collision_079.obj" />
+    <mesh name="collision_80" file="collision_080.obj" />
+    <mesh name="collision_81" file="collision_081.obj" />
+    <mesh name="collision_82" file="collision_082.obj" />
+    <mesh name="collision_83" file="collision_083.obj" />
+    <mesh name="collision_84" file="collision_084.obj" />
+    <mesh name="collision_85" file="collision_085.obj" />
+    <mesh name="collision_86" file="collision_086.obj" />
+    <mesh name="collision_87" file="collision_087.obj" />
+    <mesh name="collision_88" file="collision_088.obj" />
+    <mesh name="collision_89" file="collision_089.obj" />
+    <mesh name="collision_90" file="collision_090.obj" />
+    <mesh name="collision_91" file="collision_091.obj" />
+    <mesh name="collision_92" file="collision_092.obj" />
+    <mesh name="collision_93" file="collision_093.obj" />
+    <mesh name="collision_94" file="collision_094.obj" />
+    <mesh name="collision_95" file="collision_095.obj" />
+    <mesh name="collision_96" file="collision_096.obj" />
+    <mesh name="collision_97" file="collision_097.obj" />
+    <mesh name="collision_98" file="collision_098.obj" />
+    <mesh name="collision_99" file="collision_099.obj" />
+    <mesh name="collision_100" file="collision_100.obj" />
+    <mesh name="collision_101" file="collision_101.obj" />
+    <mesh name="collision_102" file="collision_102.obj" />
+    <mesh name="collision_103" file="collision_103.obj" />
+    <mesh name="collision_104" file="collision_104.obj" />
+    <mesh name="collision_105" file="collision_105.obj" />
+    <mesh name="collision_106" file="collision_106.obj" />
+    <mesh name="collision_107" file="collision_107.obj" />
+    <mesh name="collision_108" file="collision_108.obj" />
+    <mesh name="collision_109" file="collision_109.obj" />
+    <mesh name="collision_110" file="collision_110.obj" />
+    <mesh name="collision_111" file="collision_111.obj" />
+    <mesh name="collision_112" file="collision_112.obj" />
+    <mesh name="collision_113" file="collision_113.obj" />
+    <mesh name="collision_114" file="collision_114.obj" />
+    <mesh name="collision_115" file="collision_115.obj" />
+    <mesh name="collision_116" file="collision_116.obj" />
+    <mesh name="collision_117" file="collision_117.obj" />
+    <mesh name="collision_118" file="collision_118.obj" />
+    <mesh name="collision_119" file="collision_119.obj" />
+    <mesh name="collision_120" file="collision_120.obj" />
+    <mesh name="collision_121" file="collision_121.obj" />
+    <mesh name="collision_122" file="collision_122.obj" />
+    <mesh name="collision_123" file="collision_123.obj" />
+    <mesh name="collision_124" file="collision_124.obj" />
+    <mesh name="collision_125" file="collision_125.obj" />
+    <mesh name="collision_126" file="collision_126.obj" />
+    <mesh name="collision_127" file="collision_127.obj" />
+    <mesh name="collision_128" file="collision_128.obj" />
+    <mesh name="collision_129" file="collision_129.obj" />
+    <mesh name="collision_130" file="collision_130.obj" />
+    <mesh name="collision_131" file="collision_131.obj" />
+    <mesh name="collision_132" file="collision_132.obj" />
+    <mesh name="collision_133" file="collision_133.obj" />
+    <mesh name="collision_134" file="collision_134.obj" />
+    <mesh name="collision_135" file="collision_135.obj" />
+    <mesh name="collision_136" file="collision_136.obj" />
+    <mesh name="collision_137" file="collision_137.obj" />
+    <mesh name="collision_138" file="collision_138.obj" />
+    <mesh name="collision_139" file="collision_139.obj" />
+    <mesh name="collision_140" file="collision_140.obj" />
+    <mesh name="collision_141" file="collision_141.obj" />
+    <mesh name="collision_142" file="collision_142.obj" />
+    <mesh name="collision_143" file="collision_143.obj" />
+    <mesh name="collision_144" file="collision_144.obj" />
+    <mesh name="collision_145" file="collision_145.obj" />
+    <mesh name="collision_146" file="collision_146.obj" />
+    <mesh name="collision_147" file="collision_147.obj" />
+    <mesh name="collision_148" file="collision_148.obj" />
+    <mesh name="collision_149" file="collision_149.obj" />
+    <mesh name="collision_150" file="collision_150.obj" />
+    <mesh name="collision_151" file="collision_151.obj" />
+    <mesh name="collision_152" file="collision_152.obj" />
+    <mesh name="collision_153" file="collision_153.obj" />
+    <mesh name="collision_154" file="collision_154.obj" />
+    <mesh name="collision_155" file="collision_155.obj" />
+    <mesh name="collision_156" file="collision_156.obj" />
+    <mesh name="collision_157" file="collision_157.obj" />
+    <mesh name="collision_158" file="collision_158.obj" />
+    <mesh name="collision_159" file="collision_159.obj" />
+    <mesh name="collision_160" file="collision_160.obj" />
+    <mesh name="collision_161" file="collision_161.obj" />
+    <mesh name="collision_162" file="collision_162.obj" />
+    <mesh name="collision_163" file="collision_163.obj" />
+    <mesh name="collision_164" file="collision_164.obj" />
+    <mesh name="collision_165" file="collision_165.obj" />
+    <mesh name="collision_166" file="collision_166.obj" />
+    <mesh name="collision_167" file="collision_167.obj" />
+    <mesh name="collision_168" file="collision_168.obj" />
+    <mesh name="collision_169" file="collision_169.obj" />
+    <mesh name="collision_170" file="collision_170.obj" />
+    <mesh name="collision_171" file="collision_171.obj" />
+    <mesh name="collision_172" file="collision_172.obj" />
+    <mesh name="collision_173" file="collision_173.obj" />
+    <mesh name="collision_174" file="collision_174.obj" />
+    <mesh name="collision_175" file="collision_175.obj" />
+    <mesh name="collision_176" file="collision_176.obj" />
+    <mesh name="collision_177" file="collision_177.obj" />
+    <mesh name="collision_178" file="collision_178.obj" />
+    <mesh name="collision_179" file="collision_179.obj" />
+    <mesh name="collision_180" file="collision_180.obj" />
+    <mesh name="collision_181" file="collision_181.obj" />
+    <mesh name="collision_182" file="collision_182.obj" />
+    <mesh name="collision_183" file="collision_183.obj" />
+    <mesh name="collision_184" file="collision_184.obj" />
+    <mesh name="collision_185" file="collision_185.obj" />
+    <mesh name="collision_186" file="collision_186.obj" />
+    <mesh name="collision_187" file="collision_187.obj" />
+    <mesh name="collision_188" file="collision_188.obj" />
+    <mesh name="collision_189" file="collision_189.obj" />
+    <mesh name="collision_190" file="collision_190.obj" />
+    <mesh name="collision_191" file="collision_191.obj" />
+    <mesh name="collision_192" file="collision_192.obj" />
+    <mesh name="collision_193" file="collision_193.obj" />
+    <mesh name="collision_194" file="collision_194.obj" />
+    <mesh name="collision_195" file="collision_195.obj" />
+    <mesh name="collision_196" file="collision_196.obj" />
+    <mesh name="collision_197" file="collision_197.obj" />
+    <mesh name="collision_198" file="collision_198.obj" />
+    <mesh name="collision_199" file="collision_199.obj" />
+    <mesh name="collision_200" file="collision_200.obj" />
+    <mesh name="collision_201" file="collision_201.obj" />
+    <mesh name="collision_202" file="collision_202.obj" />
+    <mesh name="collision_203" file="collision_203.obj" />
+    <mesh name="collision_204" file="collision_204.obj" />
+    <mesh name="collision_205" file="collision_205.obj" />
+    <mesh name="collision_206" file="collision_206.obj" />
+    <mesh name="collision_207" file="collision_207.obj" />
+    <mesh name="collision_208" file="collision_208.obj" />
+    <mesh name="collision_209" file="collision_209.obj" />
+    <mesh name="collision_210" file="collision_210.obj" />
+    <mesh name="collision_211" file="collision_211.obj" />
+    <mesh name="collision_212" file="collision_212.obj" />
+    <mesh name="collision_213" file="collision_213.obj" />
+    <mesh name="collision_214" file="collision_214.obj" />
+    <mesh name="collision_215" file="collision_215.obj" />
+    <mesh name="collision_216" file="collision_216.obj" />
+    <mesh name="collision_217" file="collision_217.obj" />
+    <mesh name="collision_218" file="collision_218.obj" />
+    <mesh name="collision_219" file="collision_219.obj" />
+    <mesh name="collision_220" file="collision_220.obj" />
+    <mesh name="collision_221" file="collision_221.obj" />
+    <mesh name="collision_222" file="collision_222.obj" />
+    <mesh name="collision_223" file="collision_223.obj" />
+    <mesh name="collision_224" file="collision_224.obj" />
+    <mesh name="collision_225" file="collision_225.obj" />
+    <mesh name="collision_226" file="collision_226.obj" />
+    <mesh name="collision_227" file="collision_227.obj" />
+    <mesh name="collision_228" file="collision_228.obj" />
+    <mesh name="collision_229" file="collision_229.obj" />
+    <mesh name="collision_230" file="collision_230.obj" />
+    <mesh name="collision_231" file="collision_231.obj" />
+    <mesh name="collision_232" file="collision_232.obj" />
+    <mesh name="collision_233" file="collision_233.obj" />
+    <mesh name="collision_234" file="collision_234.obj" />
+    <mesh name="collision_235" file="collision_235.obj" />
+    <mesh name="collision_236" file="collision_236.obj" />
+    <mesh name="collision_237" file="collision_237.obj" />
+    <mesh name="collision_238" file="collision_238.obj" />
+    <mesh name="collision_239" file="collision_239.obj" />
+    <mesh name="collision_240" file="collision_240.obj" />
+    <mesh name="collision_241" file="collision_241.obj" />
+    <mesh name="collision_242" file="collision_242.obj" />
+    <mesh name="collision_243" file="collision_243.obj" />
+    <mesh name="collision_244" file="collision_244.obj" />
+    <mesh name="collision_245" file="collision_245.obj" />
+    <mesh name="collision_246" file="collision_246.obj" />
+    <mesh name="collision_247" file="collision_247.obj" />
+    <mesh name="collision_248" file="collision_248.obj" />
+    <mesh name="collision_249" file="collision_249.obj" />
+    <mesh name="collision_250" file="collision_250.obj" />
+    <mesh name="collision_251" file="collision_251.obj" />
+    <mesh name="collision_252" file="collision_252.obj" />
+    <mesh name="collision_253" file="collision_253.obj" />
+    <mesh name="collision_254" file="collision_254.obj" />
+    <mesh name="collision_255" file="collision_255.obj" />
+    <mesh name="collision_256" file="collision_256.obj" />
+    <mesh name="collision_257" file="collision_257.obj" />
+    <mesh name="collision_258" file="collision_258.obj" />
+    <mesh name="collision_259" file="collision_259.obj" />
+    <mesh name="collision_260" file="collision_260.obj" />
+    <mesh name="collision_261" file="collision_261.obj" />
+    <mesh name="collision_262" file="collision_262.obj" />
+    <mesh name="collision_263" file="collision_263.obj" />
+    <mesh name="collision_264" file="collision_264.obj" />
+    <mesh name="collision_265" file="collision_265.obj" />
+    <mesh name="collision_266" file="collision_266.obj" />
+    <mesh name="collision_267" file="collision_267.obj" />
+    <mesh name="collision_268" file="collision_268.obj" />
+    <mesh name="collision_269" file="collision_269.obj" />
+    <mesh name="collision_270" file="collision_270.obj" />
+    <mesh name="collision_271" file="collision_271.obj" />
+    <mesh name="collision_272" file="collision_272.obj" />
+    <mesh name="collision_273" file="collision_273.obj" />
+    <mesh name="collision_274" file="collision_274.obj" />
+    <mesh name="collision_275" file="collision_275.obj" />
+    <mesh name="collision_276" file="collision_276.obj" />
+    <mesh name="collision_277" file="collision_277.obj" />
+    <mesh name="collision_278" file="collision_278.obj" />
+    <mesh name="collision_279" file="collision_279.obj" />
+    <mesh name="collision_280" file="collision_280.obj" />
+    <mesh name="collision_281" file="collision_281.obj" />
+    <mesh name="collision_282" file="collision_282.obj" />
+    <mesh name="collision_283" file="collision_283.obj" />
+    <mesh name="collision_284" file="collision_284.obj" />
+    <mesh name="collision_285" file="collision_285.obj" />
+    <mesh name="collision_286" file="collision_286.obj" />
+    <mesh name="collision_287" file="collision_287.obj" />
+    <mesh name="collision_288" file="collision_288.obj" />
+    <mesh name="collision_289" file="collision_289.obj" />
+    <mesh name="collision_290" file="collision_290.obj" />
+    <mesh name="collision_291" file="collision_291.obj" />
+    <mesh name="collision_292" file="collision_292.obj" />
+    <mesh name="collision_293" file="collision_293.obj" />
+    <mesh name="collision_294" file="collision_294.obj" />
+    <mesh name="collision_295" file="collision_295.obj" />
+    <mesh name="collision_296" file="collision_296.obj" />
+    <mesh name="collision_297" file="collision_297.obj" />
+    <mesh name="collision_298" file="collision_298.obj" />
+    <mesh name="collision_299" file="collision_299.obj" />
+    <mesh name="collision_300" file="collision_300.obj" />
+    <mesh name="collision_301" file="collision_301.obj" />
+    <mesh name="collision_302" file="collision_302.obj" />
+    <mesh name="collision_303" file="collision_303.obj" />
+  </asset>
+  <worldbody>
+    <body name="extra_large_clamp" pos="0 0 0.0181659785">
+      <freejoint name="extra_large_clamp_joint" />
+      <geom name="visual" type="mesh" mesh="visual_mesh" material="visual_mat" group="2" mass="0" contype="0" conaffinity="0" />
+      <geom name="extra_large_clamp_collision_0" type="mesh" mesh="collision_0" mass="0.000389346576906" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_1" type="mesh" mesh="collision_1" mass="0.000843620507865" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_2" type="mesh" mesh="collision_2" mass="0.000982053734423" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_3" type="mesh" mesh="collision_3" mass="0.00363705855383" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_4" type="mesh" mesh="collision_4" mass="0.000243205625318" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_5" type="mesh" mesh="collision_5" mass="0.00024647471803" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_6" type="mesh" mesh="collision_6" mass="0.000619514643305" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_7" type="mesh" mesh="collision_7" mass="0.00118018680077" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_8" type="mesh" mesh="collision_8" mass="0.000605962894003" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_9" type="mesh" mesh="collision_9" mass="0.000903538060603" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_10" type="mesh" mesh="collision_10" mass="0.000674332806448" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_11" type="mesh" mesh="collision_11" mass="0.000887713030427" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_12" type="mesh" mesh="collision_12" mass="0.000543979729261" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_13" type="mesh" mesh="collision_13" mass="0.000411241860374" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_14" type="mesh" mesh="collision_14" mass="0.000418802340392" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_15" type="mesh" mesh="collision_15" mass="0.000172713438403" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_16" type="mesh" mesh="collision_16" mass="0.000308740342063" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_17" type="mesh" mesh="collision_17" mass="8.11604161966e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_18" type="mesh" mesh="collision_18" mass="8.15968865876e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_19" type="mesh" mesh="collision_19" mass="0.000171652843957" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_20" type="mesh" mesh="collision_20" mass="0.000125907696901" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_21" type="mesh" mesh="collision_21" mass="0.000449006997903" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_22" type="mesh" mesh="collision_22" mass="0.000146363513001" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_23" type="mesh" mesh="collision_23" mass="0.0013734128301" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_24" type="mesh" mesh="collision_24" mass="7.69478107002e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_25" type="mesh" mesh="collision_25" mass="0.000254798960019" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_26" type="mesh" mesh="collision_26" mass="0.000294736823205" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_27" type="mesh" mesh="collision_27" mass="0.000978718839566" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_28" type="mesh" mesh="collision_28" mass="0.000119372499803" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_29" type="mesh" mesh="collision_29" mass="3.81148092663e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_30" type="mesh" mesh="collision_30" mass="0.000326910133897" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_31" type="mesh" mesh="collision_31" mass="0.000108424364325" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_32" type="mesh" mesh="collision_32" mass="0.000311813486775" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_33" type="mesh" mesh="collision_33" mass="6.26642257145e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_34" type="mesh" mesh="collision_34" mass="0.000891028455747" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_35" type="mesh" mesh="collision_35" mass="0.000851188228394" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_36" type="mesh" mesh="collision_36" mass="0.000810855715972" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_37" type="mesh" mesh="collision_37" mass="0.00156257518338" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_38" type="mesh" mesh="collision_38" mass="0.000233935808076" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_39" type="mesh" mesh="collision_39" mass="0.000293167924593" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_40" type="mesh" mesh="collision_40" mass="0.000318638107766" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_41" type="mesh" mesh="collision_41" mass="9.34370897164e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_42" type="mesh" mesh="collision_42" mass="4.57947285977e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_43" type="mesh" mesh="collision_43" mass="0.000117806858034" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_44" type="mesh" mesh="collision_44" mass="0.000689307298949" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_45" type="mesh" mesh="collision_45" mass="0.000163957962819" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_46" type="mesh" mesh="collision_46" mass="0.000749795284695" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_47" type="mesh" mesh="collision_47" mass="3.62929499602e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_48" type="mesh" mesh="collision_48" mass="0.000121280632401" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_49" type="mesh" mesh="collision_49" mass="9.11270390759e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_50" type="mesh" mesh="collision_50" mass="0.00119292684666" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_51" type="mesh" mesh="collision_51" mass="0.00072266454849" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_52" type="mesh" mesh="collision_52" mass="0.00180665766191" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_53" type="mesh" mesh="collision_53" mass="0.000230804924674" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_54" type="mesh" mesh="collision_54" mass="0.000874243212051" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_55" type="mesh" mesh="collision_55" mass="9.95898284136e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_56" type="mesh" mesh="collision_56" mass="0.00463919701821" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_57" type="mesh" mesh="collision_57" mass="0.000250458141555" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_58" type="mesh" mesh="collision_58" mass="0.000333240061258" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_59" type="mesh" mesh="collision_59" mass="0.00181802164848" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_60" type="mesh" mesh="collision_60" mass="0.00013448578409" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_61" type="mesh" mesh="collision_61" mass="7.725814551e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_62" type="mesh" mesh="collision_62" mass="0.00231536332303" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_63" type="mesh" mesh="collision_63" mass="0.000394072311512" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_64" type="mesh" mesh="collision_64" mass="0.000156658841565" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_65" type="mesh" mesh="collision_65" mass="0.000313542730138" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_66" type="mesh" mesh="collision_66" mass="0.00122691261549" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_67" type="mesh" mesh="collision_67" mass="0.00160576342462" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_68" type="mesh" mesh="collision_68" mass="7.80435488154e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_69" type="mesh" mesh="collision_69" mass="0.000942840502603" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_70" type="mesh" mesh="collision_70" mass="0.000236229715159" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_71" type="mesh" mesh="collision_71" mass="0.00241808937171" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_72" type="mesh" mesh="collision_72" mass="0.00109232672258" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_73" type="mesh" mesh="collision_73" mass="0.00126768703121" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_74" type="mesh" mesh="collision_74" mass="0.000103762275767" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_75" type="mesh" mesh="collision_75" mass="0.000374983970806" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_76" type="mesh" mesh="collision_76" mass="0.000119617340292" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_77" type="mesh" mesh="collision_77" mass="0.000472251419214" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_78" type="mesh" mesh="collision_78" mass="0.000752019516613" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_79" type="mesh" mesh="collision_79" mass="0.00125258290317" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_80" type="mesh" mesh="collision_80" mass="0.000143874448096" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_81" type="mesh" mesh="collision_81" mass="0.000159241496577" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_82" type="mesh" mesh="collision_82" mass="0.00086222879371" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_83" type="mesh" mesh="collision_83" mass="0.00030861375007" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_84" type="mesh" mesh="collision_84" mass="0.000432018741508" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_85" type="mesh" mesh="collision_85" mass="0.000760195809918" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_86" type="mesh" mesh="collision_86" mass="0.00121828166061" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_87" type="mesh" mesh="collision_87" mass="0.00123312315739" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_88" type="mesh" mesh="collision_88" mass="0.00258166357727" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_89" type="mesh" mesh="collision_89" mass="0.000447189111988" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_90" type="mesh" mesh="collision_90" mass="0.000126939150087" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_91" type="mesh" mesh="collision_91" mass="0.000641530662001" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_92" type="mesh" mesh="collision_92" mass="0.000644930704628" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_93" type="mesh" mesh="collision_93" mass="0.000791697857329" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_94" type="mesh" mesh="collision_94" mass="0.000899199054891" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_95" type="mesh" mesh="collision_95" mass="0.000102616674559" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_96" type="mesh" mesh="collision_96" mass="0.000549407055455" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_97" type="mesh" mesh="collision_97" mass="0.000389329126816" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_98" type="mesh" mesh="collision_98" mass="0.000700375266284" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_99" type="mesh" mesh="collision_99" mass="0.00112094015827" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_100" type="mesh" mesh="collision_100" mass="0.00129520969798" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_101" type="mesh" mesh="collision_101" mass="0.00114908609378" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_102" type="mesh" mesh="collision_102" mass="0.00393708476256" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_103" type="mesh" mesh="collision_103" mass="0.00209922097118" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_104" type="mesh" mesh="collision_104" mass="0.00240247487372" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_105" type="mesh" mesh="collision_105" mass="0.000343602551731" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_106" type="mesh" mesh="collision_106" mass="0.00183154513034" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_107" type="mesh" mesh="collision_107" mass="0.000894793329093" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_108" type="mesh" mesh="collision_108" mass="0.00459965911698" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_109" type="mesh" mesh="collision_109" mass="0.000143512457981" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_110" type="mesh" mesh="collision_110" mass="0.000230113034208" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_111" type="mesh" mesh="collision_111" mass="0.000190761141568" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_112" type="mesh" mesh="collision_112" mass="2.82398012185e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_113" type="mesh" mesh="collision_113" mass="0.000478222583494" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_114" type="mesh" mesh="collision_114" mass="7.74423052746e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_115" type="mesh" mesh="collision_115" mass="0.000582938990525" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_116" type="mesh" mesh="collision_116" mass="0.000295025177776" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_117" type="mesh" mesh="collision_117" mass="0.000151519394185" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_118" type="mesh" mesh="collision_118" mass="0.000714020895449" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_119" type="mesh" mesh="collision_119" mass="9.44152825034e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_120" type="mesh" mesh="collision_120" mass="0.00275070692137" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_121" type="mesh" mesh="collision_121" mass="0.000370302738931" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_122" type="mesh" mesh="collision_122" mass="0.000797009048415" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_123" type="mesh" mesh="collision_123" mass="0.000511532110468" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_124" type="mesh" mesh="collision_124" mass="0.000845860607005" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_125" type="mesh" mesh="collision_125" mass="0.00023249721726" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_126" type="mesh" mesh="collision_126" mass="0.000591757680221" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_127" type="mesh" mesh="collision_127" mass="0.000264463869973" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_128" type="mesh" mesh="collision_128" mass="0.000284963038384" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_129" type="mesh" mesh="collision_129" mass="0.00055871482927" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_130" type="mesh" mesh="collision_130" mass="9.53231601219e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_131" type="mesh" mesh="collision_131" mass="0.000307932839025" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_132" type="mesh" mesh="collision_132" mass="0.000544877652236" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_133" type="mesh" mesh="collision_133" mass="6.09662067291e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_134" type="mesh" mesh="collision_134" mass="0.000353152985043" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_135" type="mesh" mesh="collision_135" mass="0.000679099752093" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_136" type="mesh" mesh="collision_136" mass="0.000762517673871" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_137" type="mesh" mesh="collision_137" mass="0.000634105072098" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_138" type="mesh" mesh="collision_138" mass="0.000809766407575" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_139" type="mesh" mesh="collision_139" mass="0.000750186672846" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_140" type="mesh" mesh="collision_140" mass="0.00061411520124" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_141" type="mesh" mesh="collision_141" mass="0.000188042510701" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_142" type="mesh" mesh="collision_142" mass="0.000914517235275" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_143" type="mesh" mesh="collision_143" mass="0.00216607198513" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_144" type="mesh" mesh="collision_144" mass="0.000587669611258" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_145" type="mesh" mesh="collision_145" mass="0.00105236420153" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_146" type="mesh" mesh="collision_146" mass="0.000209958199746" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_147" type="mesh" mesh="collision_147" mass="0.00120278055165" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_148" type="mesh" mesh="collision_148" mass="0.000496888144951" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_149" type="mesh" mesh="collision_149" mass="0.000459493879332" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_150" type="mesh" mesh="collision_150" mass="0.001947211765" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_151" type="mesh" mesh="collision_151" mass="0.000216341863044" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_152" type="mesh" mesh="collision_152" mass="0.000479763414985" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_153" type="mesh" mesh="collision_153" mass="0.000670872393376" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_154" type="mesh" mesh="collision_154" mass="0.00284239822027" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_155" type="mesh" mesh="collision_155" mass="0.00089552734658" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_156" type="mesh" mesh="collision_156" mass="0.00027987015534" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_157" type="mesh" mesh="collision_157" mass="0.000240232577777" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_158" type="mesh" mesh="collision_158" mass="0.0027734761475" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_159" type="mesh" mesh="collision_159" mass="6.99211856019e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_160" type="mesh" mesh="collision_160" mass="0.000391955959175" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_161" type="mesh" mesh="collision_161" mass="0.000223404044168" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_162" type="mesh" mesh="collision_162" mass="0.001390255095" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_163" type="mesh" mesh="collision_163" mass="0.000214263869699" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_164" type="mesh" mesh="collision_164" mass="0.000389528312594" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_165" type="mesh" mesh="collision_165" mass="7.96835648958e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_166" type="mesh" mesh="collision_166" mass="0.000726744319699" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_167" type="mesh" mesh="collision_167" mass="0.00182741361353" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_168" type="mesh" mesh="collision_168" mass="0.000179393776781" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_169" type="mesh" mesh="collision_169" mass="0.000351012849589" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_170" type="mesh" mesh="collision_170" mass="0.000327925853668" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_171" type="mesh" mesh="collision_171" mass="0.00139606886329" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_172" type="mesh" mesh="collision_172" mass="0.000735795661297" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_173" type="mesh" mesh="collision_173" mass="7.62413180896e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_174" type="mesh" mesh="collision_174" mass="0.000382092959856" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_175" type="mesh" mesh="collision_175" mass="0.000196374301414" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_176" type="mesh" mesh="collision_176" mass="0.00102178028406" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_177" type="mesh" mesh="collision_177" mass="7.20353883758e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_178" type="mesh" mesh="collision_178" mass="0.000632732163691" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_179" type="mesh" mesh="collision_179" mass="0.000146976555854" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_180" type="mesh" mesh="collision_180" mass="0.000231688861888" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_181" type="mesh" mesh="collision_181" mass="0.000682194791936" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_182" type="mesh" mesh="collision_182" mass="4.93105265164e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_183" type="mesh" mesh="collision_183" mass="0.000272165301515" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_184" type="mesh" mesh="collision_184" mass="0.000392357085351" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_185" type="mesh" mesh="collision_185" mass="0.000520809089098" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_186" type="mesh" mesh="collision_186" mass="0.000111123512173" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_187" type="mesh" mesh="collision_187" mass="0.00127807198857" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_188" type="mesh" mesh="collision_188" mass="0.000332412299054" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_189" type="mesh" mesh="collision_189" mass="0.000558005662953" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_190" type="mesh" mesh="collision_190" mass="0.000822844992561" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_191" type="mesh" mesh="collision_191" mass="0.000639296678893" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_192" type="mesh" mesh="collision_192" mass="0.000548877832997" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_193" type="mesh" mesh="collision_193" mass="0.000757729945338" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_194" type="mesh" mesh="collision_194" mass="0.00162330672559" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_195" type="mesh" mesh="collision_195" mass="0.000482266963758" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_196" type="mesh" mesh="collision_196" mass="0.00225305149221" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_197" type="mesh" mesh="collision_197" mass="8.13651897477e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_198" type="mesh" mesh="collision_198" mass="0.000795164562563" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_199" type="mesh" mesh="collision_199" mass="0.000188505466994" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_200" type="mesh" mesh="collision_200" mass="0.00122489992305" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_201" type="mesh" mesh="collision_201" mass="0.000302108485003" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_202" type="mesh" mesh="collision_202" mass="0.000889179888748" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_203" type="mesh" mesh="collision_203" mass="8.55866762317e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_204" type="mesh" mesh="collision_204" mass="0.000455523591519" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_205" type="mesh" mesh="collision_205" mass="0.000247994453228" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_206" type="mesh" mesh="collision_206" mass="0.000146408222822" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_207" type="mesh" mesh="collision_207" mass="0.00026480776835" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_208" type="mesh" mesh="collision_208" mass="0.00337796597348" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_209" type="mesh" mesh="collision_209" mass="7.38476912042e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_210" type="mesh" mesh="collision_210" mass="0.00209174072737" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_211" type="mesh" mesh="collision_211" mass="0.000896070764531" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_212" type="mesh" mesh="collision_212" mass="9.50054139392e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_213" type="mesh" mesh="collision_213" mass="7.06263825497e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_214" type="mesh" mesh="collision_214" mass="0.00257956036957" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_215" type="mesh" mesh="collision_215" mass="0.000125145222156" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_216" type="mesh" mesh="collision_216" mass="0.000198974600252" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_217" type="mesh" mesh="collision_217" mass="0.000425905534686" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_218" type="mesh" mesh="collision_218" mass="0.000132872913349" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_219" type="mesh" mesh="collision_219" mass="0.00010588267238" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_220" type="mesh" mesh="collision_220" mass="0.0043697896046" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_221" type="mesh" mesh="collision_221" mass="4.89145302509e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_222" type="mesh" mesh="collision_222" mass="0.00439520963819" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_223" type="mesh" mesh="collision_223" mass="0.000379328092536" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_224" type="mesh" mesh="collision_224" mass="0.000191450457271" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_225" type="mesh" mesh="collision_225" mass="0.000735236298412" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_226" type="mesh" mesh="collision_226" mass="0.000151952491057" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_227" type="mesh" mesh="collision_227" mass="0.000532075141692" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_228" type="mesh" mesh="collision_228" mass="0.000377606600601" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_229" type="mesh" mesh="collision_229" mass="0.00045385402578" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_230" type="mesh" mesh="collision_230" mass="0.00122924500261" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_231" type="mesh" mesh="collision_231" mass="5.74362665542e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_232" type="mesh" mesh="collision_232" mass="7.92859794026e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_233" type="mesh" mesh="collision_233" mass="0.000134541359773" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_234" type="mesh" mesh="collision_234" mass="0.000227136565076" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_235" type="mesh" mesh="collision_235" mass="0.000362315543499" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_236" type="mesh" mesh="collision_236" mass="0.000184927277966" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_237" type="mesh" mesh="collision_237" mass="0.0033150030608" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_238" type="mesh" mesh="collision_238" mass="0.000448413085915" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_239" type="mesh" mesh="collision_239" mass="0.000833947589884" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_240" type="mesh" mesh="collision_240" mass="0.00212771487404" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_241" type="mesh" mesh="collision_241" mass="0.000437173834883" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_242" type="mesh" mesh="collision_242" mass="6.65403448527e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_243" type="mesh" mesh="collision_243" mass="0.000123710334397" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_244" type="mesh" mesh="collision_244" mass="0.000771044472753" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_245" type="mesh" mesh="collision_245" mass="0.000782024534523" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_246" type="mesh" mesh="collision_246" mass="0.000192667589263" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_247" type="mesh" mesh="collision_247" mass="0.000601494055122" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_248" type="mesh" mesh="collision_248" mass="0.000107957684465" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_249" type="mesh" mesh="collision_249" mass="0.000152182146534" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_250" type="mesh" mesh="collision_250" mass="0.000164889246847" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_251" type="mesh" mesh="collision_251" mass="0.000152951499568" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_252" type="mesh" mesh="collision_252" mass="0.00145726345082" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_253" type="mesh" mesh="collision_253" mass="0.00239059212746" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_254" type="mesh" mesh="collision_254" mass="0.000425314269749" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_255" type="mesh" mesh="collision_255" mass="0.000211625356187" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_256" type="mesh" mesh="collision_256" mass="0.000374294467161" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_257" type="mesh" mesh="collision_257" mass="0.000439639587131" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_258" type="mesh" mesh="collision_258" mass="0.000201904303262" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_259" type="mesh" mesh="collision_259" mass="4.36613118088e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_260" type="mesh" mesh="collision_260" mass="0.000192448120504" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_261" type="mesh" mesh="collision_261" mass="3.03480237351e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_262" type="mesh" mesh="collision_262" mass="0.000191409450906" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_263" type="mesh" mesh="collision_263" mass="0.000271501546101" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_264" type="mesh" mesh="collision_264" mass="0.000242324399573" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_265" type="mesh" mesh="collision_265" mass="0.000153329701493" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_266" type="mesh" mesh="collision_266" mass="0.000103437237524" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_267" type="mesh" mesh="collision_267" mass="0.000115674624156" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_268" type="mesh" mesh="collision_268" mass="0.000634249884592" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_269" type="mesh" mesh="collision_269" mass="0.00138285817994" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_270" type="mesh" mesh="collision_270" mass="0.000230618860363" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_271" type="mesh" mesh="collision_271" mass="0.00013920200394" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_272" type="mesh" mesh="collision_272" mass="0.00148252780454" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_273" type="mesh" mesh="collision_273" mass="0.000136467467929" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_274" type="mesh" mesh="collision_274" mass="0.000511683961904" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_275" type="mesh" mesh="collision_275" mass="0.000152452897679" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_276" type="mesh" mesh="collision_276" mass="0.000142154308246" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_277" type="mesh" mesh="collision_277" mass="0.000307756433158" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_278" type="mesh" mesh="collision_278" mass="0.000305279903189" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_279" type="mesh" mesh="collision_279" mass="0.000565179819529" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_280" type="mesh" mesh="collision_280" mass="0.000684168140895" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_281" type="mesh" mesh="collision_281" mass="0.000115486761064" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_282" type="mesh" mesh="collision_282" mass="0.00277341353798" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_283" type="mesh" mesh="collision_283" mass="0.000172930599541" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_284" type="mesh" mesh="collision_284" mass="0.000582373868304" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_285" type="mesh" mesh="collision_285" mass="4.36352204224e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_286" type="mesh" mesh="collision_286" mass="0.00031293681732" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_287" type="mesh" mesh="collision_287" mass="0.000550476128076" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_288" type="mesh" mesh="collision_288" mass="0.000361621462228" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_289" type="mesh" mesh="collision_289" mass="6.8802784265e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_290" type="mesh" mesh="collision_290" mass="0.000179733636369" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_291" type="mesh" mesh="collision_291" mass="0.000157822412349" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_292" type="mesh" mesh="collision_292" mass="0.00029921743175" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_293" type="mesh" mesh="collision_293" mass="0.000185682262491" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_294" type="mesh" mesh="collision_294" mass="0.000163854871264" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_295" type="mesh" mesh="collision_295" mass="0.000170402760791" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_296" type="mesh" mesh="collision_296" mass="0.000197167465124" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_297" type="mesh" mesh="collision_297" mass="0.000888095666285" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_298" type="mesh" mesh="collision_298" mass="0.000278815068217" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_299" type="mesh" mesh="collision_299" mass="0.00017635425239" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_300" type="mesh" mesh="collision_300" mass="0.000211450989284" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_301" type="mesh" mesh="collision_301" mass="0.000315704302225" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_302" type="mesh" mesh="collision_302" mass="0.000152315138242" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="extra_large_clamp_collision_303" type="mesh" mesh="collision_303" mass="0.000153874316232" friction="0.6 0.005 0.0001" group="3" condim="4" />
+    </body>
+  </worldbody>
+</mujoco>

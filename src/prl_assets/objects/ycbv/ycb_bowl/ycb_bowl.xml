@@ -1,0 +1,450 @@
+<mujoco model="ycb_bowl">
+  <compiler angle="radian" />
+  <asset>
+    <texture name="visual_tex" type="2d" file="ycb_bowl_texture.png" />
+    <material name="visual_mat" texture="visual_tex" />
+    <mesh name="visual_mesh" file="ycb_bowl_visual.obj" />
+    <mesh name="collision_0" file="collision_000.obj" />
+    <mesh name="collision_1" file="collision_001.obj" />
+    <mesh name="collision_2" file="collision_002.obj" />
+    <mesh name="collision_3" file="collision_003.obj" />
+    <mesh name="collision_4" file="collision_004.obj" />
+    <mesh name="collision_5" file="collision_005.obj" />
+    <mesh name="collision_6" file="collision_006.obj" />
+    <mesh name="collision_7" file="collision_007.obj" />
+    <mesh name="collision_8" file="collision_008.obj" />
+    <mesh name="collision_9" file="collision_009.obj" />
+    <mesh name="collision_10" file="collision_010.obj" />
+    <mesh name="collision_11" file="collision_011.obj" />
+    <mesh name="collision_12" file="collision_012.obj" />
+    <mesh name="collision_13" file="collision_013.obj" />
+    <mesh name="collision_14" file="collision_014.obj" />
+    <mesh name="collision_15" file="collision_015.obj" />
+    <mesh name="collision_16" file="collision_016.obj" />
+    <mesh name="collision_17" file="collision_017.obj" />
+    <mesh name="collision_18" file="collision_018.obj" />
+    <mesh name="collision_19" file="collision_019.obj" />
+    <mesh name="collision_20" file="collision_020.obj" />
+    <mesh name="collision_21" file="collision_021.obj" />
+    <mesh name="collision_22" file="collision_022.obj" />
+    <mesh name="collision_23" file="collision_023.obj" />
+    <mesh name="collision_24" file="collision_024.obj" />
+    <mesh name="collision_25" file="collision_025.obj" />
+    <mesh name="collision_26" file="collision_026.obj" />
+    <mesh name="collision_27" file="collision_027.obj" />
+    <mesh name="collision_28" file="collision_028.obj" />
+    <mesh name="collision_29" file="collision_029.obj" />
+    <mesh name="collision_30" file="collision_030.obj" />
+    <mesh name="collision_31" file="collision_031.obj" />
+    <mesh name="collision_32" file="collision_032.obj" />
+    <mesh name="collision_33" file="collision_033.obj" />
+    <mesh name="collision_34" file="collision_034.obj" />
+    <mesh name="collision_35" file="collision_035.obj" />
+    <mesh name="collision_36" file="collision_036.obj" />
+    <mesh name="collision_37" file="collision_037.obj" />
+    <mesh name="collision_38" file="collision_038.obj" />
+    <mesh name="collision_39" file="collision_039.obj" />
+    <mesh name="collision_40" file="collision_040.obj" />
+    <mesh name="collision_41" file="collision_041.obj" />
+    <mesh name="collision_42" file="collision_042.obj" />
+    <mesh name="collision_43" file="collision_043.obj" />
+    <mesh name="collision_44" file="collision_044.obj" />
+    <mesh name="collision_45" file="collision_045.obj" />
+    <mesh name="collision_46" file="collision_046.obj" />
+    <mesh name="collision_47" file="collision_047.obj" />
+    <mesh name="collision_48" file="collision_048.obj" />
+    <mesh name="collision_49" file="collision_049.obj" />
+    <mesh name="collision_50" file="collision_050.obj" />
+    <mesh name="collision_51" file="collision_051.obj" />
+    <mesh name="collision_52" file="collision_052.obj" />
+    <mesh name="collision_53" file="collision_053.obj" />
+    <mesh name="collision_54" file="collision_054.obj" />
+    <mesh name="collision_55" file="collision_055.obj" />
+    <mesh name="collision_56" file="collision_056.obj" />
+    <mesh name="collision_57" file="collision_057.obj" />
+    <mesh name="collision_58" file="collision_058.obj" />
+    <mesh name="collision_59" file="collision_059.obj" />
+    <mesh name="collision_60" file="collision_060.obj" />
+    <mesh name="collision_61" file="collision_061.obj" />
+    <mesh name="collision_62" file="collision_062.obj" />
+    <mesh name="collision_63" file="collision_063.obj" />
+    <mesh name="collision_64" file="collision_064.obj" />
+    <mesh name="collision_65" file="collision_065.obj" />
+    <mesh name="collision_66" file="collision_066.obj" />
+    <mesh name="collision_67" file="collision_067.obj" />
+    <mesh name="collision_68" file="collision_068.obj" />
+    <mesh name="collision_69" file="collision_069.obj" />
+    <mesh name="collision_70" file="collision_070.obj" />
+    <mesh name="collision_71" file="collision_071.obj" />
+    <mesh name="collision_72" file="collision_072.obj" />
+    <mesh name="collision_73" file="collision_073.obj" />
+    <mesh name="collision_74" file="collision_074.obj" />
+    <mesh name="collision_75" file="collision_075.obj" />
+    <mesh name="collision_76" file="collision_076.obj" />
+    <mesh name="collision_77" file="collision_077.obj" />
+    <mesh name="collision_78" file="collision_078.obj" />
+    <mesh name="collision_79" file="collision_079.obj" />
+    <mesh name="collision_80" file="collision_080.obj" />
+    <mesh name="collision_81" file="collision_081.obj" />
+    <mesh name="collision_82" file="collision_082.obj" />
+    <mesh name="collision_83" file="collision_083.obj" />
+    <mesh name="collision_84" file="collision_084.obj" />
+    <mesh name="collision_85" file="collision_085.obj" />
+    <mesh name="collision_86" file="collision_086.obj" />
+    <mesh name="collision_87" file="collision_087.obj" />
+    <mesh name="collision_88" file="collision_088.obj" />
+    <mesh name="collision_89" file="collision_089.obj" />
+    <mesh name="collision_90" file="collision_090.obj" />
+    <mesh name="collision_91" file="collision_091.obj" />
+    <mesh name="collision_92" file="collision_092.obj" />
+    <mesh name="collision_93" file="collision_093.obj" />
+    <mesh name="collision_94" file="collision_094.obj" />
+    <mesh name="collision_95" file="collision_095.obj" />
+    <mesh name="collision_96" file="collision_096.obj" />
+    <mesh name="collision_97" file="collision_097.obj" />
+    <mesh name="collision_98" file="collision_098.obj" />
+    <mesh name="collision_99" file="collision_099.obj" />
+    <mesh name="collision_100" file="collision_100.obj" />
+    <mesh name="collision_101" file="collision_101.obj" />
+    <mesh name="collision_102" file="collision_102.obj" />
+    <mesh name="collision_103" file="collision_103.obj" />
+    <mesh name="collision_104" file="collision_104.obj" />
+    <mesh name="collision_105" file="collision_105.obj" />
+    <mesh name="collision_106" file="collision_106.obj" />
+    <mesh name="collision_107" file="collision_107.obj" />
+    <mesh name="collision_108" file="collision_108.obj" />
+    <mesh name="collision_109" file="collision_109.obj" />
+    <mesh name="collision_110" file="collision_110.obj" />
+    <mesh name="collision_111" file="collision_111.obj" />
+    <mesh name="collision_112" file="collision_112.obj" />
+    <mesh name="collision_113" file="collision_113.obj" />
+    <mesh name="collision_114" file="collision_114.obj" />
+    <mesh name="collision_115" file="collision_115.obj" />
+    <mesh name="collision_116" file="collision_116.obj" />
+    <mesh name="collision_117" file="collision_117.obj" />
+    <mesh name="collision_118" file="collision_118.obj" />
+    <mesh name="collision_119" file="collision_119.obj" />
+    <mesh name="collision_120" file="collision_120.obj" />
+    <mesh name="collision_121" file="collision_121.obj" />
+    <mesh name="collision_122" file="collision_122.obj" />
+    <mesh name="collision_123" file="collision_123.obj" />
+    <mesh name="collision_124" file="collision_124.obj" />
+    <mesh name="collision_125" file="collision_125.obj" />
+    <mesh name="collision_126" file="collision_126.obj" />
+    <mesh name="collision_127" file="collision_127.obj" />
+    <mesh name="collision_128" file="collision_128.obj" />
+    <mesh name="collision_129" file="collision_129.obj" />
+    <mesh name="collision_130" file="collision_130.obj" />
+    <mesh name="collision_131" file="collision_131.obj" />
+    <mesh name="collision_132" file="collision_132.obj" />
+    <mesh name="collision_133" file="collision_133.obj" />
+    <mesh name="collision_134" file="collision_134.obj" />
+    <mesh name="collision_135" file="collision_135.obj" />
+    <mesh name="collision_136" file="collision_136.obj" />
+    <mesh name="collision_137" file="collision_137.obj" />
+    <mesh name="collision_138" file="collision_138.obj" />
+    <mesh name="collision_139" file="collision_139.obj" />
+    <mesh name="collision_140" file="collision_140.obj" />
+    <mesh name="collision_141" file="collision_141.obj" />
+    <mesh name="collision_142" file="collision_142.obj" />
+    <mesh name="collision_143" file="collision_143.obj" />
+    <mesh name="collision_144" file="collision_144.obj" />
+    <mesh name="collision_145" file="collision_145.obj" />
+    <mesh name="collision_146" file="collision_146.obj" />
+    <mesh name="collision_147" file="collision_147.obj" />
+    <mesh name="collision_148" file="collision_148.obj" />
+    <mesh name="collision_149" file="collision_149.obj" />
+    <mesh name="collision_150" file="collision_150.obj" />
+    <mesh name="collision_151" file="collision_151.obj" />
+    <mesh name="collision_152" file="collision_152.obj" />
+    <mesh name="collision_153" file="collision_153.obj" />
+    <mesh name="collision_154" file="collision_154.obj" />
+    <mesh name="collision_155" file="collision_155.obj" />
+    <mesh name="collision_156" file="collision_156.obj" />
+    <mesh name="collision_157" file="collision_157.obj" />
+    <mesh name="collision_158" file="collision_158.obj" />
+    <mesh name="collision_159" file="collision_159.obj" />
+    <mesh name="collision_160" file="collision_160.obj" />
+    <mesh name="collision_161" file="collision_161.obj" />
+    <mesh name="collision_162" file="collision_162.obj" />
+    <mesh name="collision_163" file="collision_163.obj" />
+    <mesh name="collision_164" file="collision_164.obj" />
+    <mesh name="collision_165" file="collision_165.obj" />
+    <mesh name="collision_166" file="collision_166.obj" />
+    <mesh name="collision_167" file="collision_167.obj" />
+    <mesh name="collision_168" file="collision_168.obj" />
+    <mesh name="collision_169" file="collision_169.obj" />
+    <mesh name="collision_170" file="collision_170.obj" />
+    <mesh name="collision_171" file="collision_171.obj" />
+    <mesh name="collision_172" file="collision_172.obj" />
+    <mesh name="collision_173" file="collision_173.obj" />
+    <mesh name="collision_174" file="collision_174.obj" />
+    <mesh name="collision_175" file="collision_175.obj" />
+    <mesh name="collision_176" file="collision_176.obj" />
+    <mesh name="collision_177" file="collision_177.obj" />
+    <mesh name="collision_178" file="collision_178.obj" />
+    <mesh name="collision_179" file="collision_179.obj" />
+    <mesh name="collision_180" file="collision_180.obj" />
+    <mesh name="collision_181" file="collision_181.obj" />
+    <mesh name="collision_182" file="collision_182.obj" />
+    <mesh name="collision_183" file="collision_183.obj" />
+    <mesh name="collision_184" file="collision_184.obj" />
+    <mesh name="collision_185" file="collision_185.obj" />
+    <mesh name="collision_186" file="collision_186.obj" />
+    <mesh name="collision_187" file="collision_187.obj" />
+    <mesh name="collision_188" file="collision_188.obj" />
+    <mesh name="collision_189" file="collision_189.obj" />
+    <mesh name="collision_190" file="collision_190.obj" />
+    <mesh name="collision_191" file="collision_191.obj" />
+    <mesh name="collision_192" file="collision_192.obj" />
+    <mesh name="collision_193" file="collision_193.obj" />
+    <mesh name="collision_194" file="collision_194.obj" />
+    <mesh name="collision_195" file="collision_195.obj" />
+    <mesh name="collision_196" file="collision_196.obj" />
+    <mesh name="collision_197" file="collision_197.obj" />
+    <mesh name="collision_198" file="collision_198.obj" />
+    <mesh name="collision_199" file="collision_199.obj" />
+    <mesh name="collision_200" file="collision_200.obj" />
+    <mesh name="collision_201" file="collision_201.obj" />
+    <mesh name="collision_202" file="collision_202.obj" />
+    <mesh name="collision_203" file="collision_203.obj" />
+    <mesh name="collision_204" file="collision_204.obj" />
+    <mesh name="collision_205" file="collision_205.obj" />
+    <mesh name="collision_206" file="collision_206.obj" />
+    <mesh name="collision_207" file="collision_207.obj" />
+    <mesh name="collision_208" file="collision_208.obj" />
+    <mesh name="collision_209" file="collision_209.obj" />
+    <mesh name="collision_210" file="collision_210.obj" />
+    <mesh name="collision_211" file="collision_211.obj" />
+    <mesh name="collision_212" file="collision_212.obj" />
+    <mesh name="collision_213" file="collision_213.obj" />
+    <mesh name="collision_214" file="collision_214.obj" />
+    <mesh name="collision_215" file="collision_215.obj" />
+    <mesh name="collision_216" file="collision_216.obj" />
+    <mesh name="collision_217" file="collision_217.obj" />
+  </asset>
+  <worldbody>
+    <body name="ycb_bowl" pos="0 0 0.0274850012">
+      <freejoint name="ycb_bowl_joint" />
+      <geom name="visual" type="mesh" mesh="visual_mesh" material="visual_mat" group="2" mass="0" contype="0" conaffinity="0" />
+      <geom name="ycb_bowl_collision_0" type="mesh" mesh="collision_0" mass="0.000338593182828" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_1" type="mesh" mesh="collision_1" mass="0.000388679660984" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_2" type="mesh" mesh="collision_2" mass="0.000401204139009" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_3" type="mesh" mesh="collision_3" mass="0.000388165288286" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_4" type="mesh" mesh="collision_4" mass="0.000686139167934" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_5" type="mesh" mesh="collision_5" mass="0.000311510216558" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_6" type="mesh" mesh="collision_6" mass="0.000273927527547" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_7" type="mesh" mesh="collision_7" mass="0.000258634195424" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_8" type="mesh" mesh="collision_8" mass="0.000334284159441" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_9" type="mesh" mesh="collision_9" mass="0.000106746593133" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_10" type="mesh" mesh="collision_10" mass="0.000822116279383" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_11" type="mesh" mesh="collision_11" mass="0.00111732982654" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_12" type="mesh" mesh="collision_12" mass="0.000831584600515" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_13" type="mesh" mesh="collision_13" mass="0.00020241288073" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_14" type="mesh" mesh="collision_14" mass="0.000323900481616" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_15" type="mesh" mesh="collision_15" mass="0.00108577101963" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_16" type="mesh" mesh="collision_16" mass="0.000121164208712" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_17" type="mesh" mesh="collision_17" mass="0.000298651117089" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_18" type="mesh" mesh="collision_18" mass="0.000735969315779" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_19" type="mesh" mesh="collision_19" mass="0.000143519232304" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_20" type="mesh" mesh="collision_20" mass="7.86645514451e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_21" type="mesh" mesh="collision_21" mass="0.000928857998731" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_22" type="mesh" mesh="collision_22" mass="0.000913761063151" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_23" type="mesh" mesh="collision_23" mass="0.00012164471244" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_24" type="mesh" mesh="collision_24" mass="0.000211655082938" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_25" type="mesh" mesh="collision_25" mass="0.000935777760763" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_26" type="mesh" mesh="collision_26" mass="0.000253680595622" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_27" type="mesh" mesh="collision_27" mass="9.4188068447e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_28" type="mesh" mesh="collision_28" mass="0.00218537004122" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_29" type="mesh" mesh="collision_29" mass="0.000868721768649" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_30" type="mesh" mesh="collision_30" mass="0.00104993632312" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_31" type="mesh" mesh="collision_31" mass="0.000232900737987" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_32" type="mesh" mesh="collision_32" mass="0.000113942399273" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_33" type="mesh" mesh="collision_33" mass="0.000520755350193" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_34" type="mesh" mesh="collision_34" mass="0.000267619707069" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_35" type="mesh" mesh="collision_35" mass="0.00069673192683" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_36" type="mesh" mesh="collision_36" mass="0.000378731537999" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_37" type="mesh" mesh="collision_37" mass="0.000247930135251" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_38" type="mesh" mesh="collision_38" mass="0.000136060562829" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_39" type="mesh" mesh="collision_39" mass="0.000919284900757" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_40" type="mesh" mesh="collision_40" mass="0.000990613373172" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_41" type="mesh" mesh="collision_41" mass="0.000418572259125" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_42" type="mesh" mesh="collision_42" mass="0.000787392864867" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_43" type="mesh" mesh="collision_43" mass="0.000959193848328" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_44" type="mesh" mesh="collision_44" mass="0.000280112791863" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_45" type="mesh" mesh="collision_45" mass="0.00050599904173" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_46" type="mesh" mesh="collision_46" mass="0.000870783786771" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_47" type="mesh" mesh="collision_47" mass="0.000678844041079" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_48" type="mesh" mesh="collision_48" mass="0.000671499579999" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_49" type="mesh" mesh="collision_49" mass="0.000147582992951" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_50" type="mesh" mesh="collision_50" mass="0.000253173270257" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_51" type="mesh" mesh="collision_51" mass="0.000422113162652" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_52" type="mesh" mesh="collision_52" mass="0.00109923898745" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_53" type="mesh" mesh="collision_53" mass="0.00104449833477" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_54" type="mesh" mesh="collision_54" mass="0.000199958290564" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_55" type="mesh" mesh="collision_55" mass="0.000235423260489" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_56" type="mesh" mesh="collision_56" mass="8.59598815382e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_57" type="mesh" mesh="collision_57" mass="0.000394984824504" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_58" type="mesh" mesh="collision_58" mass="0.000154070082701" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_59" type="mesh" mesh="collision_59" mass="0.000296376242454" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_60" type="mesh" mesh="collision_60" mass="0.000446708759639" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_61" type="mesh" mesh="collision_61" mass="0.000505444779644" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_62" type="mesh" mesh="collision_62" mass="0.000970110714165" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_63" type="mesh" mesh="collision_63" mass="0.000177608202091" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_64" type="mesh" mesh="collision_64" mass="0.000128199110458" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_65" type="mesh" mesh="collision_65" mass="0.000724784232531" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_66" type="mesh" mesh="collision_66" mass="0.000298915789482" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_67" type="mesh" mesh="collision_67" mass="0.000797685032754" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_68" type="mesh" mesh="collision_68" mass="0.00186966587878" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_69" type="mesh" mesh="collision_69" mass="0.000244772761578" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_70" type="mesh" mesh="collision_70" mass="0.00136738536154" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_71" type="mesh" mesh="collision_71" mass="0.00162062506591" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_72" type="mesh" mesh="collision_72" mass="0.00151374200351" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_73" type="mesh" mesh="collision_73" mass="0.00114523151294" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_74" type="mesh" mesh="collision_74" mass="0.00060233517244" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_75" type="mesh" mesh="collision_75" mass="0.000256265299135" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_76" type="mesh" mesh="collision_76" mass="0.000184091744691" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_77" type="mesh" mesh="collision_77" mass="0.000171450829646" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_78" type="mesh" mesh="collision_78" mass="0.000244008483106" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_79" type="mesh" mesh="collision_79" mass="0.000446314852094" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_80" type="mesh" mesh="collision_80" mass="0.000651762502792" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_81" type="mesh" mesh="collision_81" mass="0.000694036433657" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_82" type="mesh" mesh="collision_82" mass="0.000734411914131" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_83" type="mesh" mesh="collision_83" mass="0.000341992117386" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_84" type="mesh" mesh="collision_84" mass="0.000387062668673" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_85" type="mesh" mesh="collision_85" mass="0.00101038107517" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_86" type="mesh" mesh="collision_86" mass="0.00089049688951" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_87" type="mesh" mesh="collision_87" mass="0.00102456549305" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_88" type="mesh" mesh="collision_88" mass="0.000498407881961" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_89" type="mesh" mesh="collision_89" mass="0.00151270945218" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_90" type="mesh" mesh="collision_90" mass="0.000252745447561" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_91" type="mesh" mesh="collision_91" mass="0.000707727474982" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_92" type="mesh" mesh="collision_92" mass="0.000784204932581" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_93" type="mesh" mesh="collision_93" mass="0.000397384558575" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_94" type="mesh" mesh="collision_94" mass="0.00149026695964" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_95" type="mesh" mesh="collision_95" mass="0.00340803756659" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_96" type="mesh" mesh="collision_96" mass="0.00334161244082" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_97" type="mesh" mesh="collision_97" mass="0.00142548042196" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_98" type="mesh" mesh="collision_98" mass="0.00139869587261" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_99" type="mesh" mesh="collision_99" mass="0.00067002424881" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_100" type="mesh" mesh="collision_100" mass="0.00056101070736" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_101" type="mesh" mesh="collision_101" mass="0.000367394172067" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_102" type="mesh" mesh="collision_102" mass="0.00112657112544" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_103" type="mesh" mesh="collision_103" mass="0.000949420416911" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_104" type="mesh" mesh="collision_104" mass="0.000494112802674" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_105" type="mesh" mesh="collision_105" mass="0.00102420420926" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_106" type="mesh" mesh="collision_106" mass="0.000212302314594" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_107" type="mesh" mesh="collision_107" mass="0.000717275375705" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_108" type="mesh" mesh="collision_108" mass="0.000350756371692" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_109" type="mesh" mesh="collision_109" mass="0.000604043013917" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_110" type="mesh" mesh="collision_110" mass="0.00199271800134" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_111" type="mesh" mesh="collision_111" mass="0.000403793307257" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_112" type="mesh" mesh="collision_112" mass="0.000891685654139" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_113" type="mesh" mesh="collision_113" mass="0.00111814634136" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_114" type="mesh" mesh="collision_114" mass="0.000832256316688" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_115" type="mesh" mesh="collision_115" mass="0.000282312523168" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_116" type="mesh" mesh="collision_116" mass="0.000297546757608" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_117" type="mesh" mesh="collision_117" mass="0.000806892951805" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_118" type="mesh" mesh="collision_118" mass="0.000361574274222" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_119" type="mesh" mesh="collision_119" mass="0.00101847368502" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_120" type="mesh" mesh="collision_120" mass="0.00101915248541" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_121" type="mesh" mesh="collision_121" mass="0.000355929191941" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_122" type="mesh" mesh="collision_122" mass="0.000670817086207" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_123" type="mesh" mesh="collision_123" mass="0.00348190876881" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_124" type="mesh" mesh="collision_124" mass="0.00166909590493" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_125" type="mesh" mesh="collision_125" mass="0.00345544423916" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_126" type="mesh" mesh="collision_126" mass="0.000157644170936" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_127" type="mesh" mesh="collision_127" mass="0.00115620954734" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_128" type="mesh" mesh="collision_128" mass="6.74861084423e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_129" type="mesh" mesh="collision_129" mass="0.000373229835409" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_130" type="mesh" mesh="collision_130" mass="0.000889842874449" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_131" type="mesh" mesh="collision_131" mass="0.000820845252903" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_132" type="mesh" mesh="collision_132" mass="0.000219328880109" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_133" type="mesh" mesh="collision_133" mass="0.00109050813289" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_134" type="mesh" mesh="collision_134" mass="0.000242579170049" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_135" type="mesh" mesh="collision_135" mass="0.000478057533416" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_136" type="mesh" mesh="collision_136" mass="0.00089987838966" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_137" type="mesh" mesh="collision_137" mass="0.000885350610376" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_138" type="mesh" mesh="collision_138" mass="0.000332254992671" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_139" type="mesh" mesh="collision_139" mass="0.000595121607326" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_140" type="mesh" mesh="collision_140" mass="0.000566985816917" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_141" type="mesh" mesh="collision_141" mass="0.000695549942682" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_142" type="mesh" mesh="collision_142" mass="0.00092000629878" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_143" type="mesh" mesh="collision_143" mass="0.000723561005459" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_144" type="mesh" mesh="collision_144" mass="0.000176669097638" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_145" type="mesh" mesh="collision_145" mass="0.000627895529156" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_146" type="mesh" mesh="collision_146" mass="0.00133281656201" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_147" type="mesh" mesh="collision_147" mass="0.000284771410091" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_148" type="mesh" mesh="collision_148" mass="0.000395375705143" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_149" type="mesh" mesh="collision_149" mass="0.000936421682752" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_150" type="mesh" mesh="collision_150" mass="0.00101870632282" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_151" type="mesh" mesh="collision_151" mass="0.000958185995327" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_152" type="mesh" mesh="collision_152" mass="0.00139874420815" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_153" type="mesh" mesh="collision_153" mass="0.000209463530156" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_154" type="mesh" mesh="collision_154" mass="0.00106349556732" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_155" type="mesh" mesh="collision_155" mass="0.00104771178983" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_156" type="mesh" mesh="collision_156" mass="0.000242193418451" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_157" type="mesh" mesh="collision_157" mass="0.000684291921921" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_158" type="mesh" mesh="collision_158" mass="0.000699834185869" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_159" type="mesh" mesh="collision_159" mass="0.000373752900939" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_160" type="mesh" mesh="collision_160" mass="0.000645912557803" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_161" type="mesh" mesh="collision_161" mass="0.000158037976078" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_162" type="mesh" mesh="collision_162" mass="8.64662865213e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_163" type="mesh" mesh="collision_163" mass="0.000385548224669" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_164" type="mesh" mesh="collision_164" mass="0.000583338472029" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_165" type="mesh" mesh="collision_165" mass="0.000457934842679" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_166" type="mesh" mesh="collision_166" mass="0.000330556582684" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_167" type="mesh" mesh="collision_167" mass="5.53862558192e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_168" type="mesh" mesh="collision_168" mass="0.00088507396497" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_169" type="mesh" mesh="collision_169" mass="0.000168916460446" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_170" type="mesh" mesh="collision_170" mass="0.000102160830836" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_171" type="mesh" mesh="collision_171" mass="0.000476937021284" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_172" type="mesh" mesh="collision_172" mass="0.000573898840108" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_173" type="mesh" mesh="collision_173" mass="0.00107024426868" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_174" type="mesh" mesh="collision_174" mass="0.000164487612176" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_175" type="mesh" mesh="collision_175" mass="0.00150055278772" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_176" type="mesh" mesh="collision_176" mass="0.000244973536533" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_177" type="mesh" mesh="collision_177" mass="0.00102536343189" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_178" type="mesh" mesh="collision_178" mass="0.000491260902522" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_179" type="mesh" mesh="collision_179" mass="0.000261492919392" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_180" type="mesh" mesh="collision_180" mass="0.00171598121335" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_181" type="mesh" mesh="collision_181" mass="0.00103745962553" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_182" type="mesh" mesh="collision_182" mass="0.00137098053973" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_183" type="mesh" mesh="collision_183" mass="0.000534082684852" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_184" type="mesh" mesh="collision_184" mass="0.000228231596103" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_185" type="mesh" mesh="collision_185" mass="0.0010068568293" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_186" type="mesh" mesh="collision_186" mass="0.000167262774225" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_187" type="mesh" mesh="collision_187" mass="0.000154309247513" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_188" type="mesh" mesh="collision_188" mass="0.000851447501273" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_189" type="mesh" mesh="collision_189" mass="0.000667813665318" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_190" type="mesh" mesh="collision_190" mass="0.0014060266268" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_191" type="mesh" mesh="collision_191" mass="0.000732289985362" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_192" type="mesh" mesh="collision_192" mass="0.0002881038736" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_193" type="mesh" mesh="collision_193" mass="0.000211911796057" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_194" type="mesh" mesh="collision_194" mass="0.00111878333963" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_195" type="mesh" mesh="collision_195" mass="0.000236909020835" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_196" type="mesh" mesh="collision_196" mass="0.000218984199332" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_197" type="mesh" mesh="collision_197" mass="0.000802502712517" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_198" type="mesh" mesh="collision_198" mass="0.000147119572533" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_199" type="mesh" mesh="collision_199" mass="0.000966611239853" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_200" type="mesh" mesh="collision_200" mass="0.000719790927091" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_201" type="mesh" mesh="collision_201" mass="0.000216341966563" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_202" type="mesh" mesh="collision_202" mass="0.000174292842739" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_203" type="mesh" mesh="collision_203" mass="0.000105294800782" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_204" type="mesh" mesh="collision_204" mass="0.000796415982715" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_205" type="mesh" mesh="collision_205" mass="0.000780139616511" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_206" type="mesh" mesh="collision_206" mass="0.000198054792791" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_207" type="mesh" mesh="collision_207" mass="0.000120481631893" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_208" type="mesh" mesh="collision_208" mass="0.000257102914406" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_209" type="mesh" mesh="collision_209" mass="0.00154080519998" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_210" type="mesh" mesh="collision_210" mass="0.00105775583139" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_211" type="mesh" mesh="collision_211" mass="0.00042889502578" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_212" type="mesh" mesh="collision_212" mass="0.000339193482446" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_213" type="mesh" mesh="collision_213" mass="0.00060406132467" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_214" type="mesh" mesh="collision_214" mass="0.000432763315655" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_215" type="mesh" mesh="collision_215" mass="0.000434652361614" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_216" type="mesh" mesh="collision_216" mass="0.000907079991788" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="ycb_bowl_collision_217" type="mesh" mesh="collision_217" mass="0.000564797002421" friction="0.6 0.005 0.0001" group="3" condim="4" />
+    </body>
+  </worldbody>
+</mujoco>

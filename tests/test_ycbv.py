@@ -62,6 +62,7 @@ def test_ycbv_identity_frame_and_symmetries(meta_path: Path):
 def test_bop_ids_name_one_object_each():
     ids = [yaml.safe_load(p.read_text())["dataset"]["ycbv"]["bop_id"] for p in YCBV_METAS]
     assert len(ids) == len(set(ids)), sorted(ids)
+    assert set(ids) == set(BOP_YCB_NAMES), f"incomplete benchmark catalog: {sorted(ids)}"
 
 
 def test_the_registry_finds_the_collection_alone_and_within_the_catalog():

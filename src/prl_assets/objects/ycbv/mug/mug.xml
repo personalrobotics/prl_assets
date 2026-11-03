@@ -1,0 +1,396 @@
+<mujoco model="mug">
+  <compiler angle="radian" />
+  <asset>
+    <texture name="visual_tex" type="2d" file="mug_texture.png" />
+    <material name="visual_mat" texture="visual_tex" />
+    <mesh name="visual_mesh" file="mug_visual.obj" />
+    <mesh name="collision_0" file="collision_000.obj" />
+    <mesh name="collision_1" file="collision_001.obj" />
+    <mesh name="collision_2" file="collision_002.obj" />
+    <mesh name="collision_3" file="collision_003.obj" />
+    <mesh name="collision_4" file="collision_004.obj" />
+    <mesh name="collision_5" file="collision_005.obj" />
+    <mesh name="collision_6" file="collision_006.obj" />
+    <mesh name="collision_7" file="collision_007.obj" />
+    <mesh name="collision_8" file="collision_008.obj" />
+    <mesh name="collision_9" file="collision_009.obj" />
+    <mesh name="collision_10" file="collision_010.obj" />
+    <mesh name="collision_11" file="collision_011.obj" />
+    <mesh name="collision_12" file="collision_012.obj" />
+    <mesh name="collision_13" file="collision_013.obj" />
+    <mesh name="collision_14" file="collision_014.obj" />
+    <mesh name="collision_15" file="collision_015.obj" />
+    <mesh name="collision_16" file="collision_016.obj" />
+    <mesh name="collision_17" file="collision_017.obj" />
+    <mesh name="collision_18" file="collision_018.obj" />
+    <mesh name="collision_19" file="collision_019.obj" />
+    <mesh name="collision_20" file="collision_020.obj" />
+    <mesh name="collision_21" file="collision_021.obj" />
+    <mesh name="collision_22" file="collision_022.obj" />
+    <mesh name="collision_23" file="collision_023.obj" />
+    <mesh name="collision_24" file="collision_024.obj" />
+    <mesh name="collision_25" file="collision_025.obj" />
+    <mesh name="collision_26" file="collision_026.obj" />
+    <mesh name="collision_27" file="collision_027.obj" />
+    <mesh name="collision_28" file="collision_028.obj" />
+    <mesh name="collision_29" file="collision_029.obj" />
+    <mesh name="collision_30" file="collision_030.obj" />
+    <mesh name="collision_31" file="collision_031.obj" />
+    <mesh name="collision_32" file="collision_032.obj" />
+    <mesh name="collision_33" file="collision_033.obj" />
+    <mesh name="collision_34" file="collision_034.obj" />
+    <mesh name="collision_35" file="collision_035.obj" />
+    <mesh name="collision_36" file="collision_036.obj" />
+    <mesh name="collision_37" file="collision_037.obj" />
+    <mesh name="collision_38" file="collision_038.obj" />
+    <mesh name="collision_39" file="collision_039.obj" />
+    <mesh name="collision_40" file="collision_040.obj" />
+    <mesh name="collision_41" file="collision_041.obj" />
+    <mesh name="collision_42" file="collision_042.obj" />
+    <mesh name="collision_43" file="collision_043.obj" />
+    <mesh name="collision_44" file="collision_044.obj" />
+    <mesh name="collision_45" file="collision_045.obj" />
+    <mesh name="collision_46" file="collision_046.obj" />
+    <mesh name="collision_47" file="collision_047.obj" />
+    <mesh name="collision_48" file="collision_048.obj" />
+    <mesh name="collision_49" file="collision_049.obj" />
+    <mesh name="collision_50" file="collision_050.obj" />
+    <mesh name="collision_51" file="collision_051.obj" />
+    <mesh name="collision_52" file="collision_052.obj" />
+    <mesh name="collision_53" file="collision_053.obj" />
+    <mesh name="collision_54" file="collision_054.obj" />
+    <mesh name="collision_55" file="collision_055.obj" />
+    <mesh name="collision_56" file="collision_056.obj" />
+    <mesh name="collision_57" file="collision_057.obj" />
+    <mesh name="collision_58" file="collision_058.obj" />
+    <mesh name="collision_59" file="collision_059.obj" />
+    <mesh name="collision_60" file="collision_060.obj" />
+    <mesh name="collision_61" file="collision_061.obj" />
+    <mesh name="collision_62" file="collision_062.obj" />
+    <mesh name="collision_63" file="collision_063.obj" />
+    <mesh name="collision_64" file="collision_064.obj" />
+    <mesh name="collision_65" file="collision_065.obj" />
+    <mesh name="collision_66" file="collision_066.obj" />
+    <mesh name="collision_67" file="collision_067.obj" />
+    <mesh name="collision_68" file="collision_068.obj" />
+    <mesh name="collision_69" file="collision_069.obj" />
+    <mesh name="collision_70" file="collision_070.obj" />
+    <mesh name="collision_71" file="collision_071.obj" />
+    <mesh name="collision_72" file="collision_072.obj" />
+    <mesh name="collision_73" file="collision_073.obj" />
+    <mesh name="collision_74" file="collision_074.obj" />
+    <mesh name="collision_75" file="collision_075.obj" />
+    <mesh name="collision_76" file="collision_076.obj" />
+    <mesh name="collision_77" file="collision_077.obj" />
+    <mesh name="collision_78" file="collision_078.obj" />
+    <mesh name="collision_79" file="collision_079.obj" />
+    <mesh name="collision_80" file="collision_080.obj" />
+    <mesh name="collision_81" file="collision_081.obj" />
+    <mesh name="collision_82" file="collision_082.obj" />
+    <mesh name="collision_83" file="collision_083.obj" />
+    <mesh name="collision_84" file="collision_084.obj" />
+    <mesh name="collision_85" file="collision_085.obj" />
+    <mesh name="collision_86" file="collision_086.obj" />
+    <mesh name="collision_87" file="collision_087.obj" />
+    <mesh name="collision_88" file="collision_088.obj" />
+    <mesh name="collision_89" file="collision_089.obj" />
+    <mesh name="collision_90" file="collision_090.obj" />
+    <mesh name="collision_91" file="collision_091.obj" />
+    <mesh name="collision_92" file="collision_092.obj" />
+    <mesh name="collision_93" file="collision_093.obj" />
+    <mesh name="collision_94" file="collision_094.obj" />
+    <mesh name="collision_95" file="collision_095.obj" />
+    <mesh name="collision_96" file="collision_096.obj" />
+    <mesh name="collision_97" file="collision_097.obj" />
+    <mesh name="collision_98" file="collision_098.obj" />
+    <mesh name="collision_99" file="collision_099.obj" />
+    <mesh name="collision_100" file="collision_100.obj" />
+    <mesh name="collision_101" file="collision_101.obj" />
+    <mesh name="collision_102" file="collision_102.obj" />
+    <mesh name="collision_103" file="collision_103.obj" />
+    <mesh name="collision_104" file="collision_104.obj" />
+    <mesh name="collision_105" file="collision_105.obj" />
+    <mesh name="collision_106" file="collision_106.obj" />
+    <mesh name="collision_107" file="collision_107.obj" />
+    <mesh name="collision_108" file="collision_108.obj" />
+    <mesh name="collision_109" file="collision_109.obj" />
+    <mesh name="collision_110" file="collision_110.obj" />
+    <mesh name="collision_111" file="collision_111.obj" />
+    <mesh name="collision_112" file="collision_112.obj" />
+    <mesh name="collision_113" file="collision_113.obj" />
+    <mesh name="collision_114" file="collision_114.obj" />
+    <mesh name="collision_115" file="collision_115.obj" />
+    <mesh name="collision_116" file="collision_116.obj" />
+    <mesh name="collision_117" file="collision_117.obj" />
+    <mesh name="collision_118" file="collision_118.obj" />
+    <mesh name="collision_119" file="collision_119.obj" />
+    <mesh name="collision_120" file="collision_120.obj" />
+    <mesh name="collision_121" file="collision_121.obj" />
+    <mesh name="collision_122" file="collision_122.obj" />
+    <mesh name="collision_123" file="collision_123.obj" />
+    <mesh name="collision_124" file="collision_124.obj" />
+    <mesh name="collision_125" file="collision_125.obj" />
+    <mesh name="collision_126" file="collision_126.obj" />
+    <mesh name="collision_127" file="collision_127.obj" />
+    <mesh name="collision_128" file="collision_128.obj" />
+    <mesh name="collision_129" file="collision_129.obj" />
+    <mesh name="collision_130" file="collision_130.obj" />
+    <mesh name="collision_131" file="collision_131.obj" />
+    <mesh name="collision_132" file="collision_132.obj" />
+    <mesh name="collision_133" file="collision_133.obj" />
+    <mesh name="collision_134" file="collision_134.obj" />
+    <mesh name="collision_135" file="collision_135.obj" />
+    <mesh name="collision_136" file="collision_136.obj" />
+    <mesh name="collision_137" file="collision_137.obj" />
+    <mesh name="collision_138" file="collision_138.obj" />
+    <mesh name="collision_139" file="collision_139.obj" />
+    <mesh name="collision_140" file="collision_140.obj" />
+    <mesh name="collision_141" file="collision_141.obj" />
+    <mesh name="collision_142" file="collision_142.obj" />
+    <mesh name="collision_143" file="collision_143.obj" />
+    <mesh name="collision_144" file="collision_144.obj" />
+    <mesh name="collision_145" file="collision_145.obj" />
+    <mesh name="collision_146" file="collision_146.obj" />
+    <mesh name="collision_147" file="collision_147.obj" />
+    <mesh name="collision_148" file="collision_148.obj" />
+    <mesh name="collision_149" file="collision_149.obj" />
+    <mesh name="collision_150" file="collision_150.obj" />
+    <mesh name="collision_151" file="collision_151.obj" />
+    <mesh name="collision_152" file="collision_152.obj" />
+    <mesh name="collision_153" file="collision_153.obj" />
+    <mesh name="collision_154" file="collision_154.obj" />
+    <mesh name="collision_155" file="collision_155.obj" />
+    <mesh name="collision_156" file="collision_156.obj" />
+    <mesh name="collision_157" file="collision_157.obj" />
+    <mesh name="collision_158" file="collision_158.obj" />
+    <mesh name="collision_159" file="collision_159.obj" />
+    <mesh name="collision_160" file="collision_160.obj" />
+    <mesh name="collision_161" file="collision_161.obj" />
+    <mesh name="collision_162" file="collision_162.obj" />
+    <mesh name="collision_163" file="collision_163.obj" />
+    <mesh name="collision_164" file="collision_164.obj" />
+    <mesh name="collision_165" file="collision_165.obj" />
+    <mesh name="collision_166" file="collision_166.obj" />
+    <mesh name="collision_167" file="collision_167.obj" />
+    <mesh name="collision_168" file="collision_168.obj" />
+    <mesh name="collision_169" file="collision_169.obj" />
+    <mesh name="collision_170" file="collision_170.obj" />
+    <mesh name="collision_171" file="collision_171.obj" />
+    <mesh name="collision_172" file="collision_172.obj" />
+    <mesh name="collision_173" file="collision_173.obj" />
+    <mesh name="collision_174" file="collision_174.obj" />
+    <mesh name="collision_175" file="collision_175.obj" />
+    <mesh name="collision_176" file="collision_176.obj" />
+    <mesh name="collision_177" file="collision_177.obj" />
+    <mesh name="collision_178" file="collision_178.obj" />
+    <mesh name="collision_179" file="collision_179.obj" />
+    <mesh name="collision_180" file="collision_180.obj" />
+    <mesh name="collision_181" file="collision_181.obj" />
+    <mesh name="collision_182" file="collision_182.obj" />
+    <mesh name="collision_183" file="collision_183.obj" />
+    <mesh name="collision_184" file="collision_184.obj" />
+    <mesh name="collision_185" file="collision_185.obj" />
+    <mesh name="collision_186" file="collision_186.obj" />
+    <mesh name="collision_187" file="collision_187.obj" />
+    <mesh name="collision_188" file="collision_188.obj" />
+    <mesh name="collision_189" file="collision_189.obj" />
+    <mesh name="collision_190" file="collision_190.obj" />
+  </asset>
+  <worldbody>
+    <body name="mug" pos="0 0 0.0406920024">
+      <freejoint name="mug_joint" />
+      <geom name="visual" type="mesh" mesh="visual_mesh" material="visual_mat" group="2" mass="0" contype="0" conaffinity="0" />
+      <geom name="mug_collision_0" type="mesh" mesh="collision_0" mass="0.000316917785226" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_1" type="mesh" mesh="collision_1" mass="0.000204927917584" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_2" type="mesh" mesh="collision_2" mass="0.000476942349421" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_3" type="mesh" mesh="collision_3" mass="0.000390763973284" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_4" type="mesh" mesh="collision_4" mass="0.000224965724053" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_5" type="mesh" mesh="collision_5" mass="0.000292488571013" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_6" type="mesh" mesh="collision_6" mass="0.000356770290431" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_7" type="mesh" mesh="collision_7" mass="0.000727191343321" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_8" type="mesh" mesh="collision_8" mass="0.000332132738984" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_9" type="mesh" mesh="collision_9" mass="0.000459466160272" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_10" type="mesh" mesh="collision_10" mass="0.000114715041084" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_11" type="mesh" mesh="collision_11" mass="0.000283847021516" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_12" type="mesh" mesh="collision_12" mass="0.000351141711209" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_13" type="mesh" mesh="collision_13" mass="0.000201713774132" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_14" type="mesh" mesh="collision_14" mass="5.1687973495e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_15" type="mesh" mesh="collision_15" mass="0.00039285273587" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_16" type="mesh" mesh="collision_16" mass="0.000733870372362" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_17" type="mesh" mesh="collision_17" mass="0.000238184537173" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_18" type="mesh" mesh="collision_18" mass="0.000259298991967" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_19" type="mesh" mesh="collision_19" mass="0.000277470012998" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_20" type="mesh" mesh="collision_20" mass="5.24586336498e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_21" type="mesh" mesh="collision_21" mass="0.00193376662513" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_22" type="mesh" mesh="collision_22" mass="0.000575251544773" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_23" type="mesh" mesh="collision_23" mass="0.00155233028342" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_24" type="mesh" mesh="collision_24" mass="0.000123734414395" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_25" type="mesh" mesh="collision_25" mass="0.00438479847613" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_26" type="mesh" mesh="collision_26" mass="4.51736699214e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_27" type="mesh" mesh="collision_27" mass="0.00215482897604" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_28" type="mesh" mesh="collision_28" mass="7.04273321085e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_29" type="mesh" mesh="collision_29" mass="0.00101788115784" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_30" type="mesh" mesh="collision_30" mass="0.000202683096575" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_31" type="mesh" mesh="collision_31" mass="0.000770232127838" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_32" type="mesh" mesh="collision_32" mass="0.00220457468544" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_33" type="mesh" mesh="collision_33" mass="0.00158354094108" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_34" type="mesh" mesh="collision_34" mass="0.00404598016097" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_35" type="mesh" mesh="collision_35" mass="8.57785934076e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_36" type="mesh" mesh="collision_36" mass="0.000345812635436" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_37" type="mesh" mesh="collision_37" mass="0.00144147946466" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_38" type="mesh" mesh="collision_38" mass="0.000667664460375" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_39" type="mesh" mesh="collision_39" mass="8.80400738211e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_40" type="mesh" mesh="collision_40" mass="0.000312619127689" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_41" type="mesh" mesh="collision_41" mass="0.000357938398745" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_42" type="mesh" mesh="collision_42" mass="0.00421240906257" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_43" type="mesh" mesh="collision_43" mass="3.09887212886e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_44" type="mesh" mesh="collision_44" mass="0.000624869769571" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_45" type="mesh" mesh="collision_45" mass="0.000828889332371" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_46" type="mesh" mesh="collision_46" mass="0.000276013899285" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_47" type="mesh" mesh="collision_47" mass="0.000256210385265" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_48" type="mesh" mesh="collision_48" mass="0.00203237002783" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_49" type="mesh" mesh="collision_49" mass="0.000546824897666" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_50" type="mesh" mesh="collision_50" mass="0.00228476283857" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_51" type="mesh" mesh="collision_51" mass="0.000342804914039" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_52" type="mesh" mesh="collision_52" mass="0.00275359802399" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_53" type="mesh" mesh="collision_53" mass="1.16828599315e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_54" type="mesh" mesh="collision_54" mass="0.000169537517245" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_55" type="mesh" mesh="collision_55" mass="0.000996389287579" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_56" type="mesh" mesh="collision_56" mass="3.93822475087e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_57" type="mesh" mesh="collision_57" mass="6.11765994631e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_58" type="mesh" mesh="collision_58" mass="0.000157325355022" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_59" type="mesh" mesh="collision_59" mass="0.000638676098121" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_60" type="mesh" mesh="collision_60" mass="0.000685005749314" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_61" type="mesh" mesh="collision_61" mass="0.00199526807938" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_62" type="mesh" mesh="collision_62" mass="0.000227309341523" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_63" type="mesh" mesh="collision_63" mass="0.00185998208675" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_64" type="mesh" mesh="collision_64" mass="0.000585949230591" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_65" type="mesh" mesh="collision_65" mass="0.00032690591868" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_66" type="mesh" mesh="collision_66" mass="0.000616659617258" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_67" type="mesh" mesh="collision_67" mass="0.000516282104391" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_68" type="mesh" mesh="collision_68" mass="0.000278701938038" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_69" type="mesh" mesh="collision_69" mass="2.38361838041e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_70" type="mesh" mesh="collision_70" mass="0.000846034010309" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_71" type="mesh" mesh="collision_71" mass="0.00028021166924" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_72" type="mesh" mesh="collision_72" mass="0.00189517098024" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_73" type="mesh" mesh="collision_73" mass="0.000194598464956" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_74" type="mesh" mesh="collision_74" mass="0.000704013042752" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_75" type="mesh" mesh="collision_75" mass="0.000543709518369" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_76" type="mesh" mesh="collision_76" mass="0.000594738969219" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_77" type="mesh" mesh="collision_77" mass="4.46397102572e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_78" type="mesh" mesh="collision_78" mass="0.00197288231191" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_79" type="mesh" mesh="collision_79" mass="4.22575345925e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_80" type="mesh" mesh="collision_80" mass="0.00230181139563" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_81" type="mesh" mesh="collision_81" mass="0.00253456544241" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_82" type="mesh" mesh="collision_82" mass="5.68707719331e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_83" type="mesh" mesh="collision_83" mass="2.3688396992e-06" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_84" type="mesh" mesh="collision_84" mass="0.000410619361947" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_85" type="mesh" mesh="collision_85" mass="0.000274918611407" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_86" type="mesh" mesh="collision_86" mass="0.000139367882116" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_87" type="mesh" mesh="collision_87" mass="2.92521080695e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_88" type="mesh" mesh="collision_88" mass="8.6393052533e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_89" type="mesh" mesh="collision_89" mass="0.000200170347925" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_90" type="mesh" mesh="collision_90" mass="0.000594540163207" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_91" type="mesh" mesh="collision_91" mass="9.64606687179e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_92" type="mesh" mesh="collision_92" mass="0.000291700209014" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_93" type="mesh" mesh="collision_93" mass="0.00577228959811" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_94" type="mesh" mesh="collision_94" mass="6.32092420218e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_95" type="mesh" mesh="collision_95" mass="0.000570294614289" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_96" type="mesh" mesh="collision_96" mass="4.49755058087e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_97" type="mesh" mesh="collision_97" mass="0.00210427718049" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_98" type="mesh" mesh="collision_98" mass="0.000263878482309" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_99" type="mesh" mesh="collision_99" mass="0.000258374707147" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_100" type="mesh" mesh="collision_100" mass="0.000470160443504" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_101" type="mesh" mesh="collision_101" mass="6.33289186626e-06" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_102" type="mesh" mesh="collision_102" mass="0.000106203353172" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_103" type="mesh" mesh="collision_103" mass="0.000449767508054" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_104" type="mesh" mesh="collision_104" mass="0.000898439336213" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_105" type="mesh" mesh="collision_105" mass="0.00141897060088" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_106" type="mesh" mesh="collision_106" mass="9.20990074139e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_107" type="mesh" mesh="collision_107" mass="5.40186520853e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_108" type="mesh" mesh="collision_108" mass="0.000263930930692" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_109" type="mesh" mesh="collision_109" mass="0.000314133132343" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_110" type="mesh" mesh="collision_110" mass="0.000408267221949" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_111" type="mesh" mesh="collision_111" mass="0.000263044044617" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_112" type="mesh" mesh="collision_112" mass="0.00153602723584" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_113" type="mesh" mesh="collision_113" mass="0.00225254776687" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_114" type="mesh" mesh="collision_114" mass="0.0013618343469" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_115" type="mesh" mesh="collision_115" mass="0.000541106751119" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_116" type="mesh" mesh="collision_116" mass="0.000287916334636" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_117" type="mesh" mesh="collision_117" mass="0.00175975765393" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_118" type="mesh" mesh="collision_118" mass="0.000420855871378" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_119" type="mesh" mesh="collision_119" mass="0.000492369569986" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_120" type="mesh" mesh="collision_120" mass="7.47845884391e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_121" type="mesh" mesh="collision_121" mass="0.000169040786334" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_122" type="mesh" mesh="collision_122" mass="7.0285291297e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_123" type="mesh" mesh="collision_123" mass="3.05947351189e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_124" type="mesh" mesh="collision_124" mass="0.000116597015871" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_125" type="mesh" mesh="collision_125" mass="0.000402687965842" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_126" type="mesh" mesh="collision_126" mass="0.000390338100249" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_127" type="mesh" mesh="collision_127" mass="0.000173986669913" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_128" type="mesh" mesh="collision_128" mass="0.00169206252044" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_129" type="mesh" mesh="collision_129" mass="0.0026764792768" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_130" type="mesh" mesh="collision_130" mass="8.11936421913e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_131" type="mesh" mesh="collision_131" mass="0.00010546517023" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_132" type="mesh" mesh="collision_132" mass="0.00189347320964" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_133" type="mesh" mesh="collision_133" mass="0.000541230915767" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_134" type="mesh" mesh="collision_134" mass="0.000283177237108" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_135" type="mesh" mesh="collision_135" mass="0.00231345439263" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_136" type="mesh" mesh="collision_136" mass="0.0004028821307" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_137" type="mesh" mesh="collision_137" mass="0.000510924985065" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_138" type="mesh" mesh="collision_138" mass="0.00315248122248" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_139" type="mesh" mesh="collision_139" mass="0.000934130635373" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_140" type="mesh" mesh="collision_140" mass="0.000521931483036" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_141" type="mesh" mesh="collision_141" mass="0.000333962850966" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_142" type="mesh" mesh="collision_142" mass="0.000502247575897" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_143" type="mesh" mesh="collision_143" mass="5.35113441201e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_144" type="mesh" mesh="collision_144" mass="0.000494880524788" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_145" type="mesh" mesh="collision_145" mass="0.000421569458121" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_146" type="mesh" mesh="collision_146" mass="8.3564404284e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_147" type="mesh" mesh="collision_147" mass="0.000195175752328" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_148" type="mesh" mesh="collision_148" mass="9.2465919227e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_149" type="mesh" mesh="collision_149" mass="0.00050728984798" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_150" type="mesh" mesh="collision_150" mass="2.72508877377e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_151" type="mesh" mesh="collision_151" mass="0.000313508301896" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_152" type="mesh" mesh="collision_152" mass="0.000198719978586" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_153" type="mesh" mesh="collision_153" mass="0.00036127114145" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_154" type="mesh" mesh="collision_154" mass="0.000142696257005" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_155" type="mesh" mesh="collision_155" mass="8.53504278649e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_156" type="mesh" mesh="collision_156" mass="0.000298178307878" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_157" type="mesh" mesh="collision_157" mass="0.000287289930585" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_158" type="mesh" mesh="collision_158" mass="0.00131812697175" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_159" type="mesh" mesh="collision_159" mass="0.00038936724911" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_160" type="mesh" mesh="collision_160" mass="6.00887124514e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_161" type="mesh" mesh="collision_161" mass="6.0138658288e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_162" type="mesh" mesh="collision_162" mass="0.000383872156382" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_163" type="mesh" mesh="collision_163" mass="0.000143142306078" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_164" type="mesh" mesh="collision_164" mass="2.67288338522e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_165" type="mesh" mesh="collision_165" mass="0.000276666740897" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_166" type="mesh" mesh="collision_166" mass="4.76018812773e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_167" type="mesh" mesh="collision_167" mass="5.86903978837e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_168" type="mesh" mesh="collision_168" mass="3.29280440133e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_169" type="mesh" mesh="collision_169" mass="5.2392742506e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_170" type="mesh" mesh="collision_170" mass="5.54929052277e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_171" type="mesh" mesh="collision_171" mass="8.07256393311e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_172" type="mesh" mesh="collision_172" mass="0.000105608465301" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_173" type="mesh" mesh="collision_173" mass="0.000150179698578" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_174" type="mesh" mesh="collision_174" mass="8.9862208202e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_175" type="mesh" mesh="collision_175" mass="0.000135040331659" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_176" type="mesh" mesh="collision_176" mass="0.000147849255799" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_177" type="mesh" mesh="collision_177" mass="3.41970034202e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_178" type="mesh" mesh="collision_178" mass="8.37468216004e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_179" type="mesh" mesh="collision_179" mass="9.19333227908e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_180" type="mesh" mesh="collision_180" mass="3.54671164373e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_181" type="mesh" mesh="collision_181" mass="4.24236631824e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_182" type="mesh" mesh="collision_182" mass="6.14950150005e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_183" type="mesh" mesh="collision_183" mass="9.58298078858e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_184" type="mesh" mesh="collision_184" mass="0.000115946012994" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_185" type="mesh" mesh="collision_185" mass="8.658748427e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_186" type="mesh" mesh="collision_186" mass="0.000114817156077" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_187" type="mesh" mesh="collision_187" mass="6.36242840102e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_188" type="mesh" mesh="collision_188" mass="0.000202525866374" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_189" type="mesh" mesh="collision_189" mass="0.000719839609517" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="mug_collision_190" type="mesh" mesh="collision_190" mass="0.00100439571064" friction="0.6 0.005 0.0001" group="3" condim="4" />
+    </body>
+  </worldbody>
+</mujoco>
