@@ -343,6 +343,19 @@ collection when reproducing the complete set, so the four retained models are pr
 
 New objects are converted and validated without discoverable metadata, then
 published with `meta.yaml` last. Existing directories are never overwritten.
+
+To change an existing object's collision recipe, edit it in `RECIPES` and rebuild only
+its collider; visuals, identity, frames, mass and hand-authored sections such as
+`grasp_regions` are kept, and each object is validated before it replaces the old one:
+
+```bash
+uv run python -m prl_assets.import_ycbv --rebuild-collision \
+  --objects mug --output src/prl_assets/objects/ycbv
+```
+
+CoACD's output depends on the platform: rebuild on Linux x86-64 with `uv sync --locked`
+to reproduce the committed colliders. `scripts/collider_baseline.py` measures what each
+collider costs to simulate.
 The JSON report (`artifacts/ycbv_import.json`, configurable with `--report`) records
 source and output hashes, conversion settings, and collision measurements.
 
@@ -353,8 +366,8 @@ the visual mesh’s convex envelope. Mass comes from the cited YCB reference obj
 inertia and friction are estimates, not measured properties of a lab copy.
 `geometric_properties.type: box` describes an axis-aligned grasp envelope; it does
 not replace the actual compound collision geometry or certify a grasp policy.
-Detailed decompositions favor geometry over contact speed (the pitcher has 567 pieces);
-benchmark the intended scene before scaling up simulation. The tuna can uses a 4 ms
+Each decomposition is the coarsest that keeps the object's openings and contacts
+(8 to 32 pieces; see [docs/schema.md](docs/schema.md)). The tuna can uses a 4 ms
 contact time constant to prevent tunneling through the bin at the documented drop speed.
 
 The independent real-archive integration check is run once in the cached audit job:
