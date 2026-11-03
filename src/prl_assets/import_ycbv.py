@@ -27,27 +27,69 @@ MASS_SOURCE = "https://personalrobotics.cs.washington.edu/publications/calli2015
 # Reference masses: Calli et al. (2015), Table 2. These are not measurements
 # of a lab copy. Closed, approximately convex products use a convex envelope;
 # handles, bent shapes and open interiors retain separate convex pieces.
+#
+# Each decomposition is the coarsest one that still passes authoring.check (including
+# the floor probe of open interiors), keeps the reference silhouette's apertures (jaw
+# gaps, handle and scissor loops) open in verify_ycbv, and bridges the scan's
+# concavities by at most about 13 mm at the 99th percentile. It was chosen from a sweep
+# of thresholds, part caps and decimation (#42). The default 2 mm threshold traced scan
+# noise and produced up to 567 parts per object.
 RECIPES = {
     1: dict(mass=0.414, material="metal", category=["food_package", "graspable"], collision="hull"),
     4: dict(mass=0.349, material="metal", category=["food_package", "graspable"], collision="hull"),
-    5: dict(mass=0.603, material="plastic", category=["food_package", "graspable"]),
+    5: dict(mass=0.603, material="plastic", category=["food_package", "graspable"], collision="hull"),
     # A thin can at the bin-drop impact speed needs the 4 ms contact time
     # constant used by the bin floor; default softness lets it pass through.
     6: dict(mass=0.171, material="metal", category=["food_package", "graspable"], collision="hull", solref="0.004 1"),
     7: dict(mass=0.187, material="cardboard", category=["food_package", "graspable"], collision="hull"),
-    10: dict(mass=0.066, material="unspecified", category=["food", "graspable"]),
+    10: dict(mass=0.066, material="unspecified", category=["food", "graspable"], decomposition=dict(threshold=0.02)),
     # The benchmark pitcher scan is capped across the top; it has no usable
     # open interior. Preserve its handle, but do not advertise it as fillable.
-    11: dict(mass=0.178, material="plastic", category=["container", "tableware", "graspable"]),
-    12: dict(mass=1.131, material="plastic", category=["household", "graspable"]),
-    13: dict(mass=0.147, material="unspecified", category=["container", "tableware", "graspable"], open=True),
-    14: dict(mass=0.118, material="unspecified", category=["container", "tableware", "graspable"], open=True),
-    15: dict(mass=0.895, material="unspecified", category=["tool", "graspable"]),
+    # Decimated parts fall 3.7 mm short of its surface; undecimated ones do not.
+    11: dict(
+        mass=0.178,
+        material="plastic",
+        category=["container", "tableware", "graspable"],
+        decomposition=dict(threshold=0.01, max_convex_hull=16, decimate=False),
+    ),
+    12: dict(mass=1.131, material="plastic", category=["household", "graspable"], collision="hull"),
+    # 18 parts also pass, at a 2.35 mm floor gap against the 3 mm limit; 28 leave margin.
+    13: dict(
+        mass=0.147,
+        material="unspecified",
+        category=["container", "tableware", "graspable"],
+        open=True,
+        decomposition=dict(threshold=0.0075, max_convex_hull=32),
+    ),
+    14: dict(
+        mass=0.118,
+        material="unspecified",
+        category=["container", "tableware", "graspable"],
+        open=True,
+        decomposition=dict(threshold=0.01, max_convex_hull=32),
+    ),
+    15: dict(mass=0.895, material="unspecified", category=["tool", "graspable"], decomposition=dict(threshold=0.02)),
     16: dict(mass=0.729, material="wood", category=["block", "graspable"], collision="hull"),
-    17: dict(mass=0.082, material="unspecified", category=["tool", "graspable"]),
+    17: dict(
+        mass=0.082,
+        material="unspecified",
+        category=["tool", "graspable"],
+        decomposition=dict(threshold=0.01, max_convex_hull=16),
+    ),
     18: dict(mass=0.0158, material="plastic", category=["tool", "graspable"], collision="hull"),
-    19: dict(mass=0.125, material="unspecified", category=["tool", "graspable"]),
-    20: dict(mass=0.202, material="unspecified", category=["tool", "graspable"]),
+    # The jaw gap stays open at 0.0075 / 32 parts (6% occupied); 0.01 leaves 12%.
+    19: dict(
+        mass=0.125,
+        material="unspecified",
+        category=["tool", "graspable"],
+        decomposition=dict(threshold=0.0075, max_convex_hull=32),
+    ),
+    20: dict(
+        mass=0.202,
+        material="unspecified",
+        category=["tool", "graspable"],
+        decomposition=dict(threshold=0.01, max_convex_hull=16),
+    ),
     21: dict(mass=0.028, material="foam", category=["block", "graspable"], collision="hull"),
 }
 DECOMPOSITION = dict(
