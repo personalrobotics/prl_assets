@@ -116,10 +116,11 @@ jobs:
       - name: Verify the exact wheel outside the checkout
         timeout-minutes: 15
         env:
-          MUJOCO_GL: egl
+          MUJOCO_GL: glfw
+          LIBGL_ALWAYS_SOFTWARE: "1"
           OPENBLAS_NUM_THREADS: "1"
         run: >-
-          uv run --locked --all-extras python scripts/verify_wheel.py
+          xvfb-run -a uv run --locked --all-extras python scripts/verify_wheel.py
           artifacts/dist/*.whl "$HOME/.cache/prl_assets/ycbv_models.zip"
           artifacts/wheel-verification
 

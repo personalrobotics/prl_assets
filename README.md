@@ -387,7 +387,11 @@ MUJOCO_GL=egl OPENBLAS_NUM_THREADS=1 uv run --locked --all-extras \
   /path/to/ycbv_models.zip artifacts/wheel-verification
 ```
 
-Use a new output directory for each run. The verifier first checks a base installation
+Use a new output directory for each run. CI uses its preinstalled `xvfb-run` virtual
+display with `MUJOCO_GL=glfw` and `LIBGL_ALWAYS_SOFTWARE=1`; the compute host uses
+EGL. The selected backend is recorded in the inspection manifest.
+
+The verifier first checks a base installation
 without MuJoCo or SciPy, then installs the locked optional dependencies and pinned
 `asset_manager`. It runs from the temporary installation with Python's isolated mode.
 The wheel copied into the output directory is the exact file that passed. CI uploads

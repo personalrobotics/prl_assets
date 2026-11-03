@@ -35,8 +35,8 @@ def digest(path):
     return h.hexdigest()
 
 
-def run(args, *, cwd=ROOT, env=None):
-    subprocess.run([str(x) for x in args], cwd=cwd, env=env, check=True)
+def run(args, *, cwd=ROOT, env=None, stdout=None):
+    subprocess.run([str(x) for x in args], cwd=cwd, env=env, stdout=stdout, check=True)
 
 
 def main():
@@ -112,7 +112,10 @@ def main():
     base = output / "base-requirements.txt"
     full = output / "verification-requirements.txt"
     for path, extras in ((base, []), (full, ["--all-extras"])):
-        run(["uv", "export", "--locked", "--no-emit-project", "--no-default-groups", *extras, "--output-file", path])
+        run(
+            ["uv", "export", "--locked", "--no-emit-project", "--no-default-groups", *extras, "--output-file", path],
+            stdout=subprocess.DEVNULL,
+        )
     with tempfile.TemporaryDirectory(prefix="prl-assets-installed-") as temporary:
         work = Path(temporary)
         venv = work / "environment"
