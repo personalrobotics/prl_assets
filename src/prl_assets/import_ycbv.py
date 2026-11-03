@@ -24,8 +24,32 @@ from prl_assets.ycbv_source import ARCHIVE_SHA256, ARCHIVE_URL, fetch_archive, s
 
 COACD_VERSION = "1.0.14"
 MASS_SOURCE = "https://personalrobotics.cs.washington.edu/publications/calli2015ycb.pdf#page=5"
-# Extend only after checking each object's collision fit and open-space probes.
-RECIPES = {5: {"mass": 0.603, "material": "plastic", "category": ["food_package", "graspable"]}}
+# Reference masses: Calli et al. (2015), Table 2. These are not measurements
+# of a lab copy. Closed, approximately convex products use a convex envelope;
+# handles, bent shapes and open interiors retain separate convex pieces.
+RECIPES = {
+    1: dict(mass=0.414, material="metal", category=["food_package", "graspable"], collision="hull"),
+    4: dict(mass=0.349, material="metal", category=["food_package", "graspable"], collision="hull"),
+    5: dict(mass=0.603, material="plastic", category=["food_package", "graspable"]),
+    # A thin can at the bin-drop impact speed needs the 4 ms contact time
+    # constant used by the bin floor; default softness lets it pass through.
+    6: dict(mass=0.171, material="metal", category=["food_package", "graspable"], collision="hull", solref="0.004 1"),
+    7: dict(mass=0.187, material="cardboard", category=["food_package", "graspable"], collision="hull"),
+    10: dict(mass=0.066, material="unspecified", category=["food", "graspable"]),
+    # The benchmark pitcher scan is capped across the top; it has no usable
+    # open interior. Preserve its handle, but do not advertise it as fillable.
+    11: dict(mass=0.178, material="plastic", category=["container", "tableware", "graspable"]),
+    12: dict(mass=1.131, material="plastic", category=["household", "graspable"]),
+    13: dict(mass=0.147, material="unspecified", category=["container", "tableware", "graspable"], open=True),
+    14: dict(mass=0.118, material="unspecified", category=["container", "tableware", "graspable"], open=True),
+    15: dict(mass=0.895, material="unspecified", category=["tool", "graspable"]),
+    16: dict(mass=0.729, material="wood", category=["block", "graspable"], collision="hull"),
+    17: dict(mass=0.082, material="unspecified", category=["tool", "graspable"]),
+    18: dict(mass=0.0158, material="plastic", category=["tool", "graspable"], collision="hull"),
+    19: dict(mass=0.125, material="unspecified", category=["tool", "graspable"]),
+    20: dict(mass=0.202, material="unspecified", category=["tool", "graspable"]),
+    21: dict(mass=0.028, material="foam", category=["block", "graspable"], collision="hull"),
+}
 DECOMPOSITION = dict(
     threshold=0.002,
     real_metric=True,
@@ -171,9 +195,17 @@ def _build(archive: zipfile.ZipFile, stage: Path, bop_id: int) -> dict:
     with Image.open(source / f"obj_{bop_id:06d}.png") as image:
         image.convert("RGB").resize((1024, 1024), Image.Resampling.LANCZOS).save(stage / f"{name}_texture.png")
     collision_input = trimesh.Trimesh(vertices=mesh.vertices, faces=mesh.faces, process=True)
-    coacd.set_log_level("warn")
-    parts = coacd.run_coacd(coacd.Mesh(collision_input.vertices, collision_input.faces), **DECOMPOSITION)
-    hulls = [trimesh.Trimesh(vertices=v, faces=f, process=True).convex_hull for v, f in parts]
+    settings = {**DECOMPOSITION}
+    if recipe.get("open"):
+        # Preserve thin walls and open interiors in the manifold preprocessing.
+        settings["preprocess_resolution"] = 100
+    method = recipe.get("collision", "decomposition")
+    if method == "hull":
+        hulls = [collision_input.convex_hull]
+    else:
+        coacd.set_log_level("warn")
+        parts = coacd.run_coacd(coacd.Mesh(collision_input.vertices, collision_input.faces), **settings)
+        hulls = [trimesh.Trimesh(vertices=v, faces=f, process=True).convex_hull for v, f in parts]
     if not hulls or any(not math.isfinite(h.volume) or h.volume <= 0 for h in hulls):
         raise ValueError("decomposition must produce finite, positive-volume hulls")
     hulls.sort(key=lambda h: tuple(np.round(h.centroid, 9)))
@@ -215,6 +247,7 @@ def _build(archive: zipfile.ZipFile, stage: Path, bop_id: int) -> dict:
             friction="0.6 0.005 0.0001",
             group="3",
             condim="4",
+            **({"solref": recipe["solref"]} if "solref" in recipe else {}),
         )
     ET.indent(model)
     (stage / f"{name}.xml").write_text(ET.tostring(model, encoding="unicode") + "\n")
@@ -225,7 +258,7 @@ def _build(archive: zipfile.ZipFile, stage: Path, bop_id: int) -> dict:
         mass=recipe["mass"],
         dimensions=extents,
         material=recipe["material"],
-        geometric_properties=dict(type="box", size=extents),
+        geometric_properties=dict(type="box", size=extents, **({"open": True} if recipe.get("open") else {})),
         mujoco=dict(xml_path=f"{name}.xml", scale=1.0, friction=[0.6, 0.005, 0.0001]),
         perception=dict(aliases=[BOP_YCB_NAMES[bop_id], "YCB " + name.replace("_", " ")]),
         dataset=dict(ycbv=dict(bop_id=bop_id, ycb_name=BOP_YCB_NAMES[bop_id])),
@@ -249,10 +282,16 @@ def _build(archive: zipfile.ZipFile, stage: Path, bop_id: int) -> dict:
                 mass_note="Reference YCB object mass, not a measurement of a lab copy",
                 inertia="Estimated by MuJoCo from uniformly dense convex parts; overlaps are counted",
                 friction="Unmeasured nominal contact parameters",
+                **(
+                    {"contact": f"MuJoCo solref {recipe['solref']}; 4 ms stiffness for thin-can bin impacts"}
+                    if "solref" in recipe
+                    else {}
+                ),
             ),
             conversion=dict(
                 coacd=COACD_VERSION,
-                settings=DECOMPOSITION,
+                method=method,
+                settings=settings if method == "decomposition" else {},
                 texture_size=[1024, 1024],
                 environment={
                     name: importlib.metadata.version(name) for name in ("numpy", "trimesh", "mujoco", "pillow", "scipy")

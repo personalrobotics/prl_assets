@@ -1,0 +1,1495 @@
+{
+  "source": {
+    "url": "https://huggingface.co/datasets/bop-benchmark/ycbv/resolve/5c2c4aa229800355648cd268040aa814f8dc94f0/ycbv_models.zip",
+    "sha256": "1e517a9b513cadb8eaf406ac3ce3c5f1d6fc4a80161c866b4e2a73d13de5e554"
+  },
+  "method": {
+    "samples_per_mesh": 20000,
+    "distance": "symmetric nearest-neighbour surface distance, both sample sets pooled",
+    "tolerances": {
+      "p99_mm": 3.0,
+      "colour_median": 12.0,
+      "residual_rotation_deg": 0.5,
+      "residual_translation_mm": 1.0
+    }
+  },
+  "environment": {
+    "python": "3.11.17",
+    "numpy": "2.4.6",
+    "scipy": "1.17.1",
+    "trimesh": "5.2.0",
+    "pillow": "13.0.0"
+  },
+  "objects": [
+    {
+      "name": "banana",
+      "bop_id": 10,
+      "ycb_name": "011_banana",
+      "source_members": {
+        "models/obj_000010.ply": "39f645ba8c4cd8457f9f22e19f50c557b259f8c5b2f21a39ebb3dde5f97c256c",
+        "models/obj_000010.png": "b68de45c4d92a2f8d3e8da357912b16b972ef37f25b56bcb593d4cf9fdc4ba2d"
+      },
+      "T_asset_bop": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "surface_distance_mm": {
+        "mean": 0.44,
+        "p99": 0.99,
+        "max": 1.55
+      },
+      "colour_median": 1.0,
+      "flipped": {
+        "180_about_x": {
+          "p99_mm": 70.84,
+          "colour_median": 14.0
+        },
+        "180_about_y": {
+          "p99_mm": 70.99,
+          "colour_median": 13.0
+        },
+        "180_about_z": {
+          "p99_mm": 63.36,
+          "colour_median": 14.7
+        }
+      },
+      "best_fit_residual": {
+        "rotation_deg": 0.011,
+        "translation_mm": 0.017
+      },
+      "asset_extent_m": [
+        0.1089,
+        0.1784,
+        0.0367
+      ],
+      "bop_extent_in_asset_axes_m": [
+        0.1089,
+        0.1784,
+        0.0367
+      ],
+      "pass": true
+    },
+    {
+      "name": "bleach_cleanser",
+      "bop_id": 12,
+      "ycb_name": "021_bleach_cleanser",
+      "source_members": {
+        "models/obj_000012.ply": "073401d538dbdc7ed5f8f782ff3a31196bc2fbd50512ddc9d41aa3965d8f590f",
+        "models/obj_000012.png": "4a3e23d50817bee611d2b4d1da1ff2aa2563f62a04e86cb4965a6d09a13d7666"
+      },
+      "T_asset_bop": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "surface_distance_mm": {
+        "mean": 0.76,
+        "p99": 1.71,
+        "max": 2.65
+      },
+      "colour_median": 1.0,
+      "flipped": {
+        "180_about_x": {
+          "p99_mm": 39.61,
+          "colour_median": 12.0
+        },
+        "180_about_y": {
+          "p99_mm": 36.41,
+          "colour_median": 13.0
+        },
+        "180_about_z": {
+          "p99_mm": 23.99,
+          "colour_median": 7.7
+        }
+      },
+      "best_fit_residual": {
+        "rotation_deg": 0.031,
+        "translation_mm": 0.027
+      },
+      "asset_extent_m": [
+        0.1024,
+        0.0677,
+        0.2506
+      ],
+      "bop_extent_in_asset_axes_m": [
+        0.1024,
+        0.0677,
+        0.2506
+      ],
+      "pass": true
+    },
+    {
+      "name": "cracker_box",
+      "bop_id": 2,
+      "ycb_name": "003_cracker_box",
+      "source_members": {
+        "models/obj_000002.ply": "121df764d2214a16d59fd77a31e168ca9e79ba0f30a5e529de86c8cd19c1686f",
+        "models/obj_000002.png": "9a04bc0e7a10766e44aee4bdfc719462b0b6cc53d186bc6d4e8b890691acdf59"
+      },
+      "T_asset_bop": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "surface_distance_mm": {
+        "mean": 1.01,
+        "p99": 2.26,
+        "max": 3.31
+      },
+      "colour_median": 2.7,
+      "flipped": {
+        "180_about_x": {
+          "p99_mm": 6.23,
+          "colour_median": 48.7
+        },
+        "180_about_y": {
+          "p99_mm": 9.56,
+          "colour_median": 56.3
+        },
+        "180_about_z": {
+          "p99_mm": 8.82,
+          "colour_median": 60.3
+        }
+      },
+      "best_fit_residual": {
+        "rotation_deg": 0.015,
+        "translation_mm": 0.022
+      },
+      "asset_extent_m": [
+        0.0718,
+        0.164,
+        0.2134
+      ],
+      "bop_extent_in_asset_axes_m": [
+        0.0717,
+        0.164,
+        0.2135
+      ],
+      "pass": true
+    },
+    {
+      "name": "extra_large_clamp",
+      "bop_id": 20,
+      "ycb_name": "052_extra_large_clamp",
+      "source_members": {
+        "models/obj_000020.ply": "26bda75feff6cddb68872781b3b3e38e986d69276e7a20182186e97e3890497c",
+        "models/obj_000020.png": "31384fbe397576a88032465631bdad37b7cf57d98ce52b8eacbd8262bd0ca325"
+      },
+      "T_asset_bop": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "surface_distance_mm": {
+        "mean": 0.7,
+        "p99": 1.55,
+        "max": 2.31
+      },
+      "colour_median": 1.0,
+      "flipped": {
+        "180_about_x": {
+          "p99_mm": 28.22,
+          "colour_median": 8.3
+        },
+        "180_about_y": {
+          "p99_mm": 55.22,
+          "colour_median": 8.0
+        },
+        "180_about_z": {
+          "p99_mm": 64.28,
+          "colour_median": 8.7
+        }
+      },
+      "best_fit_residual": {
+        "rotation_deg": 0.024,
+        "translation_mm": 0.024
+      },
+      "asset_extent_m": [
+        0.2098,
+        0.1644,
+        0.0363
+      ],
+      "bop_extent_in_asset_axes_m": [
+        0.2098,
+        0.1644,
+        0.0363
+      ],
+      "pass": true
+    },
+    {
+      "name": "foam_brick",
+      "bop_id": 21,
+      "ycb_name": "061_foam_brick",
+      "source_members": {
+        "models/obj_000021.ply": "c7fa849e009d48a414f6529696febce17a16ae80ecdc5ac12eaa1e185cb9eb9b",
+        "models/obj_000021.png": "6dbfd09f336cd16f165a8f63506ed0d50c4f22e5e3e73757b813be2aeee0c179"
+      },
+      "T_asset_bop": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "surface_distance_mm": {
+        "mean": 0.44,
+        "p99": 0.99,
+        "max": 1.6
+      },
+      "colour_median": 1.0,
+      "flipped": {
+        "180_about_x": {
+          "p99_mm": 12.0,
+          "colour_median": 4.7
+        },
+        "180_about_y": {
+          "p99_mm": 12.03,
+          "colour_median": 4.7
+        },
+        "180_about_z": {
+          "p99_mm": 1.81,
+          "colour_median": 2.0
+        }
+      },
+      "best_fit_residual": {
+        "rotation_deg": 0.03,
+        "translation_mm": 0.001
+      },
+      "asset_extent_m": [
+        0.0526,
+        0.0778,
+        0.0511
+      ],
+      "bop_extent_in_asset_axes_m": [
+        0.0526,
+        0.0778,
+        0.0511
+      ],
+      "pass": true
+    },
+    {
+      "name": "gelatin_box",
+      "bop_id": 8,
+      "ycb_name": "009_gelatin_box",
+      "source_members": {
+        "models/obj_000008.ply": "f7e1fb4921cee22a87334cf0eba24afeeddeed98dc372e5b5265a926dab86e04",
+        "models/obj_000008.png": "5fd0de9bc41b3c77545d116febf7a72875c8b430e35efe974ab601342a942b74"
+      },
+      "T_asset_bop": [
+        [
+          0.971797,
+          0.235821,
+          0.0,
+          0.0
+        ],
+        [
+          -0.235821,
+          0.971797,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "surface_distance_mm": {
+        "mean": 0.43,
+        "p99": 0.96,
+        "max": 1.52
+      },
+      "colour_median": 4.7,
+      "flipped": {
+        "180_about_x": {
+          "p99_mm": 2.08,
+          "colour_median": 58.7
+        },
+        "180_about_y": {
+          "p99_mm": 2.36,
+          "colour_median": 53.0
+        },
+        "180_about_z": {
+          "p99_mm": 1.46,
+          "colour_median": 34.7
+        }
+      },
+      "best_fit_residual": {
+        "rotation_deg": 0.008,
+        "translation_mm": 0.045
+      },
+      "asset_extent_m": [
+        0.0731,
+        0.0897,
+        0.0301
+      ],
+      "bop_extent_in_asset_axes_m": [
+        0.0731,
+        0.0897,
+        0.0301
+      ],
+      "pass": true
+    },
+    {
+      "name": "large_clamp",
+      "bop_id": 19,
+      "ycb_name": "051_large_clamp",
+      "source_members": {
+        "models/obj_000019.ply": "cb0cec6c6602e2ac1fa556b2d5f9cae200d346d98cc28d0057d33a98b5a5a298",
+        "models/obj_000019.png": "07bcedf0ffbcf9b9ab8c4eac77e1c80aafba6e5bb55641838199ad062b1ea7ed"
+      },
+      "T_asset_bop": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "surface_distance_mm": {
+        "mean": 0.6,
+        "p99": 1.32,
+        "max": 1.94
+      },
+      "colour_median": 1.3,
+      "flipped": {
+        "180_about_x": {
+          "p99_mm": 39.12,
+          "colour_median": 9.7
+        },
+        "180_about_y": {
+          "p99_mm": 27.97,
+          "colour_median": 10.7
+        },
+        "180_about_z": {
+          "p99_mm": 45.86,
+          "colour_median": 11.0
+        }
+      },
+      "best_fit_residual": {
+        "rotation_deg": 0.008,
+        "translation_mm": 0.006
+      },
+      "asset_extent_m": [
+        0.12,
+        0.1713,
+        0.0392
+      ],
+      "bop_extent_in_asset_axes_m": [
+        0.12,
+        0.1713,
+        0.0392
+      ],
+      "pass": true
+    },
+    {
+      "name": "large_marker",
+      "bop_id": 18,
+      "ycb_name": "040_large_marker",
+      "source_members": {
+        "models/obj_000018.ply": "aa6f0f674e68e4affd95f7d21ae052539fe817590492d485f12e34dd80489a2a",
+        "models/obj_000018.png": "0351acbfd666baabc23261c3f7d5d7645c5b55bd47cef0dbc101572552c888fb"
+      },
+      "T_asset_bop": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "surface_distance_mm": {
+        "mean": 0.26,
+        "p99": 0.57,
+        "max": 0.86
+      },
+      "colour_median": 1.0,
+      "flipped": {
+        "180_about_x": {
+          "p99_mm": 4.68,
+          "colour_median": 150.7
+        },
+        "180_about_y": {
+          "p99_mm": 2.29,
+          "colour_median": 14.7
+        },
+        "180_about_z": {
+          "p99_mm": 4.26,
+          "colour_median": 148.0
+        }
+      },
+      "best_fit_residual": {
+        "rotation_deg": 0.008,
+        "translation_mm": 0.009
+      },
+      "asset_extent_m": [
+        0.021,
+        0.1208,
+        0.0189
+      ],
+      "bop_extent_in_asset_axes_m": [
+        0.021,
+        0.1208,
+        0.0189
+      ],
+      "pass": true
+    },
+    {
+      "name": "master_chef_can",
+      "bop_id": 1,
+      "ycb_name": "002_master_chef_can",
+      "source_members": {
+        "models/obj_000001.ply": "af8774fe78b700e5ac7f55e48411c3389813753293d20dba420704c89fed6285",
+        "models/obj_000001.png": "58dd75e68ee169389471f1cc53011736fb08e3d2efd75e246cd7543a97696173"
+      },
+      "T_asset_bop": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "surface_distance_mm": {
+        "mean": 0.74,
+        "p99": 1.67,
+        "max": 2.44
+      },
+      "colour_median": 3.0,
+      "flipped": {
+        "180_about_x": {
+          "p99_mm": 2.33,
+          "colour_median": 59.7
+        },
+        "180_about_y": {
+          "p99_mm": 2.35,
+          "colour_median": 60.3
+        },
+        "180_about_z": {
+          "p99_mm": 1.68,
+          "colour_median": 9.7
+        }
+      },
+      "best_fit_residual": {
+        "rotation_deg": 0.197,
+        "translation_mm": 0.02
+      },
+      "asset_extent_m": [
+        0.1023,
+        0.1024,
+        0.1401
+      ],
+      "bop_extent_in_asset_axes_m": [
+        0.1023,
+        0.1024,
+        0.1401
+      ],
+      "pass": true
+    },
+    {
+      "name": "mug",
+      "bop_id": 14,
+      "ycb_name": "025_mug",
+      "source_members": {
+        "models/obj_000014.ply": "98d8a87c312b61e0185890cf123ddf63422add5978602b46531b6568a2783c77",
+        "models/obj_000014.png": "dc8066a0782cabb3a479f1c91ae4274b8cbc4e0c625f91e7317a7788dc9cc3b3"
+      },
+      "T_asset_bop": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "surface_distance_mm": {
+        "mean": 0.7,
+        "p99": 1.5,
+        "max": 2.48
+      },
+      "colour_median": 1.3,
+      "flipped": {
+        "180_about_x": {
+          "p99_mm": 30.59,
+          "colour_median": 16.0
+        },
+        "180_about_y": {
+          "p99_mm": 32.66,
+          "colour_median": 26.3
+        },
+        "180_about_z": {
+          "p99_mm": 22.16,
+          "colour_median": 23.0
+        }
+      },
+      "best_fit_residual": {
+        "rotation_deg": 0.062,
+        "translation_mm": 0.01
+      },
+      "asset_extent_m": [
+        0.117,
+        0.0931,
+        0.0814
+      ],
+      "bop_extent_in_asset_axes_m": [
+        0.117,
+        0.0931,
+        0.0814
+      ],
+      "pass": true
+    },
+    {
+      "name": "mustard_bottle",
+      "bop_id": 5,
+      "ycb_name": "006_mustard_bottle",
+      "source_members": {
+        "models/obj_000005.ply": "c1d093e33fe9b447812b2950c26b80fb26648a4205445986c9cc8b1731496811",
+        "models/obj_000005.png": "5ab81c84e1b0a945c9f1a3f20fe765720ab607ca2841a1da3454b9cf443893b1"
+      },
+      "T_asset_bop": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "surface_distance_mm": {
+        "mean": 0.64,
+        "p99": 1.45,
+        "max": 2.24
+      },
+      "colour_median": 1.3,
+      "flipped": {
+        "180_about_x": {
+          "p99_mm": 30.56,
+          "colour_median": 16.0
+        },
+        "180_about_y": {
+          "p99_mm": 30.58,
+          "colour_median": 16.0
+        },
+        "180_about_z": {
+          "p99_mm": 2.32,
+          "colour_median": 4.7
+        }
+      },
+      "best_fit_residual": {
+        "rotation_deg": 0.016,
+        "translation_mm": 0.021
+      },
+      "asset_extent_m": [
+        0.0972,
+        0.0666,
+        0.1914
+      ],
+      "bop_extent_in_asset_axes_m": [
+        0.0972,
+        0.0666,
+        0.1914
+      ],
+      "pass": true
+    },
+    {
+      "name": "pitcher_base",
+      "bop_id": 11,
+      "ycb_name": "019_pitcher_base",
+      "source_members": {
+        "models/obj_000011.ply": "e4d6c876cfc0342c133b357e2241f553197ca95df757126bd3b5daf7dddf65af",
+        "models/obj_000011.png": "1e2ae707ec3fb1fada520825f14a3712960948198eb569405ed71ccce1b82f8b"
+      },
+      "T_asset_bop": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "surface_distance_mm": {
+        "mean": 1.09,
+        "p99": 2.41,
+        "max": 3.33
+      },
+      "colour_median": 1.3,
+      "flipped": {
+        "180_about_x": {
+          "p99_mm": 37.31,
+          "colour_median": 12.7
+        },
+        "180_about_y": {
+          "p99_mm": 36.35,
+          "colour_median": 16.0
+        },
+        "180_about_z": {
+          "p99_mm": 22.56,
+          "colour_median": 14.7
+        }
+      },
+      "best_fit_residual": {
+        "rotation_deg": 0.054,
+        "translation_mm": 0.028
+      },
+      "asset_extent_m": [
+        0.149,
+        0.1448,
+        0.2426
+      ],
+      "bop_extent_in_asset_axes_m": [
+        0.149,
+        0.1448,
+        0.2426
+      ],
+      "pass": true
+    },
+    {
+      "name": "power_drill",
+      "bop_id": 15,
+      "ycb_name": "035_power_drill",
+      "source_members": {
+        "models/obj_000015.ply": "dd0c7bc5c3ee29e48a7087f58ab6df518cf3326e6b3b4b05071741014cbd31cf",
+        "models/obj_000015.png": "c43c1f9df2529613b3021f89aee21e148fbb3b5e4e8b9606d1d9db761b59c1a5"
+      },
+      "T_asset_bop": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "surface_distance_mm": {
+        "mean": 0.73,
+        "p99": 1.65,
+        "max": 2.31
+      },
+      "colour_median": 2.3,
+      "flipped": {
+        "180_about_x": {
+          "p99_mm": 54.21,
+          "colour_median": 56.7
+        },
+        "180_about_y": {
+          "p99_mm": 51.96,
+          "colour_median": 53.7
+        },
+        "180_about_z": {
+          "p99_mm": 57.73,
+          "colour_median": 56.3
+        }
+      },
+      "best_fit_residual": {
+        "rotation_deg": 0.007,
+        "translation_mm": 0.021
+      },
+      "asset_extent_m": [
+        0.1842,
+        0.1874,
+        0.0573
+      ],
+      "bop_extent_in_asset_axes_m": [
+        0.1842,
+        0.1874,
+        0.0573
+      ],
+      "pass": true
+    },
+    {
+      "name": "pudding_box",
+      "bop_id": 7,
+      "ycb_name": "008_pudding_box",
+      "source_members": {
+        "models/obj_000007.ply": "21b80159a1769616832bf3571b13e4915864b49817a1e480db0e3c70e8fe32ad",
+        "models/obj_000007.png": "84ed40299ebe3ddb46eb903245041e75d37a4afe98b8090fd7788ad3c51f0b98"
+      },
+      "T_asset_bop": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "surface_distance_mm": {
+        "mean": 0.54,
+        "p99": 1.21,
+        "max": 2.04
+      },
+      "colour_median": 3.7,
+      "flipped": {
+        "180_about_x": {
+          "p99_mm": 23.92,
+          "colour_median": 93.8
+        },
+        "180_about_y": {
+          "p99_mm": 23.76,
+          "colour_median": 84.0
+        },
+        "180_about_z": {
+          "p99_mm": 4.32,
+          "colour_median": 49.0
+        }
+      },
+      "best_fit_residual": {
+        "rotation_deg": 0.013,
+        "translation_mm": 0.006
+      },
+      "asset_extent_m": [
+        0.1378,
+        0.1288,
+        0.0388
+      ],
+      "bop_extent_in_asset_axes_m": [
+        0.1378,
+        0.1288,
+        0.0388
+      ],
+      "pass": true
+    },
+    {
+      "name": "scissors",
+      "bop_id": 17,
+      "ycb_name": "037_scissors",
+      "source_members": {
+        "models/obj_000017.ply": "c6062f41708b3663b33d27d7042eafeed7b66e0f97f8421c368754c1d92dbaf9",
+        "models/obj_000017.png": "be06b5b0378c3fb73e69b6427d078972b5f4979da028d5e2b531894e113b81be"
+      },
+      "T_asset_bop": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "surface_distance_mm": {
+        "mean": 0.39,
+        "p99": 0.87,
+        "max": 1.29
+      },
+      "colour_median": 1.3,
+      "flipped": {
+        "180_about_x": {
+          "p99_mm": 72.06,
+          "colour_median": 32.3
+        },
+        "180_about_y": {
+          "p99_mm": 76.81,
+          "colour_median": 20.0
+        },
+        "180_about_z": {
+          "p99_mm": 64.98,
+          "colour_median": 36.0
+        }
+      },
+      "best_fit_residual": {
+        "rotation_deg": 0.009,
+        "translation_mm": 0.023
+      },
+      "asset_extent_m": [
+        0.0961,
+        0.2015,
+        0.0157
+      ],
+      "bop_extent_in_asset_axes_m": [
+        0.0961,
+        0.2015,
+        0.0157
+      ],
+      "pass": true
+    },
+    {
+      "name": "spam_can",
+      "bop_id": 9,
+      "ycb_name": "010_potted_meat_can",
+      "source_members": {
+        "models/obj_000009.ply": "9c77d165489482dcc602330513e381936121484f33fda4f9ff57d61bbaf773fc",
+        "models/obj_000009.png": "f3cf6aa7fce365d25c476127d973998faed0b9b9318d361196b61b9a94828c91"
+      },
+      "T_asset_bop": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "surface_distance_mm": {
+        "mean": 0.55,
+        "p99": 1.23,
+        "max": 1.88
+      },
+      "colour_median": 5.3,
+      "flipped": {
+        "180_about_x": {
+          "p99_mm": 5.11,
+          "colour_median": 38.3
+        },
+        "180_about_y": {
+          "p99_mm": 5.07,
+          "colour_median": 38.7
+        },
+        "180_about_z": {
+          "p99_mm": 1.61,
+          "colour_median": 26.7
+        }
+      },
+      "best_fit_residual": {
+        "rotation_deg": 0.008,
+        "translation_mm": 0.08
+      },
+      "asset_extent_m": [
+        0.1021,
+        0.0601,
+        0.0835
+      ],
+      "bop_extent_in_asset_axes_m": [
+        0.1021,
+        0.0603,
+        0.0836
+      ],
+      "pass": true
+    },
+    {
+      "name": "sugar_box",
+      "bop_id": 3,
+      "ycb_name": "004_sugar_box",
+      "source_members": {
+        "models/obj_000003.ply": "d22f8ddd76c00f4003f1dc04252e599ed840d5cf638d7a1fe7f5569ddfe5eb3d",
+        "models/obj_000003.png": "2bc96cec830648eb0c4d491948464863b449309f4a61764a5b3f86a785474c5d"
+      },
+      "T_asset_bop": [
+        [
+          0.0,
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          -1.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "surface_distance_mm": {
+        "mean": 0.68,
+        "p99": 1.52,
+        "max": 2.19
+      },
+      "colour_median": 1.7,
+      "flipped": {
+        "180_about_x": {
+          "p99_mm": 7.63,
+          "colour_median": 60.7
+        },
+        "180_about_y": {
+          "p99_mm": 4.68,
+          "colour_median": 61.7
+        },
+        "180_about_z": {
+          "p99_mm": 9.41,
+          "colour_median": 60.0
+        }
+      },
+      "best_fit_residual": {
+        "rotation_deg": 0.029,
+        "translation_mm": 0.071
+      },
+      "asset_extent_m": [
+        0.176,
+        0.0942,
+        0.0495
+      ],
+      "bop_extent_in_asset_axes_m": [
+        0.176,
+        0.094,
+        0.0495
+      ],
+      "pass": true
+    },
+    {
+      "name": "tomato_soup_can",
+      "bop_id": 4,
+      "ycb_name": "005_tomato_soup_can",
+      "source_members": {
+        "models/obj_000004.ply": "fea7ae381b760b4852463fce4effa53fe9535dc5c8c1ee89de2be85a30b32211",
+        "models/obj_000004.png": "33183a894eb75ae04ae5188a3ae689fe8d06ec6b9f9624da1bf853c2a25e70d2"
+      },
+      "T_asset_bop": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "surface_distance_mm": {
+        "mean": 0.52,
+        "p99": 1.15,
+        "max": 1.72
+      },
+      "colour_median": 4.7,
+      "flipped": {
+        "180_about_x": {
+          "p99_mm": 3.57,
+          "colour_median": 80.3
+        },
+        "180_about_y": {
+          "p99_mm": 3.17,
+          "colour_median": 74.7
+        },
+        "180_about_z": {
+          "p99_mm": 3.41,
+          "colour_median": 39.7
+        }
+      },
+      "best_fit_residual": {
+        "rotation_deg": 0.046,
+        "translation_mm": 0.004
+      },
+      "asset_extent_m": [
+        0.0679,
+        0.0678,
+        0.102
+      ],
+      "bop_extent_in_asset_axes_m": [
+        0.0679,
+        0.0678,
+        0.102
+      ],
+      "pass": true
+    },
+    {
+      "name": "tuna_fish_can",
+      "bop_id": 6,
+      "ycb_name": "007_tuna_fish_can",
+      "source_members": {
+        "models/obj_000006.ply": "7d2a73f5f3ca3d7caf18962c02e7602c250301e9e403d934e247016054ce1187",
+        "models/obj_000006.png": "0962794d75a8d9ad41ed8e19e77bd307cb4e300d5e5d2cdbc4cacfecf5b1dbad"
+      },
+      "T_asset_bop": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "surface_distance_mm": {
+        "mean": 0.43,
+        "p99": 0.95,
+        "max": 1.39
+      },
+      "colour_median": 3.7,
+      "flipped": {
+        "180_about_x": {
+          "p99_mm": 2.88,
+          "colour_median": 28.7
+        },
+        "180_about_y": {
+          "p99_mm": 2.91,
+          "colour_median": 28.7
+        },
+        "180_about_z": {
+          "p99_mm": 0.97,
+          "colour_median": 14.7
+        }
+      },
+      "best_fit_residual": {
+        "rotation_deg": 0.126,
+        "translation_mm": 0.014
+      },
+      "asset_extent_m": [
+        0.0855,
+        0.0856,
+        0.0335
+      ],
+      "bop_extent_in_asset_axes_m": [
+        0.0855,
+        0.0856,
+        0.0335
+      ],
+      "pass": true
+    },
+    {
+      "name": "wood_block",
+      "bop_id": 16,
+      "ycb_name": "036_wood_block",
+      "source_members": {
+        "models/obj_000016.ply": "905e55fbf904bcc2e88ec394676243e0232b717a3d2e4be6799d13ea4f21c131",
+        "models/obj_000016.png": "35e5556ebc6415e58105400837594c887cc4f7416fc42a779df85ea8c4c73090"
+      },
+      "T_asset_bop": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "surface_distance_mm": {
+        "mean": 0.89,
+        "p99": 1.99,
+        "max": 2.88
+      },
+      "colour_median": 3.3,
+      "flipped": {
+        "180_about_x": {
+          "p99_mm": 13.27,
+          "colour_median": 13.3
+        },
+        "180_about_y": {
+          "p99_mm": 13.42,
+          "colour_median": 15.7
+        },
+        "180_about_z": {
+          "p99_mm": 2.64,
+          "colour_median": 16.3
+        }
+      },
+      "best_fit_residual": {
+        "rotation_deg": 0.013,
+        "translation_mm": 0.018
+      },
+      "asset_extent_m": [
+        0.104,
+        0.1035,
+        0.2059
+      ],
+      "bop_extent_in_asset_axes_m": [
+        0.104,
+        0.1035,
+        0.2059
+      ],
+      "pass": true
+    },
+    {
+      "name": "ycb_bowl",
+      "bop_id": 13,
+      "ycb_name": "024_bowl",
+      "source_members": {
+        "models/obj_000013.ply": "4f23ae40cae3a205d6d4db713e1668c783d710d0f35375eedb00c4de79606e34",
+        "models/obj_000013.png": "20029d22859dd94150b3d969c0b351663b6d7be31d28b90ba15987ee3ba57fdc"
+      },
+      "T_asset_bop": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "surface_distance_mm": {
+        "mean": 0.74,
+        "p99": 1.4,
+        "max": 1.86
+      },
+      "colour_median": 2.0,
+      "flipped": {
+        "180_about_x": {
+          "p99_mm": 51.33,
+          "colour_median": 13.0
+        },
+        "180_about_y": {
+          "p99_mm": 51.3,
+          "colour_median": 13.3
+        },
+        "180_about_z": {
+          "p99_mm": 1.73,
+          "colour_median": 7.7
+        }
+      },
+      "best_fit_residual": {
+        "rotation_deg": 0.011,
+        "translation_mm": 0.01
+      },
+      "asset_extent_m": [
+        0.1614,
+        0.1611,
+        0.055
+      ],
+      "bop_extent_in_asset_axes_m": [
+        0.1614,
+        0.1611,
+        0.055
+      ],
+      "pass": true
+    }
+  ]
+}

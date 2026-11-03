@@ -1,0 +1,92 @@
+name: pitcher_base
+description: YCB-V 019_pitcher_base
+category:
+- container
+- tableware
+- graspable
+mass: 0.178
+dimensions: &id001
+- 0.14899592648935367
+- 0.14476900179209679
+- 0.24263999938964845
+material: plastic
+geometric_properties:
+  type: box
+  size: *id001
+mujoco:
+  xml_path: pitcher_base.xml
+  scale: 1.0
+  friction:
+  - 0.6
+  - 0.005
+  - 0.0001
+perception:
+  aliases:
+  - 019_pitcher_base
+  - YCB pitcher base
+dataset:
+  ycbv:
+    bop_id: 11
+    ycb_name: 019_pitcher_base
+frames:
+  T_asset_bop:
+  - - 1.0
+    - 0.0
+    - 0.0
+    - 0.0
+  - - 0.0
+    - 1.0
+    - 0.0
+    - 0.0
+  - - 0.0
+    - 0.0
+    - 1.0
+    - 0.0
+  - - 0.0
+    - 0.0
+    - 0.0
+    - 1.0
+symmetries:
+  frame: bop
+  discrete: []
+  continuous: []
+provenance:
+  geometry: Pinned BOP PLY converted mm to m without alignment or simplification;
+    texture resized to 1024x1024
+  reference_model: models/obj_000011.ply in the pinned BOP ycbv_models.zip
+  license: CC-BY-4.0
+  attribution: YCB Object and Model Set; see collection NOTICE.md
+  archive_sha256: 1e517a9b513cadb8eaf406ac3ce3c5f1d6fc4a80161c866b4e2a73d13de5e554
+  source_members:
+    models/obj_000011.ply: e4d6c876cfc0342c133b357e2241f553197ca95df757126bd3b5daf7dddf65af
+    models/obj_000011.png: 1e2ae707ec3fb1fada520825f14a3712960948198eb569405ed71ccce1b82f8b
+  physical_properties:
+    mass_source: https://personalrobotics.cs.washington.edu/publications/calli2015ycb.pdf#page=5
+    mass_note: Reference YCB object mass, not a measurement of a lab copy
+    inertia: Estimated by MuJoCo from uniformly dense convex parts; overlaps are counted
+    friction: Unmeasured nominal contact parameters
+  conversion:
+    coacd: 1.0.14
+    method: decomposition
+    settings:
+      threshold: 0.002
+      real_metric: true
+      seed: 0
+      preprocess_mode: auto
+      preprocess_resolution: 50
+      resolution: 2000
+      mcts_nodes: 20
+      mcts_iterations: 150
+      mcts_max_depth: 3
+      merge: true
+      decimate: true
+      max_ch_vertex: 128
+    texture_size:
+    - 1024
+    - 1024
+    environment:
+      numpy: 2.4.6
+      trimesh: 5.2.0
+      mujoco: 3.17.0
+      pillow: 13.0.0
+      scipy: 1.17.1

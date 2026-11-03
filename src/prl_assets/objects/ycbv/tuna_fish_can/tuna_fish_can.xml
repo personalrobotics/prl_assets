@@ -1,0 +1,16 @@
+<mujoco model="tuna_fish_can">
+  <compiler angle="radian" />
+  <asset>
+    <texture name="visual_tex" type="2d" file="tuna_fish_can_texture.png" />
+    <material name="visual_mat" texture="visual_tex" />
+    <mesh name="visual_mesh" file="tuna_fish_can_visual.obj" />
+    <mesh name="collision_0" file="collision_000.obj" />
+  </asset>
+  <worldbody>
+    <body name="tuna_fish_can" pos="0 0 0.0167555008">
+      <freejoint name="tuna_fish_can_joint" />
+      <geom name="visual" type="mesh" mesh="visual_mesh" material="visual_mat" group="2" mass="0" contype="0" conaffinity="0" />
+      <geom name="tuna_fish_can_collision_0" type="mesh" mesh="collision_0" mass="0.171" friction="0.6 0.005 0.0001" group="3" condim="4" solref="0.004 1" />
+    </body>
+  </worldbody>
+</mujoco>

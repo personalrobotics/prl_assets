@@ -1,0 +1,191 @@
+name: wood_block
+description: YCB-V 036_wood_block
+category:
+- block
+- graspable
+mass: 0.729
+dimensions: &id001
+- 0.10395099639892579
+- 0.1035479965209961
+- 0.20588999938964844
+material: wood
+geometric_properties:
+  type: box
+  size: *id001
+mujoco:
+  xml_path: wood_block.xml
+  scale: 1.0
+  friction:
+  - 0.6
+  - 0.005
+  - 0.0001
+perception:
+  aliases:
+  - 036_wood_block
+  - YCB wood block
+dataset:
+  ycbv:
+    bop_id: 16
+    ycb_name: 036_wood_block
+frames:
+  T_asset_bop:
+  - - 1.0
+    - 0.0
+    - 0.0
+    - 0.0
+  - - 0.0
+    - 1.0
+    - 0.0
+    - 0.0
+  - - 0.0
+    - 0.0
+    - 1.0
+    - 0.0
+  - - 0.0
+    - 0.0
+    - 0.0
+    - 1.0
+symmetries:
+  frame: bop
+  discrete:
+  - - 0.00179515
+    - -0.999956
+    - -0.00918835
+    - -0.451143
+    - 0.99999
+    - 0.00175811
+    - 0.00403816
+    - -0.140551
+    - -0.00402183
+    - -0.00919551
+    - 0.99995
+    - -0.00311599
+    - 0
+    - 0
+    - 0
+    - 1
+  - - -0.91235
+    - 0.409408
+    - 0.00174142
+    - -0.447974
+    - 0.409408
+    - 0.912315
+    - 0.00813459
+    - 0.104494
+    - 0.00174165
+    - 0.00813454
+    - -0.999965
+    - -0.378074
+    - 0
+    - 0
+    - 0
+    - 1
+  - - -0.999923
+    - -0.000141842
+    - -0.0124131
+    - -0.676942
+    - 0.000199091
+    - -0.999989
+    - -0.00461085
+    - -0.897931
+    - -0.0124123
+    - -0.00461297
+    - 0.999912
+    - -0.0102148
+    - 0
+    - 0
+    - 0
+    - 1
+  - - 0.398672
+    - 0.917025
+    - 0.0111883
+    - -0.0193414
+    - 0.917024
+    - -0.398762
+    - 0.00739889
+    - 0.0551928
+    - 0.0112464
+    - 0.00731019
+    - -0.99991
+    - -0.43156
+    - 0
+    - 0
+    - 0
+    - 1
+  - - -0.41428
+    - -0.910149
+    - 0.00109705
+    - -0.786049
+    - -0.910149
+    - 0.414278
+    - -0.00180925
+    - -0.502355
+    - 0.0011922
+    - -0.00174801
+    - -0.999998
+    - -0.474172
+    - 0
+    - 0
+    - 0
+    - 1
+  - - 0.00204922
+    - 0.99999
+    - -0.00387721
+    - 0.151877
+    - -0.999955
+    - 0.00201313
+    - -0.00929112
+    - -0.438735
+    - -0.00928322
+    - 0.00389608
+    - 0.999949
+    - -0.0101433
+    - 0
+    - 0
+    - 0
+    - 1
+  - - 0.910561
+    - -0.413226
+    - 0.0110989
+    - -0.215161
+    - -0.413226
+    - -0.910625
+    - -0.00243254
+    - -1.0105
+    - 0.0111121
+    - -0.00237138
+    - -0.999935
+    - -0.469675
+    - 0
+    - 0
+    - 0
+    - 1
+  continuous: []
+provenance:
+  geometry: Pinned BOP PLY converted mm to m without alignment or simplification;
+    texture resized to 1024x1024
+  reference_model: models/obj_000016.ply in the pinned BOP ycbv_models.zip
+  license: CC-BY-4.0
+  attribution: YCB Object and Model Set; see collection NOTICE.md
+  archive_sha256: 1e517a9b513cadb8eaf406ac3ce3c5f1d6fc4a80161c866b4e2a73d13de5e554
+  source_members:
+    models/obj_000016.ply: 905e55fbf904bcc2e88ec394676243e0232b717a3d2e4be6799d13ea4f21c131
+    models/obj_000016.png: 35e5556ebc6415e58105400837594c887cc4f7416fc42a779df85ea8c4c73090
+  physical_properties:
+    mass_source: https://personalrobotics.cs.washington.edu/publications/calli2015ycb.pdf#page=5
+    mass_note: Reference YCB object mass, not a measurement of a lab copy
+    inertia: Estimated by MuJoCo from uniformly dense convex parts; overlaps are counted
+    friction: Unmeasured nominal contact parameters
+  conversion:
+    coacd: 1.0.14
+    method: hull
+    settings: {}
+    texture_size:
+    - 1024
+    - 1024
+    environment:
+      numpy: 2.4.6
+      trimesh: 5.2.0
+      mujoco: 3.17.0
+      pillow: 13.0.0
+      scipy: 1.17.1

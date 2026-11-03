@@ -1,0 +1,93 @@
+name: mug
+description: YCB-V 025_mug
+category:
+- container
+- tableware
+- graspable
+mass: 0.118
+dimensions: &id001
+- 0.11696509709474777
+- 0.09307499564201499
+- 0.08138400474378432
+material: unspecified
+geometric_properties:
+  type: box
+  size: *id001
+  open: true
+mujoco:
+  xml_path: mug.xml
+  scale: 1.0
+  friction:
+  - 0.6
+  - 0.005
+  - 0.0001
+perception:
+  aliases:
+  - 025_mug
+  - YCB mug
+dataset:
+  ycbv:
+    bop_id: 14
+    ycb_name: 025_mug
+frames:
+  T_asset_bop:
+  - - 1.0
+    - 0.0
+    - 0.0
+    - 0.0
+  - - 0.0
+    - 1.0
+    - 0.0
+    - 0.0
+  - - 0.0
+    - 0.0
+    - 1.0
+    - 0.0
+  - - 0.0
+    - 0.0
+    - 0.0
+    - 1.0
+symmetries:
+  frame: bop
+  discrete: []
+  continuous: []
+provenance:
+  geometry: Pinned BOP PLY converted mm to m without alignment or simplification;
+    texture resized to 1024x1024
+  reference_model: models/obj_000014.ply in the pinned BOP ycbv_models.zip
+  license: CC-BY-4.0
+  attribution: YCB Object and Model Set; see collection NOTICE.md
+  archive_sha256: 1e517a9b513cadb8eaf406ac3ce3c5f1d6fc4a80161c866b4e2a73d13de5e554
+  source_members:
+    models/obj_000014.ply: 98d8a87c312b61e0185890cf123ddf63422add5978602b46531b6568a2783c77
+    models/obj_000014.png: dc8066a0782cabb3a479f1c91ae4274b8cbc4e0c625f91e7317a7788dc9cc3b3
+  physical_properties:
+    mass_source: https://personalrobotics.cs.washington.edu/publications/calli2015ycb.pdf#page=5
+    mass_note: Reference YCB object mass, not a measurement of a lab copy
+    inertia: Estimated by MuJoCo from uniformly dense convex parts; overlaps are counted
+    friction: Unmeasured nominal contact parameters
+  conversion:
+    coacd: 1.0.14
+    method: decomposition
+    settings:
+      threshold: 0.002
+      real_metric: true
+      seed: 0
+      preprocess_mode: auto
+      preprocess_resolution: 100
+      resolution: 2000
+      mcts_nodes: 20
+      mcts_iterations: 150
+      mcts_max_depth: 3
+      merge: true
+      decimate: true
+      max_ch_vertex: 128
+    texture_size:
+    - 1024
+    - 1024
+    environment:
+      numpy: 2.4.6
+      trimesh: 5.2.0
+      mujoco: 3.17.0
+      pillow: 13.0.0
+      scipy: 1.17.1

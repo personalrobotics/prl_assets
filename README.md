@@ -80,8 +80,36 @@ in metres. [docs/schema.md](docs/schema.md) defines these fields and frames;
 to the BOP models. The scans are CC BY 4.0, not MIT; see
 [objects/ycbv/NOTICE.md](src/prl_assets/objects/ycbv/NOTICE.md).
 
-The collection currently holds `cracker_box`, `sugar_box`, `gelatin_box` and `spam_can`;
-the remaining YCB-V objects are tracked in issue #28.
+The collection contains all 21 benchmark identities. `ycb_bowl` is distinct from the
+existing `plastic_bowl`; `wood_block` is the benchmark block, not a generic toy cube.
+Scissors, clamps and the foam brick represent the fixed, rigid benchmark configuration.
+The benchmark pitcher scan is capped across the top, so it does not provide a usable
+open interior. The mug and bowl retain their open interiors. The [full catalog source audit](docs/ycbv_catalog.json)
+records geometry, texture and frame agreement for all 21 objects.
+
+| BOP ID | Canonical name | Collision model |
+| --- | --- | --- |
+| 1 | `master_chef_can` | convex envelope |
+| 2 | `cracker_box` | retained box |
+| 3 | `sugar_box` | retained box |
+| 4 | `tomato_soup_can` | convex envelope |
+| 5 | `mustard_bottle` | convex decomposition |
+| 6 | `tuna_fish_can` | convex envelope |
+| 7 | `pudding_box` | convex envelope |
+| 8 | `gelatin_box` | retained box |
+| 9 | `spam_can` | retained box |
+| 10 | `banana` | convex decomposition |
+| 11 | `pitcher_base` | convex decomposition, capped benchmark scan |
+| 12 | `bleach_cleanser` | convex decomposition |
+| 13 | `ycb_bowl` | convex decomposition, open interior |
+| 14 | `mug` | convex decomposition, open interior |
+| 15 | `power_drill` | convex decomposition |
+| 16 | `wood_block` | convex envelope |
+| 17 | `scissors` | convex decomposition |
+| 18 | `large_marker` | convex envelope |
+| 19 | `large_clamp` | convex decomposition |
+| 20 | `extra_large_clamp` | convex decomposition |
+| 21 | `foam_brick` | convex envelope |
 
 ### Migrating from flat paths
 
@@ -289,7 +317,7 @@ uv run --extra authoring python scripts/validate_objects.py
 | Script | Description |
 |--------|-------------|
 | `inspect_object.py` | Visualize single object with collision overlay and coordinate axes |
-| `viz_all_objects.py` | Display all 17 objects in a grid with collision geometry |
+| `viz_all_objects.py` | Display the catalog in a grid with collision geometry |
 | `viz_stacking_demo.py` | Physics demo: stacked dishes on tray, objects in tote |
 | `validate_objects.py` | Check objects the way CI does: conventions, mass, collision geometry against the visual mesh, open interiors |
 | `recenter_mesh.py` | Utility to re-center mesh origin to centroid |
@@ -313,10 +341,10 @@ uv run python -m prl_assets.import_ycbv \
 ```
 
 It verifies and caches the pinned 525 MB BOP model archive before reading models.
-Use `--archive /path/to/ycbv_models.zip` to reuse an existing copy. The initial
-validated recipe adds `mustard_bottle`; the four audited overlaps are retained
-without modifying their geometry, frames, aliases, or physical properties.
-Other new-object recipes are added only after their collision geometry is checked.
+Use `--archive /path/to/ycbv_models.zip` to reuse an existing copy. Recipes cover
+the 17 new objects; the four audited overlaps are retained without modifying their
+geometry, frames, aliases, or physical properties. Start with a copy of the packaged
+collection when reproducing the complete set, so the four retained models are present.
 
 New objects are converted and validated without discoverable metadata, then
 published with `meta.yaml` last. Existing directories are never overwritten.
@@ -325,10 +353,14 @@ source and output hashes, conversion settings, and collision measurements.
 
 The imported visual mesh is the original BOP geometry converted to metres, with
 UVs preserved and the texture resized to 1024 by 1024. Convex collision pieces are
-created with pinned CoACD settings. Mass comes from the cited YCB reference object;
+created with pinned CoACD settings for concave objects; closed convex objects use
+the visual mesh’s convex envelope. Mass comes from the cited YCB reference object;
 inertia and friction are estimates, not measured properties of a lab copy.
 `geometric_properties.type: box` describes an axis-aligned grasp envelope; it does
 not replace the actual compound collision geometry or certify a grasp policy.
+Detailed decompositions favor geometry over contact speed (the pitcher has 567 pieces);
+benchmark the intended scene before scaling up simulation. The tuna can uses a 4 ms
+contact time constant to prevent tunneling through the bin at the documented drop speed.
 
 The independent real-archive integration check is run once in the cached audit job:
 

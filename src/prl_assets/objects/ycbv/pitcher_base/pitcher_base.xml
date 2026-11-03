@@ -1,0 +1,1148 @@
+<mujoco model="pitcher_base">
+  <compiler angle="radian" />
+  <asset>
+    <texture name="visual_tex" type="2d" file="pitcher_base_texture.png" />
+    <material name="visual_mat" texture="visual_tex" />
+    <mesh name="visual_mesh" file="pitcher_base_visual.obj" />
+    <mesh name="collision_0" file="collision_000.obj" />
+    <mesh name="collision_1" file="collision_001.obj" />
+    <mesh name="collision_2" file="collision_002.obj" />
+    <mesh name="collision_3" file="collision_003.obj" />
+    <mesh name="collision_4" file="collision_004.obj" />
+    <mesh name="collision_5" file="collision_005.obj" />
+    <mesh name="collision_6" file="collision_006.obj" />
+    <mesh name="collision_7" file="collision_007.obj" />
+    <mesh name="collision_8" file="collision_008.obj" />
+    <mesh name="collision_9" file="collision_009.obj" />
+    <mesh name="collision_10" file="collision_010.obj" />
+    <mesh name="collision_11" file="collision_011.obj" />
+    <mesh name="collision_12" file="collision_012.obj" />
+    <mesh name="collision_13" file="collision_013.obj" />
+    <mesh name="collision_14" file="collision_014.obj" />
+    <mesh name="collision_15" file="collision_015.obj" />
+    <mesh name="collision_16" file="collision_016.obj" />
+    <mesh name="collision_17" file="collision_017.obj" />
+    <mesh name="collision_18" file="collision_018.obj" />
+    <mesh name="collision_19" file="collision_019.obj" />
+    <mesh name="collision_20" file="collision_020.obj" />
+    <mesh name="collision_21" file="collision_021.obj" />
+    <mesh name="collision_22" file="collision_022.obj" />
+    <mesh name="collision_23" file="collision_023.obj" />
+    <mesh name="collision_24" file="collision_024.obj" />
+    <mesh name="collision_25" file="collision_025.obj" />
+    <mesh name="collision_26" file="collision_026.obj" />
+    <mesh name="collision_27" file="collision_027.obj" />
+    <mesh name="collision_28" file="collision_028.obj" />
+    <mesh name="collision_29" file="collision_029.obj" />
+    <mesh name="collision_30" file="collision_030.obj" />
+    <mesh name="collision_31" file="collision_031.obj" />
+    <mesh name="collision_32" file="collision_032.obj" />
+    <mesh name="collision_33" file="collision_033.obj" />
+    <mesh name="collision_34" file="collision_034.obj" />
+    <mesh name="collision_35" file="collision_035.obj" />
+    <mesh name="collision_36" file="collision_036.obj" />
+    <mesh name="collision_37" file="collision_037.obj" />
+    <mesh name="collision_38" file="collision_038.obj" />
+    <mesh name="collision_39" file="collision_039.obj" />
+    <mesh name="collision_40" file="collision_040.obj" />
+    <mesh name="collision_41" file="collision_041.obj" />
+    <mesh name="collision_42" file="collision_042.obj" />
+    <mesh name="collision_43" file="collision_043.obj" />
+    <mesh name="collision_44" file="collision_044.obj" />
+    <mesh name="collision_45" file="collision_045.obj" />
+    <mesh name="collision_46" file="collision_046.obj" />
+    <mesh name="collision_47" file="collision_047.obj" />
+    <mesh name="collision_48" file="collision_048.obj" />
+    <mesh name="collision_49" file="collision_049.obj" />
+    <mesh name="collision_50" file="collision_050.obj" />
+    <mesh name="collision_51" file="collision_051.obj" />
+    <mesh name="collision_52" file="collision_052.obj" />
+    <mesh name="collision_53" file="collision_053.obj" />
+    <mesh name="collision_54" file="collision_054.obj" />
+    <mesh name="collision_55" file="collision_055.obj" />
+    <mesh name="collision_56" file="collision_056.obj" />
+    <mesh name="collision_57" file="collision_057.obj" />
+    <mesh name="collision_58" file="collision_058.obj" />
+    <mesh name="collision_59" file="collision_059.obj" />
+    <mesh name="collision_60" file="collision_060.obj" />
+    <mesh name="collision_61" file="collision_061.obj" />
+    <mesh name="collision_62" file="collision_062.obj" />
+    <mesh name="collision_63" file="collision_063.obj" />
+    <mesh name="collision_64" file="collision_064.obj" />
+    <mesh name="collision_65" file="collision_065.obj" />
+    <mesh name="collision_66" file="collision_066.obj" />
+    <mesh name="collision_67" file="collision_067.obj" />
+    <mesh name="collision_68" file="collision_068.obj" />
+    <mesh name="collision_69" file="collision_069.obj" />
+    <mesh name="collision_70" file="collision_070.obj" />
+    <mesh name="collision_71" file="collision_071.obj" />
+    <mesh name="collision_72" file="collision_072.obj" />
+    <mesh name="collision_73" file="collision_073.obj" />
+    <mesh name="collision_74" file="collision_074.obj" />
+    <mesh name="collision_75" file="collision_075.obj" />
+    <mesh name="collision_76" file="collision_076.obj" />
+    <mesh name="collision_77" file="collision_077.obj" />
+    <mesh name="collision_78" file="collision_078.obj" />
+    <mesh name="collision_79" file="collision_079.obj" />
+    <mesh name="collision_80" file="collision_080.obj" />
+    <mesh name="collision_81" file="collision_081.obj" />
+    <mesh name="collision_82" file="collision_082.obj" />
+    <mesh name="collision_83" file="collision_083.obj" />
+    <mesh name="collision_84" file="collision_084.obj" />
+    <mesh name="collision_85" file="collision_085.obj" />
+    <mesh name="collision_86" file="collision_086.obj" />
+    <mesh name="collision_87" file="collision_087.obj" />
+    <mesh name="collision_88" file="collision_088.obj" />
+    <mesh name="collision_89" file="collision_089.obj" />
+    <mesh name="collision_90" file="collision_090.obj" />
+    <mesh name="collision_91" file="collision_091.obj" />
+    <mesh name="collision_92" file="collision_092.obj" />
+    <mesh name="collision_93" file="collision_093.obj" />
+    <mesh name="collision_94" file="collision_094.obj" />
+    <mesh name="collision_95" file="collision_095.obj" />
+    <mesh name="collision_96" file="collision_096.obj" />
+    <mesh name="collision_97" file="collision_097.obj" />
+    <mesh name="collision_98" file="collision_098.obj" />
+    <mesh name="collision_99" file="collision_099.obj" />
+    <mesh name="collision_100" file="collision_100.obj" />
+    <mesh name="collision_101" file="collision_101.obj" />
+    <mesh name="collision_102" file="collision_102.obj" />
+    <mesh name="collision_103" file="collision_103.obj" />
+    <mesh name="collision_104" file="collision_104.obj" />
+    <mesh name="collision_105" file="collision_105.obj" />
+    <mesh name="collision_106" file="collision_106.obj" />
+    <mesh name="collision_107" file="collision_107.obj" />
+    <mesh name="collision_108" file="collision_108.obj" />
+    <mesh name="collision_109" file="collision_109.obj" />
+    <mesh name="collision_110" file="collision_110.obj" />
+    <mesh name="collision_111" file="collision_111.obj" />
+    <mesh name="collision_112" file="collision_112.obj" />
+    <mesh name="collision_113" file="collision_113.obj" />
+    <mesh name="collision_114" file="collision_114.obj" />
+    <mesh name="collision_115" file="collision_115.obj" />
+    <mesh name="collision_116" file="collision_116.obj" />
+    <mesh name="collision_117" file="collision_117.obj" />
+    <mesh name="collision_118" file="collision_118.obj" />
+    <mesh name="collision_119" file="collision_119.obj" />
+    <mesh name="collision_120" file="collision_120.obj" />
+    <mesh name="collision_121" file="collision_121.obj" />
+    <mesh name="collision_122" file="collision_122.obj" />
+    <mesh name="collision_123" file="collision_123.obj" />
+    <mesh name="collision_124" file="collision_124.obj" />
+    <mesh name="collision_125" file="collision_125.obj" />
+    <mesh name="collision_126" file="collision_126.obj" />
+    <mesh name="collision_127" file="collision_127.obj" />
+    <mesh name="collision_128" file="collision_128.obj" />
+    <mesh name="collision_129" file="collision_129.obj" />
+    <mesh name="collision_130" file="collision_130.obj" />
+    <mesh name="collision_131" file="collision_131.obj" />
+    <mesh name="collision_132" file="collision_132.obj" />
+    <mesh name="collision_133" file="collision_133.obj" />
+    <mesh name="collision_134" file="collision_134.obj" />
+    <mesh name="collision_135" file="collision_135.obj" />
+    <mesh name="collision_136" file="collision_136.obj" />
+    <mesh name="collision_137" file="collision_137.obj" />
+    <mesh name="collision_138" file="collision_138.obj" />
+    <mesh name="collision_139" file="collision_139.obj" />
+    <mesh name="collision_140" file="collision_140.obj" />
+    <mesh name="collision_141" file="collision_141.obj" />
+    <mesh name="collision_142" file="collision_142.obj" />
+    <mesh name="collision_143" file="collision_143.obj" />
+    <mesh name="collision_144" file="collision_144.obj" />
+    <mesh name="collision_145" file="collision_145.obj" />
+    <mesh name="collision_146" file="collision_146.obj" />
+    <mesh name="collision_147" file="collision_147.obj" />
+    <mesh name="collision_148" file="collision_148.obj" />
+    <mesh name="collision_149" file="collision_149.obj" />
+    <mesh name="collision_150" file="collision_150.obj" />
+    <mesh name="collision_151" file="collision_151.obj" />
+    <mesh name="collision_152" file="collision_152.obj" />
+    <mesh name="collision_153" file="collision_153.obj" />
+    <mesh name="collision_154" file="collision_154.obj" />
+    <mesh name="collision_155" file="collision_155.obj" />
+    <mesh name="collision_156" file="collision_156.obj" />
+    <mesh name="collision_157" file="collision_157.obj" />
+    <mesh name="collision_158" file="collision_158.obj" />
+    <mesh name="collision_159" file="collision_159.obj" />
+    <mesh name="collision_160" file="collision_160.obj" />
+    <mesh name="collision_161" file="collision_161.obj" />
+    <mesh name="collision_162" file="collision_162.obj" />
+    <mesh name="collision_163" file="collision_163.obj" />
+    <mesh name="collision_164" file="collision_164.obj" />
+    <mesh name="collision_165" file="collision_165.obj" />
+    <mesh name="collision_166" file="collision_166.obj" />
+    <mesh name="collision_167" file="collision_167.obj" />
+    <mesh name="collision_168" file="collision_168.obj" />
+    <mesh name="collision_169" file="collision_169.obj" />
+    <mesh name="collision_170" file="collision_170.obj" />
+    <mesh name="collision_171" file="collision_171.obj" />
+    <mesh name="collision_172" file="collision_172.obj" />
+    <mesh name="collision_173" file="collision_173.obj" />
+    <mesh name="collision_174" file="collision_174.obj" />
+    <mesh name="collision_175" file="collision_175.obj" />
+    <mesh name="collision_176" file="collision_176.obj" />
+    <mesh name="collision_177" file="collision_177.obj" />
+    <mesh name="collision_178" file="collision_178.obj" />
+    <mesh name="collision_179" file="collision_179.obj" />
+    <mesh name="collision_180" file="collision_180.obj" />
+    <mesh name="collision_181" file="collision_181.obj" />
+    <mesh name="collision_182" file="collision_182.obj" />
+    <mesh name="collision_183" file="collision_183.obj" />
+    <mesh name="collision_184" file="collision_184.obj" />
+    <mesh name="collision_185" file="collision_185.obj" />
+    <mesh name="collision_186" file="collision_186.obj" />
+    <mesh name="collision_187" file="collision_187.obj" />
+    <mesh name="collision_188" file="collision_188.obj" />
+    <mesh name="collision_189" file="collision_189.obj" />
+    <mesh name="collision_190" file="collision_190.obj" />
+    <mesh name="collision_191" file="collision_191.obj" />
+    <mesh name="collision_192" file="collision_192.obj" />
+    <mesh name="collision_193" file="collision_193.obj" />
+    <mesh name="collision_194" file="collision_194.obj" />
+    <mesh name="collision_195" file="collision_195.obj" />
+    <mesh name="collision_196" file="collision_196.obj" />
+    <mesh name="collision_197" file="collision_197.obj" />
+    <mesh name="collision_198" file="collision_198.obj" />
+    <mesh name="collision_199" file="collision_199.obj" />
+    <mesh name="collision_200" file="collision_200.obj" />
+    <mesh name="collision_201" file="collision_201.obj" />
+    <mesh name="collision_202" file="collision_202.obj" />
+    <mesh name="collision_203" file="collision_203.obj" />
+    <mesh name="collision_204" file="collision_204.obj" />
+    <mesh name="collision_205" file="collision_205.obj" />
+    <mesh name="collision_206" file="collision_206.obj" />
+    <mesh name="collision_207" file="collision_207.obj" />
+    <mesh name="collision_208" file="collision_208.obj" />
+    <mesh name="collision_209" file="collision_209.obj" />
+    <mesh name="collision_210" file="collision_210.obj" />
+    <mesh name="collision_211" file="collision_211.obj" />
+    <mesh name="collision_212" file="collision_212.obj" />
+    <mesh name="collision_213" file="collision_213.obj" />
+    <mesh name="collision_214" file="collision_214.obj" />
+    <mesh name="collision_215" file="collision_215.obj" />
+    <mesh name="collision_216" file="collision_216.obj" />
+    <mesh name="collision_217" file="collision_217.obj" />
+    <mesh name="collision_218" file="collision_218.obj" />
+    <mesh name="collision_219" file="collision_219.obj" />
+    <mesh name="collision_220" file="collision_220.obj" />
+    <mesh name="collision_221" file="collision_221.obj" />
+    <mesh name="collision_222" file="collision_222.obj" />
+    <mesh name="collision_223" file="collision_223.obj" />
+    <mesh name="collision_224" file="collision_224.obj" />
+    <mesh name="collision_225" file="collision_225.obj" />
+    <mesh name="collision_226" file="collision_226.obj" />
+    <mesh name="collision_227" file="collision_227.obj" />
+    <mesh name="collision_228" file="collision_228.obj" />
+    <mesh name="collision_229" file="collision_229.obj" />
+    <mesh name="collision_230" file="collision_230.obj" />
+    <mesh name="collision_231" file="collision_231.obj" />
+    <mesh name="collision_232" file="collision_232.obj" />
+    <mesh name="collision_233" file="collision_233.obj" />
+    <mesh name="collision_234" file="collision_234.obj" />
+    <mesh name="collision_235" file="collision_235.obj" />
+    <mesh name="collision_236" file="collision_236.obj" />
+    <mesh name="collision_237" file="collision_237.obj" />
+    <mesh name="collision_238" file="collision_238.obj" />
+    <mesh name="collision_239" file="collision_239.obj" />
+    <mesh name="collision_240" file="collision_240.obj" />
+    <mesh name="collision_241" file="collision_241.obj" />
+    <mesh name="collision_242" file="collision_242.obj" />
+    <mesh name="collision_243" file="collision_243.obj" />
+    <mesh name="collision_244" file="collision_244.obj" />
+    <mesh name="collision_245" file="collision_245.obj" />
+    <mesh name="collision_246" file="collision_246.obj" />
+    <mesh name="collision_247" file="collision_247.obj" />
+    <mesh name="collision_248" file="collision_248.obj" />
+    <mesh name="collision_249" file="collision_249.obj" />
+    <mesh name="collision_250" file="collision_250.obj" />
+    <mesh name="collision_251" file="collision_251.obj" />
+    <mesh name="collision_252" file="collision_252.obj" />
+    <mesh name="collision_253" file="collision_253.obj" />
+    <mesh name="collision_254" file="collision_254.obj" />
+    <mesh name="collision_255" file="collision_255.obj" />
+    <mesh name="collision_256" file="collision_256.obj" />
+    <mesh name="collision_257" file="collision_257.obj" />
+    <mesh name="collision_258" file="collision_258.obj" />
+    <mesh name="collision_259" file="collision_259.obj" />
+    <mesh name="collision_260" file="collision_260.obj" />
+    <mesh name="collision_261" file="collision_261.obj" />
+    <mesh name="collision_262" file="collision_262.obj" />
+    <mesh name="collision_263" file="collision_263.obj" />
+    <mesh name="collision_264" file="collision_264.obj" />
+    <mesh name="collision_265" file="collision_265.obj" />
+    <mesh name="collision_266" file="collision_266.obj" />
+    <mesh name="collision_267" file="collision_267.obj" />
+    <mesh name="collision_268" file="collision_268.obj" />
+    <mesh name="collision_269" file="collision_269.obj" />
+    <mesh name="collision_270" file="collision_270.obj" />
+    <mesh name="collision_271" file="collision_271.obj" />
+    <mesh name="collision_272" file="collision_272.obj" />
+    <mesh name="collision_273" file="collision_273.obj" />
+    <mesh name="collision_274" file="collision_274.obj" />
+    <mesh name="collision_275" file="collision_275.obj" />
+    <mesh name="collision_276" file="collision_276.obj" />
+    <mesh name="collision_277" file="collision_277.obj" />
+    <mesh name="collision_278" file="collision_278.obj" />
+    <mesh name="collision_279" file="collision_279.obj" />
+    <mesh name="collision_280" file="collision_280.obj" />
+    <mesh name="collision_281" file="collision_281.obj" />
+    <mesh name="collision_282" file="collision_282.obj" />
+    <mesh name="collision_283" file="collision_283.obj" />
+    <mesh name="collision_284" file="collision_284.obj" />
+    <mesh name="collision_285" file="collision_285.obj" />
+    <mesh name="collision_286" file="collision_286.obj" />
+    <mesh name="collision_287" file="collision_287.obj" />
+    <mesh name="collision_288" file="collision_288.obj" />
+    <mesh name="collision_289" file="collision_289.obj" />
+    <mesh name="collision_290" file="collision_290.obj" />
+    <mesh name="collision_291" file="collision_291.obj" />
+    <mesh name="collision_292" file="collision_292.obj" />
+    <mesh name="collision_293" file="collision_293.obj" />
+    <mesh name="collision_294" file="collision_294.obj" />
+    <mesh name="collision_295" file="collision_295.obj" />
+    <mesh name="collision_296" file="collision_296.obj" />
+    <mesh name="collision_297" file="collision_297.obj" />
+    <mesh name="collision_298" file="collision_298.obj" />
+    <mesh name="collision_299" file="collision_299.obj" />
+    <mesh name="collision_300" file="collision_300.obj" />
+    <mesh name="collision_301" file="collision_301.obj" />
+    <mesh name="collision_302" file="collision_302.obj" />
+    <mesh name="collision_303" file="collision_303.obj" />
+    <mesh name="collision_304" file="collision_304.obj" />
+    <mesh name="collision_305" file="collision_305.obj" />
+    <mesh name="collision_306" file="collision_306.obj" />
+    <mesh name="collision_307" file="collision_307.obj" />
+    <mesh name="collision_308" file="collision_308.obj" />
+    <mesh name="collision_309" file="collision_309.obj" />
+    <mesh name="collision_310" file="collision_310.obj" />
+    <mesh name="collision_311" file="collision_311.obj" />
+    <mesh name="collision_312" file="collision_312.obj" />
+    <mesh name="collision_313" file="collision_313.obj" />
+    <mesh name="collision_314" file="collision_314.obj" />
+    <mesh name="collision_315" file="collision_315.obj" />
+    <mesh name="collision_316" file="collision_316.obj" />
+    <mesh name="collision_317" file="collision_317.obj" />
+    <mesh name="collision_318" file="collision_318.obj" />
+    <mesh name="collision_319" file="collision_319.obj" />
+    <mesh name="collision_320" file="collision_320.obj" />
+    <mesh name="collision_321" file="collision_321.obj" />
+    <mesh name="collision_322" file="collision_322.obj" />
+    <mesh name="collision_323" file="collision_323.obj" />
+    <mesh name="collision_324" file="collision_324.obj" />
+    <mesh name="collision_325" file="collision_325.obj" />
+    <mesh name="collision_326" file="collision_326.obj" />
+    <mesh name="collision_327" file="collision_327.obj" />
+    <mesh name="collision_328" file="collision_328.obj" />
+    <mesh name="collision_329" file="collision_329.obj" />
+    <mesh name="collision_330" file="collision_330.obj" />
+    <mesh name="collision_331" file="collision_331.obj" />
+    <mesh name="collision_332" file="collision_332.obj" />
+    <mesh name="collision_333" file="collision_333.obj" />
+    <mesh name="collision_334" file="collision_334.obj" />
+    <mesh name="collision_335" file="collision_335.obj" />
+    <mesh name="collision_336" file="collision_336.obj" />
+    <mesh name="collision_337" file="collision_337.obj" />
+    <mesh name="collision_338" file="collision_338.obj" />
+    <mesh name="collision_339" file="collision_339.obj" />
+    <mesh name="collision_340" file="collision_340.obj" />
+    <mesh name="collision_341" file="collision_341.obj" />
+    <mesh name="collision_342" file="collision_342.obj" />
+    <mesh name="collision_343" file="collision_343.obj" />
+    <mesh name="collision_344" file="collision_344.obj" />
+    <mesh name="collision_345" file="collision_345.obj" />
+    <mesh name="collision_346" file="collision_346.obj" />
+    <mesh name="collision_347" file="collision_347.obj" />
+    <mesh name="collision_348" file="collision_348.obj" />
+    <mesh name="collision_349" file="collision_349.obj" />
+    <mesh name="collision_350" file="collision_350.obj" />
+    <mesh name="collision_351" file="collision_351.obj" />
+    <mesh name="collision_352" file="collision_352.obj" />
+    <mesh name="collision_353" file="collision_353.obj" />
+    <mesh name="collision_354" file="collision_354.obj" />
+    <mesh name="collision_355" file="collision_355.obj" />
+    <mesh name="collision_356" file="collision_356.obj" />
+    <mesh name="collision_357" file="collision_357.obj" />
+    <mesh name="collision_358" file="collision_358.obj" />
+    <mesh name="collision_359" file="collision_359.obj" />
+    <mesh name="collision_360" file="collision_360.obj" />
+    <mesh name="collision_361" file="collision_361.obj" />
+    <mesh name="collision_362" file="collision_362.obj" />
+    <mesh name="collision_363" file="collision_363.obj" />
+    <mesh name="collision_364" file="collision_364.obj" />
+    <mesh name="collision_365" file="collision_365.obj" />
+    <mesh name="collision_366" file="collision_366.obj" />
+    <mesh name="collision_367" file="collision_367.obj" />
+    <mesh name="collision_368" file="collision_368.obj" />
+    <mesh name="collision_369" file="collision_369.obj" />
+    <mesh name="collision_370" file="collision_370.obj" />
+    <mesh name="collision_371" file="collision_371.obj" />
+    <mesh name="collision_372" file="collision_372.obj" />
+    <mesh name="collision_373" file="collision_373.obj" />
+    <mesh name="collision_374" file="collision_374.obj" />
+    <mesh name="collision_375" file="collision_375.obj" />
+    <mesh name="collision_376" file="collision_376.obj" />
+    <mesh name="collision_377" file="collision_377.obj" />
+    <mesh name="collision_378" file="collision_378.obj" />
+    <mesh name="collision_379" file="collision_379.obj" />
+    <mesh name="collision_380" file="collision_380.obj" />
+    <mesh name="collision_381" file="collision_381.obj" />
+    <mesh name="collision_382" file="collision_382.obj" />
+    <mesh name="collision_383" file="collision_383.obj" />
+    <mesh name="collision_384" file="collision_384.obj" />
+    <mesh name="collision_385" file="collision_385.obj" />
+    <mesh name="collision_386" file="collision_386.obj" />
+    <mesh name="collision_387" file="collision_387.obj" />
+    <mesh name="collision_388" file="collision_388.obj" />
+    <mesh name="collision_389" file="collision_389.obj" />
+    <mesh name="collision_390" file="collision_390.obj" />
+    <mesh name="collision_391" file="collision_391.obj" />
+    <mesh name="collision_392" file="collision_392.obj" />
+    <mesh name="collision_393" file="collision_393.obj" />
+    <mesh name="collision_394" file="collision_394.obj" />
+    <mesh name="collision_395" file="collision_395.obj" />
+    <mesh name="collision_396" file="collision_396.obj" />
+    <mesh name="collision_397" file="collision_397.obj" />
+    <mesh name="collision_398" file="collision_398.obj" />
+    <mesh name="collision_399" file="collision_399.obj" />
+    <mesh name="collision_400" file="collision_400.obj" />
+    <mesh name="collision_401" file="collision_401.obj" />
+    <mesh name="collision_402" file="collision_402.obj" />
+    <mesh name="collision_403" file="collision_403.obj" />
+    <mesh name="collision_404" file="collision_404.obj" />
+    <mesh name="collision_405" file="collision_405.obj" />
+    <mesh name="collision_406" file="collision_406.obj" />
+    <mesh name="collision_407" file="collision_407.obj" />
+    <mesh name="collision_408" file="collision_408.obj" />
+    <mesh name="collision_409" file="collision_409.obj" />
+    <mesh name="collision_410" file="collision_410.obj" />
+    <mesh name="collision_411" file="collision_411.obj" />
+    <mesh name="collision_412" file="collision_412.obj" />
+    <mesh name="collision_413" file="collision_413.obj" />
+    <mesh name="collision_414" file="collision_414.obj" />
+    <mesh name="collision_415" file="collision_415.obj" />
+    <mesh name="collision_416" file="collision_416.obj" />
+    <mesh name="collision_417" file="collision_417.obj" />
+    <mesh name="collision_418" file="collision_418.obj" />
+    <mesh name="collision_419" file="collision_419.obj" />
+    <mesh name="collision_420" file="collision_420.obj" />
+    <mesh name="collision_421" file="collision_421.obj" />
+    <mesh name="collision_422" file="collision_422.obj" />
+    <mesh name="collision_423" file="collision_423.obj" />
+    <mesh name="collision_424" file="collision_424.obj" />
+    <mesh name="collision_425" file="collision_425.obj" />
+    <mesh name="collision_426" file="collision_426.obj" />
+    <mesh name="collision_427" file="collision_427.obj" />
+    <mesh name="collision_428" file="collision_428.obj" />
+    <mesh name="collision_429" file="collision_429.obj" />
+    <mesh name="collision_430" file="collision_430.obj" />
+    <mesh name="collision_431" file="collision_431.obj" />
+    <mesh name="collision_432" file="collision_432.obj" />
+    <mesh name="collision_433" file="collision_433.obj" />
+    <mesh name="collision_434" file="collision_434.obj" />
+    <mesh name="collision_435" file="collision_435.obj" />
+    <mesh name="collision_436" file="collision_436.obj" />
+    <mesh name="collision_437" file="collision_437.obj" />
+    <mesh name="collision_438" file="collision_438.obj" />
+    <mesh name="collision_439" file="collision_439.obj" />
+    <mesh name="collision_440" file="collision_440.obj" />
+    <mesh name="collision_441" file="collision_441.obj" />
+    <mesh name="collision_442" file="collision_442.obj" />
+    <mesh name="collision_443" file="collision_443.obj" />
+    <mesh name="collision_444" file="collision_444.obj" />
+    <mesh name="collision_445" file="collision_445.obj" />
+    <mesh name="collision_446" file="collision_446.obj" />
+    <mesh name="collision_447" file="collision_447.obj" />
+    <mesh name="collision_448" file="collision_448.obj" />
+    <mesh name="collision_449" file="collision_449.obj" />
+    <mesh name="collision_450" file="collision_450.obj" />
+    <mesh name="collision_451" file="collision_451.obj" />
+    <mesh name="collision_452" file="collision_452.obj" />
+    <mesh name="collision_453" file="collision_453.obj" />
+    <mesh name="collision_454" file="collision_454.obj" />
+    <mesh name="collision_455" file="collision_455.obj" />
+    <mesh name="collision_456" file="collision_456.obj" />
+    <mesh name="collision_457" file="collision_457.obj" />
+    <mesh name="collision_458" file="collision_458.obj" />
+    <mesh name="collision_459" file="collision_459.obj" />
+    <mesh name="collision_460" file="collision_460.obj" />
+    <mesh name="collision_461" file="collision_461.obj" />
+    <mesh name="collision_462" file="collision_462.obj" />
+    <mesh name="collision_463" file="collision_463.obj" />
+    <mesh name="collision_464" file="collision_464.obj" />
+    <mesh name="collision_465" file="collision_465.obj" />
+    <mesh name="collision_466" file="collision_466.obj" />
+    <mesh name="collision_467" file="collision_467.obj" />
+    <mesh name="collision_468" file="collision_468.obj" />
+    <mesh name="collision_469" file="collision_469.obj" />
+    <mesh name="collision_470" file="collision_470.obj" />
+    <mesh name="collision_471" file="collision_471.obj" />
+    <mesh name="collision_472" file="collision_472.obj" />
+    <mesh name="collision_473" file="collision_473.obj" />
+    <mesh name="collision_474" file="collision_474.obj" />
+    <mesh name="collision_475" file="collision_475.obj" />
+    <mesh name="collision_476" file="collision_476.obj" />
+    <mesh name="collision_477" file="collision_477.obj" />
+    <mesh name="collision_478" file="collision_478.obj" />
+    <mesh name="collision_479" file="collision_479.obj" />
+    <mesh name="collision_480" file="collision_480.obj" />
+    <mesh name="collision_481" file="collision_481.obj" />
+    <mesh name="collision_482" file="collision_482.obj" />
+    <mesh name="collision_483" file="collision_483.obj" />
+    <mesh name="collision_484" file="collision_484.obj" />
+    <mesh name="collision_485" file="collision_485.obj" />
+    <mesh name="collision_486" file="collision_486.obj" />
+    <mesh name="collision_487" file="collision_487.obj" />
+    <mesh name="collision_488" file="collision_488.obj" />
+    <mesh name="collision_489" file="collision_489.obj" />
+    <mesh name="collision_490" file="collision_490.obj" />
+    <mesh name="collision_491" file="collision_491.obj" />
+    <mesh name="collision_492" file="collision_492.obj" />
+    <mesh name="collision_493" file="collision_493.obj" />
+    <mesh name="collision_494" file="collision_494.obj" />
+    <mesh name="collision_495" file="collision_495.obj" />
+    <mesh name="collision_496" file="collision_496.obj" />
+    <mesh name="collision_497" file="collision_497.obj" />
+    <mesh name="collision_498" file="collision_498.obj" />
+    <mesh name="collision_499" file="collision_499.obj" />
+    <mesh name="collision_500" file="collision_500.obj" />
+    <mesh name="collision_501" file="collision_501.obj" />
+    <mesh name="collision_502" file="collision_502.obj" />
+    <mesh name="collision_503" file="collision_503.obj" />
+    <mesh name="collision_504" file="collision_504.obj" />
+    <mesh name="collision_505" file="collision_505.obj" />
+    <mesh name="collision_506" file="collision_506.obj" />
+    <mesh name="collision_507" file="collision_507.obj" />
+    <mesh name="collision_508" file="collision_508.obj" />
+    <mesh name="collision_509" file="collision_509.obj" />
+    <mesh name="collision_510" file="collision_510.obj" />
+    <mesh name="collision_511" file="collision_511.obj" />
+    <mesh name="collision_512" file="collision_512.obj" />
+    <mesh name="collision_513" file="collision_513.obj" />
+    <mesh name="collision_514" file="collision_514.obj" />
+    <mesh name="collision_515" file="collision_515.obj" />
+    <mesh name="collision_516" file="collision_516.obj" />
+    <mesh name="collision_517" file="collision_517.obj" />
+    <mesh name="collision_518" file="collision_518.obj" />
+    <mesh name="collision_519" file="collision_519.obj" />
+    <mesh name="collision_520" file="collision_520.obj" />
+    <mesh name="collision_521" file="collision_521.obj" />
+    <mesh name="collision_522" file="collision_522.obj" />
+    <mesh name="collision_523" file="collision_523.obj" />
+    <mesh name="collision_524" file="collision_524.obj" />
+    <mesh name="collision_525" file="collision_525.obj" />
+    <mesh name="collision_526" file="collision_526.obj" />
+    <mesh name="collision_527" file="collision_527.obj" />
+    <mesh name="collision_528" file="collision_528.obj" />
+    <mesh name="collision_529" file="collision_529.obj" />
+    <mesh name="collision_530" file="collision_530.obj" />
+    <mesh name="collision_531" file="collision_531.obj" />
+    <mesh name="collision_532" file="collision_532.obj" />
+    <mesh name="collision_533" file="collision_533.obj" />
+    <mesh name="collision_534" file="collision_534.obj" />
+    <mesh name="collision_535" file="collision_535.obj" />
+    <mesh name="collision_536" file="collision_536.obj" />
+    <mesh name="collision_537" file="collision_537.obj" />
+    <mesh name="collision_538" file="collision_538.obj" />
+    <mesh name="collision_539" file="collision_539.obj" />
+    <mesh name="collision_540" file="collision_540.obj" />
+    <mesh name="collision_541" file="collision_541.obj" />
+    <mesh name="collision_542" file="collision_542.obj" />
+    <mesh name="collision_543" file="collision_543.obj" />
+    <mesh name="collision_544" file="collision_544.obj" />
+    <mesh name="collision_545" file="collision_545.obj" />
+    <mesh name="collision_546" file="collision_546.obj" />
+    <mesh name="collision_547" file="collision_547.obj" />
+    <mesh name="collision_548" file="collision_548.obj" />
+    <mesh name="collision_549" file="collision_549.obj" />
+    <mesh name="collision_550" file="collision_550.obj" />
+    <mesh name="collision_551" file="collision_551.obj" />
+    <mesh name="collision_552" file="collision_552.obj" />
+    <mesh name="collision_553" file="collision_553.obj" />
+    <mesh name="collision_554" file="collision_554.obj" />
+    <mesh name="collision_555" file="collision_555.obj" />
+    <mesh name="collision_556" file="collision_556.obj" />
+    <mesh name="collision_557" file="collision_557.obj" />
+    <mesh name="collision_558" file="collision_558.obj" />
+    <mesh name="collision_559" file="collision_559.obj" />
+    <mesh name="collision_560" file="collision_560.obj" />
+    <mesh name="collision_561" file="collision_561.obj" />
+    <mesh name="collision_562" file="collision_562.obj" />
+    <mesh name="collision_563" file="collision_563.obj" />
+    <mesh name="collision_564" file="collision_564.obj" />
+    <mesh name="collision_565" file="collision_565.obj" />
+    <mesh name="collision_566" file="collision_566.obj" />
+  </asset>
+  <worldbody>
+    <body name="pitcher_base" pos="0 0 0.12132">
+      <freejoint name="pitcher_base_joint" />
+      <geom name="visual" type="mesh" mesh="visual_mesh" material="visual_mat" group="2" mass="0" contype="0" conaffinity="0" />
+      <geom name="pitcher_base_collision_0" type="mesh" mesh="collision_0" mass="4.79005614236e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_1" type="mesh" mesh="collision_1" mass="2.27842680857e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_2" type="mesh" mesh="collision_2" mass="5.61086544017e-06" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_3" type="mesh" mesh="collision_3" mass="1.03993169576e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_4" type="mesh" mesh="collision_4" mass="1.18327422956e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_5" type="mesh" mesh="collision_5" mass="2.82478155344e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_6" type="mesh" mesh="collision_6" mass="2.66559445675e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_7" type="mesh" mesh="collision_7" mass="3.8394333822e-06" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_8" type="mesh" mesh="collision_8" mass="4.97667273416e-06" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_9" type="mesh" mesh="collision_9" mass="1.22708670553e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_10" type="mesh" mesh="collision_10" mass="7.79832391455e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_11" type="mesh" mesh="collision_11" mass="2.55765145184e-06" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_12" type="mesh" mesh="collision_12" mass="5.2530261409e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_13" type="mesh" mesh="collision_13" mass="6.66733124287e-06" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_14" type="mesh" mesh="collision_14" mass="2.13779506635e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_15" type="mesh" mesh="collision_15" mass="2.10242324938e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_16" type="mesh" mesh="collision_16" mass="1.15672120507e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_17" type="mesh" mesh="collision_17" mass="1.4360452231e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_18" type="mesh" mesh="collision_18" mass="6.06237569331e-06" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_19" type="mesh" mesh="collision_19" mass="5.04952307305e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_20" type="mesh" mesh="collision_20" mass="1.40037887417e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_21" type="mesh" mesh="collision_21" mass="4.72053698326e-06" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_22" type="mesh" mesh="collision_22" mass="2.2254751877e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_23" type="mesh" mesh="collision_23" mass="7.14217277997e-06" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_24" type="mesh" mesh="collision_24" mass="4.22966670391e-06" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_25" type="mesh" mesh="collision_25" mass="3.9709430735e-06" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_26" type="mesh" mesh="collision_26" mass="1.14315766459e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_27" type="mesh" mesh="collision_27" mass="5.54415034976e-06" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_28" type="mesh" mesh="collision_28" mass="2.20450018497e-06" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_29" type="mesh" mesh="collision_29" mass="1.32369483544e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_30" type="mesh" mesh="collision_30" mass="3.83965700503e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_31" type="mesh" mesh="collision_31" mass="2.34486911033e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_32" type="mesh" mesh="collision_32" mass="8.18074063015e-06" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_33" type="mesh" mesh="collision_33" mass="1.59173605303e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_34" type="mesh" mesh="collision_34" mass="2.0026861971e-06" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_35" type="mesh" mesh="collision_35" mass="1.77551498056e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_36" type="mesh" mesh="collision_36" mass="9.76375968788e-06" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_37" type="mesh" mesh="collision_37" mass="1.04143932313e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_38" type="mesh" mesh="collision_38" mass="5.90111022535e-06" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_39" type="mesh" mesh="collision_39" mass="0.00389008969665" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_40" type="mesh" mesh="collision_40" mass="1.21663117482e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_41" type="mesh" mesh="collision_41" mass="0.000280702230286" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_42" type="mesh" mesh="collision_42" mass="6.60561601695e-06" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_43" type="mesh" mesh="collision_43" mass="0.00144461640128" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_44" type="mesh" mesh="collision_44" mass="0.00473154633308" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_45" type="mesh" mesh="collision_45" mass="0.00102447700652" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_46" type="mesh" mesh="collision_46" mass="0.000260132366323" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_47" type="mesh" mesh="collision_47" mass="4.6155367186e-07" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_48" type="mesh" mesh="collision_48" mass="0.00148215054885" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_49" type="mesh" mesh="collision_49" mass="5.88466456139e-06" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_50" type="mesh" mesh="collision_50" mass="0.00167202995996" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_51" type="mesh" mesh="collision_51" mass="0.000706834847236" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_52" type="mesh" mesh="collision_52" mass="9.50950480278e-06" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_53" type="mesh" mesh="collision_53" mass="1.54204766301e-06" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_54" type="mesh" mesh="collision_54" mass="0.000675511323563" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_55" type="mesh" mesh="collision_55" mass="0.00120038286853" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_56" type="mesh" mesh="collision_56" mass="2.71599003776e-06" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_57" type="mesh" mesh="collision_57" mass="0.00191093282477" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_58" type="mesh" mesh="collision_58" mass="2.7326750035e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_59" type="mesh" mesh="collision_59" mass="1.55204708704e-06" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_60" type="mesh" mesh="collision_60" mass="2.35773324107e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_61" type="mesh" mesh="collision_61" mass="9.17149301283e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_62" type="mesh" mesh="collision_62" mass="0.000123625786201" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_63" type="mesh" mesh="collision_63" mass="2.02500895812e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_64" type="mesh" mesh="collision_64" mass="9.51636142284e-06" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_65" type="mesh" mesh="collision_65" mass="0.000182006381097" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_66" type="mesh" mesh="collision_66" mass="6.02036358439e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_67" type="mesh" mesh="collision_67" mass="0.00078177366843" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_68" type="mesh" mesh="collision_68" mass="7.53733471418e-06" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_69" type="mesh" mesh="collision_69" mass="1.22900447301e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_70" type="mesh" mesh="collision_70" mass="0.000177486277628" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_71" type="mesh" mesh="collision_71" mass="0.000103042293849" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_72" type="mesh" mesh="collision_72" mass="1.8809489598e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_73" type="mesh" mesh="collision_73" mass="1.16086148355e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_74" type="mesh" mesh="collision_74" mass="0.000517186431255" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_75" type="mesh" mesh="collision_75" mass="8.12290591712e-06" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_76" type="mesh" mesh="collision_76" mass="2.62459926595e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_77" type="mesh" mesh="collision_77" mass="4.76967394167e-06" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_78" type="mesh" mesh="collision_78" mass="1.83747313127e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_79" type="mesh" mesh="collision_79" mass="0.000196265843944" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_80" type="mesh" mesh="collision_80" mass="0.000108325441151" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_81" type="mesh" mesh="collision_81" mass="2.64462516832e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_82" type="mesh" mesh="collision_82" mass="0.00251927290155" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_83" type="mesh" mesh="collision_83" mass="4.49959072968e-06" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_84" type="mesh" mesh="collision_84" mass="3.89112879223e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_85" type="mesh" mesh="collision_85" mass="0.000685736722226" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_86" type="mesh" mesh="collision_86" mass="8.96746418277e-06" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_87" type="mesh" mesh="collision_87" mass="4.76349133898e-06" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_88" type="mesh" mesh="collision_88" mass="7.5443482095e-06" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_89" type="mesh" mesh="collision_89" mass="6.78520081682e-07" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_90" type="mesh" mesh="collision_90" mass="5.68363076932e-06" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_91" type="mesh" mesh="collision_91" mass="0.000771608225622" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_92" type="mesh" mesh="collision_92" mass="0.000715147683193" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_93" type="mesh" mesh="collision_93" mass="0.000618667712893" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_94" type="mesh" mesh="collision_94" mass="0.000882767288859" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_95" type="mesh" mesh="collision_95" mass="0.000884876105005" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_96" type="mesh" mesh="collision_96" mass="6.01140408566e-06" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_97" type="mesh" mesh="collision_97" mass="0.00135282097188" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_98" type="mesh" mesh="collision_98" mass="0.000701796751325" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_99" type="mesh" mesh="collision_99" mass="0.00056061001398" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_100" type="mesh" mesh="collision_100" mass="0.00165115140927" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_101" type="mesh" mesh="collision_101" mass="5.17538165307e-06" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_102" type="mesh" mesh="collision_102" mass="0.00033912853931" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_103" type="mesh" mesh="collision_103" mass="0.000458089111393" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_104" type="mesh" mesh="collision_104" mass="0.000705210499548" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_105" type="mesh" mesh="collision_105" mass="0.000449575724847" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_106" type="mesh" mesh="collision_106" mass="0.000128037623489" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_107" type="mesh" mesh="collision_107" mass="9.76970231394e-06" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_108" type="mesh" mesh="collision_108" mass="0.000218917696918" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_109" type="mesh" mesh="collision_109" mass="3.91627062545e-07" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_110" type="mesh" mesh="collision_110" mass="1.78102863328e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_111" type="mesh" mesh="collision_111" mass="1.47787680608e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_112" type="mesh" mesh="collision_112" mass="1.37916699284e-06" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_113" type="mesh" mesh="collision_113" mass="0.000178153205265" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_114" type="mesh" mesh="collision_114" mass="2.42261783892e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_115" type="mesh" mesh="collision_115" mass="0.000639143006754" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_116" type="mesh" mesh="collision_116" mass="1.65027446725e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_117" type="mesh" mesh="collision_117" mass="0.000622412989545" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_118" type="mesh" mesh="collision_118" mass="0.000473052086475" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_119" type="mesh" mesh="collision_119" mass="6.63701025694e-06" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_120" type="mesh" mesh="collision_120" mass="0.000652815577433" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_121" type="mesh" mesh="collision_121" mass="0.00047207876633" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_122" type="mesh" mesh="collision_122" mass="0.000285980913202" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_123" type="mesh" mesh="collision_123" mass="0.000102960923284" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_124" type="mesh" mesh="collision_124" mass="8.97000426815e-06" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_125" type="mesh" mesh="collision_125" mass="0.00255745884716" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_126" type="mesh" mesh="collision_126" mass="1.86778867788e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_127" type="mesh" mesh="collision_127" mass="0.00177821460897" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_128" type="mesh" mesh="collision_128" mass="0.00096180478242" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_129" type="mesh" mesh="collision_129" mass="0.000203144642988" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_130" type="mesh" mesh="collision_130" mass="1.33176984435e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_131" type="mesh" mesh="collision_131" mass="1.60681593437e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_132" type="mesh" mesh="collision_132" mass="5.55620484728e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_133" type="mesh" mesh="collision_133" mass="0.000129891102147" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_134" type="mesh" mesh="collision_134" mass="0.000102699937411" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_135" type="mesh" mesh="collision_135" mass="0.000214612304092" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_136" type="mesh" mesh="collision_136" mass="0.000136587647123" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_137" type="mesh" mesh="collision_137" mass="4.9127527577e-06" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_138" type="mesh" mesh="collision_138" mass="0.00454837165351" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_139" type="mesh" mesh="collision_139" mass="0.000119517244511" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_140" type="mesh" mesh="collision_140" mass="0.000427930439037" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_141" type="mesh" mesh="collision_141" mass="0.00276872763801" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_142" type="mesh" mesh="collision_142" mass="0.0009901772719" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_143" type="mesh" mesh="collision_143" mass="0.00104478347729" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_144" type="mesh" mesh="collision_144" mass="0.000107139236552" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_145" type="mesh" mesh="collision_145" mass="9.15768829248e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_146" type="mesh" mesh="collision_146" mass="0.000160416790936" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_147" type="mesh" mesh="collision_147" mass="0.00055965991116" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_148" type="mesh" mesh="collision_148" mass="0.000109622024834" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_149" type="mesh" mesh="collision_149" mass="8.1237060574e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_150" type="mesh" mesh="collision_150" mass="0.000767514840121" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_151" type="mesh" mesh="collision_151" mass="7.96770045661e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_152" type="mesh" mesh="collision_152" mass="6.48949612246e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_153" type="mesh" mesh="collision_153" mass="4.49990755327e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_154" type="mesh" mesh="collision_154" mass="1.55279034722e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_155" type="mesh" mesh="collision_155" mass="0.000119988540682" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_156" type="mesh" mesh="collision_156" mass="0.000194840334252" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_157" type="mesh" mesh="collision_157" mass="5.57439752616e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_158" type="mesh" mesh="collision_158" mass="0.000111453530757" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_159" type="mesh" mesh="collision_159" mass="0.000163573607872" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_160" type="mesh" mesh="collision_160" mass="0.000217976161256" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_161" type="mesh" mesh="collision_161" mass="0.000929744625882" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_162" type="mesh" mesh="collision_162" mass="0.000200590639057" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_163" type="mesh" mesh="collision_163" mass="0.000577861520927" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_164" type="mesh" mesh="collision_164" mass="0.000126031316258" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_165" type="mesh" mesh="collision_165" mass="0.000178540925066" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_166" type="mesh" mesh="collision_166" mass="6.46532623346e-06" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_167" type="mesh" mesh="collision_167" mass="0.000932757597241" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_168" type="mesh" mesh="collision_168" mass="0.000601098388606" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_169" type="mesh" mesh="collision_169" mass="0.000152632997041" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_170" type="mesh" mesh="collision_170" mass="2.27560904469e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_171" type="mesh" mesh="collision_171" mass="5.42689836374e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_172" type="mesh" mesh="collision_172" mass="0.00116501308871" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_173" type="mesh" mesh="collision_173" mass="0.000183409899838" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_174" type="mesh" mesh="collision_174" mass="0.000313469970399" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_175" type="mesh" mesh="collision_175" mass="0.00230456206501" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_176" type="mesh" mesh="collision_176" mass="0.0005332962517" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_177" type="mesh" mesh="collision_177" mass="5.6375613676e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_178" type="mesh" mesh="collision_178" mass="0.000594990645236" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_179" type="mesh" mesh="collision_179" mass="0.00017597094068" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_180" type="mesh" mesh="collision_180" mass="0.000235130440999" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_181" type="mesh" mesh="collision_181" mass="0.000280592031259" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_182" type="mesh" mesh="collision_182" mass="4.24015929577e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_183" type="mesh" mesh="collision_183" mass="0.000426006273445" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_184" type="mesh" mesh="collision_184" mass="4.29473731983e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_185" type="mesh" mesh="collision_185" mass="1.93066320847e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_186" type="mesh" mesh="collision_186" mass="0.000328634488427" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_187" type="mesh" mesh="collision_187" mass="0.000214563255371" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_188" type="mesh" mesh="collision_188" mass="9.57871875483e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_189" type="mesh" mesh="collision_189" mass="0.000163920114693" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_190" type="mesh" mesh="collision_190" mass="0.000227803646002" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_191" type="mesh" mesh="collision_191" mass="5.58451449396e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_192" type="mesh" mesh="collision_192" mass="0.000353344705446" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_193" type="mesh" mesh="collision_193" mass="0.000110172751409" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_194" type="mesh" mesh="collision_194" mass="7.80304900955e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_195" type="mesh" mesh="collision_195" mass="0.000337349641443" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_196" type="mesh" mesh="collision_196" mass="1.22999863569e-06" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_197" type="mesh" mesh="collision_197" mass="0.00063328411193" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_198" type="mesh" mesh="collision_198" mass="0.000147678421037" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_199" type="mesh" mesh="collision_199" mass="0.000399739999096" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_200" type="mesh" mesh="collision_200" mass="2.8040547706e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_201" type="mesh" mesh="collision_201" mass="0.000374710064677" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_202" type="mesh" mesh="collision_202" mass="0.000307379173418" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_203" type="mesh" mesh="collision_203" mass="0.000182725968118" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_204" type="mesh" mesh="collision_204" mass="0.000571197285414" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_205" type="mesh" mesh="collision_205" mass="0.000177060337579" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_206" type="mesh" mesh="collision_206" mass="7.59018317986e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_207" type="mesh" mesh="collision_207" mass="0.000573849834158" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_208" type="mesh" mesh="collision_208" mass="0.000295303742595" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_209" type="mesh" mesh="collision_209" mass="3.9003241592e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_210" type="mesh" mesh="collision_210" mass="0.00199094245548" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_211" type="mesh" mesh="collision_211" mass="0.000145525404989" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_212" type="mesh" mesh="collision_212" mass="0.000185361877693" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_213" type="mesh" mesh="collision_213" mass="1.53094260337e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_214" type="mesh" mesh="collision_214" mass="0.000597072065683" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_215" type="mesh" mesh="collision_215" mass="0.00203911489611" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_216" type="mesh" mesh="collision_216" mass="4.01748209411e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_217" type="mesh" mesh="collision_217" mass="0.000246019214847" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_218" type="mesh" mesh="collision_218" mass="0.000532274775485" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_219" type="mesh" mesh="collision_219" mass="0.000224657212977" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_220" type="mesh" mesh="collision_220" mass="0.000123957022113" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_221" type="mesh" mesh="collision_221" mass="0.00506355316464" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_222" type="mesh" mesh="collision_222" mass="0.00058522883861" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_223" type="mesh" mesh="collision_223" mass="0.00111202917449" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_224" type="mesh" mesh="collision_224" mass="0.00172859527009" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_225" type="mesh" mesh="collision_225" mass="0.000302037116748" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_226" type="mesh" mesh="collision_226" mass="0.000354987517347" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_227" type="mesh" mesh="collision_227" mass="0.00491242493794" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_228" type="mesh" mesh="collision_228" mass="0.000117439416953" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_229" type="mesh" mesh="collision_229" mass="6.71374979055e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_230" type="mesh" mesh="collision_230" mass="9.54501292607e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_231" type="mesh" mesh="collision_231" mass="0.00014511177491" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_232" type="mesh" mesh="collision_232" mass="1.44063755242e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_233" type="mesh" mesh="collision_233" mass="3.69516604471e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_234" type="mesh" mesh="collision_234" mass="0.000232580933395" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_235" type="mesh" mesh="collision_235" mass="0.000120546187062" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_236" type="mesh" mesh="collision_236" mass="8.16795215951e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_237" type="mesh" mesh="collision_237" mass="0.00481923770944" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_238" type="mesh" mesh="collision_238" mass="4.63360647612e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_239" type="mesh" mesh="collision_239" mass="5.83917052352e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_240" type="mesh" mesh="collision_240" mass="0.00305173116712" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_241" type="mesh" mesh="collision_241" mass="0.000899572724321" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_242" type="mesh" mesh="collision_242" mass="6.00237061984e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_243" type="mesh" mesh="collision_243" mass="0.000218883770557" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_244" type="mesh" mesh="collision_244" mass="7.66049303738e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_245" type="mesh" mesh="collision_245" mass="0.00024656602701" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_246" type="mesh" mesh="collision_246" mass="0.00590990990344" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_247" type="mesh" mesh="collision_247" mass="0.00563558933807" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_248" type="mesh" mesh="collision_248" mass="0.0043352969595" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_249" type="mesh" mesh="collision_249" mass="0.00170123261085" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_250" type="mesh" mesh="collision_250" mass="0.00151975316466" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_251" type="mesh" mesh="collision_251" mass="0.00143052551625" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_252" type="mesh" mesh="collision_252" mass="1.90569211834e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_253" type="mesh" mesh="collision_253" mass="5.22724297959e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_254" type="mesh" mesh="collision_254" mass="0.000157775498106" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_255" type="mesh" mesh="collision_255" mass="0.000382080580892" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_256" type="mesh" mesh="collision_256" mass="0.00016314247018" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_257" type="mesh" mesh="collision_257" mass="2.70423377702e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_258" type="mesh" mesh="collision_258" mass="0.000122862915285" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_259" type="mesh" mesh="collision_259" mass="1.44605294681e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_260" type="mesh" mesh="collision_260" mass="8.12947276689e-06" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_261" type="mesh" mesh="collision_261" mass="0.00223893697307" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_262" type="mesh" mesh="collision_262" mass="9.67679437051e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_263" type="mesh" mesh="collision_263" mass="0.000360349207293" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_264" type="mesh" mesh="collision_264" mass="0.000154768882717" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_265" type="mesh" mesh="collision_265" mass="1.20557685178e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_266" type="mesh" mesh="collision_266" mass="0.000303947675486" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_267" type="mesh" mesh="collision_267" mass="0.000151864381588" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_268" type="mesh" mesh="collision_268" mass="6.30314897463e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_269" type="mesh" mesh="collision_269" mass="0.000218439276359" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_270" type="mesh" mesh="collision_270" mass="0.00015528470054" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_271" type="mesh" mesh="collision_271" mass="0.000134644335701" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_272" type="mesh" mesh="collision_272" mass="6.39143578115e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_273" type="mesh" mesh="collision_273" mass="0.000200629061199" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_274" type="mesh" mesh="collision_274" mass="4.62175614587e-06" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_275" type="mesh" mesh="collision_275" mass="0.000935833472426" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_276" type="mesh" mesh="collision_276" mass="0.000300584033833" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_277" type="mesh" mesh="collision_277" mass="0.000133162702566" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_278" type="mesh" mesh="collision_278" mass="5.68958444202e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_279" type="mesh" mesh="collision_279" mass="1.18136963643e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_280" type="mesh" mesh="collision_280" mass="8.55064128142e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_281" type="mesh" mesh="collision_281" mass="4.70658920368e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_282" type="mesh" mesh="collision_282" mass="0.000317511657424" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_283" type="mesh" mesh="collision_283" mass="4.43497587096e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_284" type="mesh" mesh="collision_284" mass="6.77508819788e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_285" type="mesh" mesh="collision_285" mass="5.0083349868e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_286" type="mesh" mesh="collision_286" mass="0.000505950133486" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_287" type="mesh" mesh="collision_287" mass="1.26733695553e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_288" type="mesh" mesh="collision_288" mass="9.46039442094e-06" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_289" type="mesh" mesh="collision_289" mass="0.000509373537597" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_290" type="mesh" mesh="collision_290" mass="0.000211525512008" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_291" type="mesh" mesh="collision_291" mass="0.000115807235565" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_292" type="mesh" mesh="collision_292" mass="3.50840565902e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_293" type="mesh" mesh="collision_293" mass="0.00142301660603" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_294" type="mesh" mesh="collision_294" mass="5.36796193e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_295" type="mesh" mesh="collision_295" mass="6.46908251186e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_296" type="mesh" mesh="collision_296" mass="0.000100756990647" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_297" type="mesh" mesh="collision_297" mass="9.19626305686e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_298" type="mesh" mesh="collision_298" mass="0.000789399968241" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_299" type="mesh" mesh="collision_299" mass="0.000739505916809" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_300" type="mesh" mesh="collision_300" mass="0.00179196200603" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_301" type="mesh" mesh="collision_301" mass="1.13517170032e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_302" type="mesh" mesh="collision_302" mass="8.88517442123e-06" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_303" type="mesh" mesh="collision_303" mass="0.00383661806413" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_304" type="mesh" mesh="collision_304" mass="1.65438014139e-06" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_305" type="mesh" mesh="collision_305" mass="2.29450931224e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_306" type="mesh" mesh="collision_306" mass="4.73946273635e-06" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_307" type="mesh" mesh="collision_307" mass="5.34174971105e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_308" type="mesh" mesh="collision_308" mass="9.47625881268e-06" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_309" type="mesh" mesh="collision_309" mass="0.000171296052348" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_310" type="mesh" mesh="collision_310" mass="6.42163840572e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_311" type="mesh" mesh="collision_311" mass="0.000205164887058" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_312" type="mesh" mesh="collision_312" mass="8.35702948833e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_313" type="mesh" mesh="collision_313" mass="2.43251337456e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_314" type="mesh" mesh="collision_314" mass="4.57266444491e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_315" type="mesh" mesh="collision_315" mass="2.66803399691e-06" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_316" type="mesh" mesh="collision_316" mass="0.000840626237262" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_317" type="mesh" mesh="collision_317" mass="4.77364261982e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_318" type="mesh" mesh="collision_318" mass="7.57931700789e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_319" type="mesh" mesh="collision_319" mass="7.53935165854e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_320" type="mesh" mesh="collision_320" mass="0.000190037641948" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_321" type="mesh" mesh="collision_321" mass="0.000936084419357" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_322" type="mesh" mesh="collision_322" mass="0.000355328902088" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_323" type="mesh" mesh="collision_323" mass="1.00964155459e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_324" type="mesh" mesh="collision_324" mass="0.000966323501283" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_325" type="mesh" mesh="collision_325" mass="1.13514543169e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_326" type="mesh" mesh="collision_326" mass="0.000941306650378" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_327" type="mesh" mesh="collision_327" mass="1.77761437152e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_328" type="mesh" mesh="collision_328" mass="0.000202446860049" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_329" type="mesh" mesh="collision_329" mass="0.000546187620159" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_330" type="mesh" mesh="collision_330" mass="2.14272053089e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_331" type="mesh" mesh="collision_331" mass="2.85500106768e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_332" type="mesh" mesh="collision_332" mass="9.42627935809e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_333" type="mesh" mesh="collision_333" mass="0.000155734713484" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_334" type="mesh" mesh="collision_334" mass="1.50383281806e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_335" type="mesh" mesh="collision_335" mass="3.56848987146e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_336" type="mesh" mesh="collision_336" mass="2.32026535535e-06" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_337" type="mesh" mesh="collision_337" mass="1.60773583069e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_338" type="mesh" mesh="collision_338" mass="0.00038759471395" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_339" type="mesh" mesh="collision_339" mass="0.0004186403714" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_340" type="mesh" mesh="collision_340" mass="6.12544418092e-06" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_341" type="mesh" mesh="collision_341" mass="4.90665073137e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_342" type="mesh" mesh="collision_342" mass="0.000191957073781" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_343" type="mesh" mesh="collision_343" mass="0.000138560390218" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_344" type="mesh" mesh="collision_344" mass="6.51651951394e-06" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_345" type="mesh" mesh="collision_345" mass="0.000293164630319" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_346" type="mesh" mesh="collision_346" mass="3.56195033858e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_347" type="mesh" mesh="collision_347" mass="4.26524879756e-06" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_348" type="mesh" mesh="collision_348" mass="1.07248467063e-06" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_349" type="mesh" mesh="collision_349" mass="7.00176332005e-06" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_350" type="mesh" mesh="collision_350" mass="2.12434613532e-06" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_351" type="mesh" mesh="collision_351" mass="1.57151640431e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_352" type="mesh" mesh="collision_352" mass="8.91344355443e-07" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_353" type="mesh" mesh="collision_353" mass="1.91153654721e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_354" type="mesh" mesh="collision_354" mass="7.81719846929e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_355" type="mesh" mesh="collision_355" mass="1.61522369901e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_356" type="mesh" mesh="collision_356" mass="3.39561640176e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_357" type="mesh" mesh="collision_357" mass="9.79559821731e-06" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_358" type="mesh" mesh="collision_358" mass="1.54654641633e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_359" type="mesh" mesh="collision_359" mass="5.95424245246e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_360" type="mesh" mesh="collision_360" mass="0.000155619569901" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_361" type="mesh" mesh="collision_361" mass="1.7730184315e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_362" type="mesh" mesh="collision_362" mass="4.86786881759e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_363" type="mesh" mesh="collision_363" mass="3.87295869802e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_364" type="mesh" mesh="collision_364" mass="5.93510667055e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_365" type="mesh" mesh="collision_365" mass="8.59944355123e-06" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_366" type="mesh" mesh="collision_366" mass="1.31794869024e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_367" type="mesh" mesh="collision_367" mass="2.72760674104e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_368" type="mesh" mesh="collision_368" mass="7.27098567306e-06" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_369" type="mesh" mesh="collision_369" mass="3.22069623915e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_370" type="mesh" mesh="collision_370" mass="0.00099955455885" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_371" type="mesh" mesh="collision_371" mass="0.000350245727756" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_372" type="mesh" mesh="collision_372" mass="6.23323018976e-06" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_373" type="mesh" mesh="collision_373" mass="5.77195055816e-06" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_374" type="mesh" mesh="collision_374" mass="0.000941587843026" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_375" type="mesh" mesh="collision_375" mass="1.82166173731e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_376" type="mesh" mesh="collision_376" mass="2.25708224898e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_377" type="mesh" mesh="collision_377" mass="5.71438010337e-06" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_378" type="mesh" mesh="collision_378" mass="1.74765440935e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_379" type="mesh" mesh="collision_379" mass="2.8023346449e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_380" type="mesh" mesh="collision_380" mass="4.62150509128e-06" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_381" type="mesh" mesh="collision_381" mass="1.5639889414e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_382" type="mesh" mesh="collision_382" mass="5.68029858455e-06" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_383" type="mesh" mesh="collision_383" mass="3.82609556095e-06" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_384" type="mesh" mesh="collision_384" mass="7.99427461565e-06" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_385" type="mesh" mesh="collision_385" mass="0.00190750652922" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_386" type="mesh" mesh="collision_386" mass="1.7106531697e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_387" type="mesh" mesh="collision_387" mass="5.93911670977e-06" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_388" type="mesh" mesh="collision_388" mass="9.48492039997e-06" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_389" type="mesh" mesh="collision_389" mass="1.41650020004e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_390" type="mesh" mesh="collision_390" mass="6.00659952902e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_391" type="mesh" mesh="collision_391" mass="2.20976651432e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_392" type="mesh" mesh="collision_392" mass="1.18298716638e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_393" type="mesh" mesh="collision_393" mass="0.00113761610062" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_394" type="mesh" mesh="collision_394" mass="0.000407053855634" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_395" type="mesh" mesh="collision_395" mass="0.0015646175104" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_396" type="mesh" mesh="collision_396" mass="1.27006233573e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_397" type="mesh" mesh="collision_397" mass="0.00109521407626" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_398" type="mesh" mesh="collision_398" mass="0.000132325911475" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_399" type="mesh" mesh="collision_399" mass="0.000647817330908" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_400" type="mesh" mesh="collision_400" mass="4.99393162371e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_401" type="mesh" mesh="collision_401" mass="1.61296020518e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_402" type="mesh" mesh="collision_402" mass="0.000817598246569" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_403" type="mesh" mesh="collision_403" mass="9.15244813966e-06" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_404" type="mesh" mesh="collision_404" mass="0.00510405910216" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_405" type="mesh" mesh="collision_405" mass="1.1213713559e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_406" type="mesh" mesh="collision_406" mass="0.000580465416138" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_407" type="mesh" mesh="collision_407" mass="5.76062861651e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_408" type="mesh" mesh="collision_408" mass="7.81756829602e-06" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_409" type="mesh" mesh="collision_409" mass="5.96866192463e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_410" type="mesh" mesh="collision_410" mass="7.63706455236e-07" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_411" type="mesh" mesh="collision_411" mass="2.40891061932e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_412" type="mesh" mesh="collision_412" mass="1.14708682486e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_413" type="mesh" mesh="collision_413" mass="5.63793694025e-06" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_414" type="mesh" mesh="collision_414" mass="0.00619678864873" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_415" type="mesh" mesh="collision_415" mass="3.60491271255e-06" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_416" type="mesh" mesh="collision_416" mass="2.36512136227e-06" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_417" type="mesh" mesh="collision_417" mass="3.2145689825e-06" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_418" type="mesh" mesh="collision_418" mass="7.95939418404e-06" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_419" type="mesh" mesh="collision_419" mass="8.00737444324e-06" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_420" type="mesh" mesh="collision_420" mass="2.07380957598e-06" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_421" type="mesh" mesh="collision_421" mass="6.75100505895e-06" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_422" type="mesh" mesh="collision_422" mass="0.000705761548992" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_423" type="mesh" mesh="collision_423" mass="8.45686191582e-06" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_424" type="mesh" mesh="collision_424" mass="2.85479705021e-06" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_425" type="mesh" mesh="collision_425" mass="1.28463804124e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_426" type="mesh" mesh="collision_426" mass="3.69339625835e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_427" type="mesh" mesh="collision_427" mass="1.75580851531e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_428" type="mesh" mesh="collision_428" mass="0.000766520291672" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_429" type="mesh" mesh="collision_429" mass="4.15427194638e-07" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_430" type="mesh" mesh="collision_430" mass="2.02744081177e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_431" type="mesh" mesh="collision_431" mass="6.54518418696e-06" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_432" type="mesh" mesh="collision_432" mass="7.95229554366e-06" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_433" type="mesh" mesh="collision_433" mass="9.27072094044e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_434" type="mesh" mesh="collision_434" mass="2.34313513211e-06" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_435" type="mesh" mesh="collision_435" mass="5.27116647786e-06" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_436" type="mesh" mesh="collision_436" mass="1.28611247462e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_437" type="mesh" mesh="collision_437" mass="5.31285015776e-06" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_438" type="mesh" mesh="collision_438" mass="4.84570098649e-06" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_439" type="mesh" mesh="collision_439" mass="4.66153286641e-06" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_440" type="mesh" mesh="collision_440" mass="1.27679140797e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_441" type="mesh" mesh="collision_441" mass="7.0942778084e-06" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_442" type="mesh" mesh="collision_442" mass="5.26197874274e-06" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_443" type="mesh" mesh="collision_443" mass="2.21881305234e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_444" type="mesh" mesh="collision_444" mass="2.1576249984e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_445" type="mesh" mesh="collision_445" mass="9.56300154504e-06" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_446" type="mesh" mesh="collision_446" mass="1.12106227397e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_447" type="mesh" mesh="collision_447" mass="3.77395441535e-06" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_448" type="mesh" mesh="collision_448" mass="1.91838884215e-06" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_449" type="mesh" mesh="collision_449" mass="4.92556060529e-06" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_450" type="mesh" mesh="collision_450" mass="9.0084639943e-06" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_451" type="mesh" mesh="collision_451" mass="8.87841542739e-06" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_452" type="mesh" mesh="collision_452" mass="2.80064190786e-06" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_453" type="mesh" mesh="collision_453" mass="2.98286137046e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_454" type="mesh" mesh="collision_454" mass="2.47251743871e-06" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_455" type="mesh" mesh="collision_455" mass="4.93477854983e-06" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_456" type="mesh" mesh="collision_456" mass="5.68876200491e-06" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_457" type="mesh" mesh="collision_457" mass="1.70049510731e-06" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_458" type="mesh" mesh="collision_458" mass="1.63563270189e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_459" type="mesh" mesh="collision_459" mass="1.37495599319e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_460" type="mesh" mesh="collision_460" mass="1.12469463826e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_461" type="mesh" mesh="collision_461" mass="1.86071313482e-06" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_462" type="mesh" mesh="collision_462" mass="1.85858111031e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_463" type="mesh" mesh="collision_463" mass="2.10613803576e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_464" type="mesh" mesh="collision_464" mass="6.94443586528e-06" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_465" type="mesh" mesh="collision_465" mass="2.2657458149e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_466" type="mesh" mesh="collision_466" mass="2.22708125919e-06" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_467" type="mesh" mesh="collision_467" mass="8.70865246824e-06" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_468" type="mesh" mesh="collision_468" mass="6.2467944734e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_469" type="mesh" mesh="collision_469" mass="6.08611808246e-06" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_470" type="mesh" mesh="collision_470" mass="2.19812954034e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_471" type="mesh" mesh="collision_471" mass="3.85197917737e-06" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_472" type="mesh" mesh="collision_472" mass="9.84063289414e-06" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_473" type="mesh" mesh="collision_473" mass="4.04937481862e-06" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_474" type="mesh" mesh="collision_474" mass="9.24119863704e-06" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_475" type="mesh" mesh="collision_475" mass="1.5575285561e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_476" type="mesh" mesh="collision_476" mass="9.31198778503e-06" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_477" type="mesh" mesh="collision_477" mass="1.09465345663e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_478" type="mesh" mesh="collision_478" mass="1.10554676755e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_479" type="mesh" mesh="collision_479" mass="3.05100755553e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_480" type="mesh" mesh="collision_480" mass="1.06683560881e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_481" type="mesh" mesh="collision_481" mass="4.52153677218e-06" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_482" type="mesh" mesh="collision_482" mass="5.95277095604e-06" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_483" type="mesh" mesh="collision_483" mass="2.33503733134e-06" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_484" type="mesh" mesh="collision_484" mass="6.39904786783e-06" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_485" type="mesh" mesh="collision_485" mass="5.80746396931e-06" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_486" type="mesh" mesh="collision_486" mass="2.50468546515e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_487" type="mesh" mesh="collision_487" mass="3.82986212159e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_488" type="mesh" mesh="collision_488" mass="2.05952996419e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_489" type="mesh" mesh="collision_489" mass="4.13407870218e-06" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_490" type="mesh" mesh="collision_490" mass="1.44677974567e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_491" type="mesh" mesh="collision_491" mass="3.66417243537e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_492" type="mesh" mesh="collision_492" mass="1.51638169298e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_493" type="mesh" mesh="collision_493" mass="2.46794657731e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_494" type="mesh" mesh="collision_494" mass="5.50493397143e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_495" type="mesh" mesh="collision_495" mass="1.14374315884e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_496" type="mesh" mesh="collision_496" mass="7.18679901449e-06" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_497" type="mesh" mesh="collision_497" mass="3.01355354344e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_498" type="mesh" mesh="collision_498" mass="5.38000666653e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_499" type="mesh" mesh="collision_499" mass="2.00283055184e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_500" type="mesh" mesh="collision_500" mass="1.18328904456e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_501" type="mesh" mesh="collision_501" mass="7.68396122121e-06" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_502" type="mesh" mesh="collision_502" mass="1.82968300147e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_503" type="mesh" mesh="collision_503" mass="4.21402571336e-06" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_504" type="mesh" mesh="collision_504" mass="2.10535019836e-06" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_505" type="mesh" mesh="collision_505" mass="2.51876901832e-06" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_506" type="mesh" mesh="collision_506" mass="7.92159984734e-06" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_507" type="mesh" mesh="collision_507" mass="8.23167643034e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_508" type="mesh" mesh="collision_508" mass="4.00697824539e-06" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_509" type="mesh" mesh="collision_509" mass="3.23293406423e-06" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_510" type="mesh" mesh="collision_510" mass="6.04455374225e-06" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_511" type="mesh" mesh="collision_511" mass="4.21757350435e-06" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_512" type="mesh" mesh="collision_512" mass="6.79412215111e-06" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_513" type="mesh" mesh="collision_513" mass="8.99532224125e-06" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_514" type="mesh" mesh="collision_514" mass="1.04839445705e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_515" type="mesh" mesh="collision_515" mass="5.89930786823e-06" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_516" type="mesh" mesh="collision_516" mass="9.04081530877e-06" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_517" type="mesh" mesh="collision_517" mass="9.79075429598e-06" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_518" type="mesh" mesh="collision_518" mass="6.20359921822e-06" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_519" type="mesh" mesh="collision_519" mass="9.6587827818e-06" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_520" type="mesh" mesh="collision_520" mass="5.73850599416e-06" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_521" type="mesh" mesh="collision_521" mass="0.000104672847329" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_522" type="mesh" mesh="collision_522" mass="5.10777691497e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_523" type="mesh" mesh="collision_523" mass="1.31427435318e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_524" type="mesh" mesh="collision_524" mass="9.05851794029e-06" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_525" type="mesh" mesh="collision_525" mass="5.39997245246e-06" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_526" type="mesh" mesh="collision_526" mass="1.12494990431e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_527" type="mesh" mesh="collision_527" mass="3.00684088263e-06" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_528" type="mesh" mesh="collision_528" mass="2.30023844017e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_529" type="mesh" mesh="collision_529" mass="7.6050825399e-06" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_530" type="mesh" mesh="collision_530" mass="5.76050823468e-06" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_531" type="mesh" mesh="collision_531" mass="2.0666269637e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_532" type="mesh" mesh="collision_532" mass="1.09923239613e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_533" type="mesh" mesh="collision_533" mass="1.2482960555e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_534" type="mesh" mesh="collision_534" mass="1.04759194514e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_535" type="mesh" mesh="collision_535" mass="9.83441537605e-06" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_536" type="mesh" mesh="collision_536" mass="2.57095083428e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_537" type="mesh" mesh="collision_537" mass="2.2231028615e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_538" type="mesh" mesh="collision_538" mass="2.01661358417e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_539" type="mesh" mesh="collision_539" mass="1.65159181736e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_540" type="mesh" mesh="collision_540" mass="1.59835341506e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_541" type="mesh" mesh="collision_541" mass="7.18528912035e-06" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_542" type="mesh" mesh="collision_542" mass="2.98364183296e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_543" type="mesh" mesh="collision_543" mass="1.10031507878e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_544" type="mesh" mesh="collision_544" mass="1.56228078795e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_545" type="mesh" mesh="collision_545" mass="5.12690894715e-06" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_546" type="mesh" mesh="collision_546" mass="6.1300264426e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_547" type="mesh" mesh="collision_547" mass="1.03143934086e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_548" type="mesh" mesh="collision_548" mass="5.70359111919e-06" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_549" type="mesh" mesh="collision_549" mass="6.53221162124e-06" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_550" type="mesh" mesh="collision_550" mass="2.03969736442e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_551" type="mesh" mesh="collision_551" mass="1.15853123399e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_552" type="mesh" mesh="collision_552" mass="6.44785712453e-06" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_553" type="mesh" mesh="collision_553" mass="1.07263418269e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_554" type="mesh" mesh="collision_554" mass="1.96598122386e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_555" type="mesh" mesh="collision_555" mass="3.92344373306e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_556" type="mesh" mesh="collision_556" mass="2.78070856412e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_557" type="mesh" mesh="collision_557" mass="1.22397154206e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_558" type="mesh" mesh="collision_558" mass="7.2360028328e-06" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_559" type="mesh" mesh="collision_559" mass="2.94699742644e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_560" type="mesh" mesh="collision_560" mass="1.79487622415e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_561" type="mesh" mesh="collision_561" mass="1.89257236197e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_562" type="mesh" mesh="collision_562" mass="1.44724966701e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_563" type="mesh" mesh="collision_563" mass="4.5023246933e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_564" type="mesh" mesh="collision_564" mass="1.84126939528e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_565" type="mesh" mesh="collision_565" mass="4.19620592803e-05" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="pitcher_base_collision_566" type="mesh" mesh="collision_566" mass="6.00923446412e-06" friction="0.6 0.005 0.0001" group="3" condim="4" />
+    </body>
+  </worldbody>
+</mujoco>
