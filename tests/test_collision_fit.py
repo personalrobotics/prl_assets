@@ -109,6 +109,27 @@ def test_a_filled_container_fails():
     assert any("(floor_gap)" in f for f in report.failures), str(report)
 
 
+def test_a_solid_hull_container_fails():
+    """A bowl collided as its convex hull is solid; a probe dropped on it rolls off the
+    top and must not pass by landing beside the bowl, near its base."""
+    obj = authoring.load("ycb_bowl")
+    spec = obj.spec.copy()
+    body = next(iter(spec.worldbody.bodies))
+    for g in _collision(spec):
+        spec.delete(g)
+    visual = next(g for g in spec.geoms if g.group == authoring.VISUAL_GROUP)
+    body.add_geom(
+        type=mujoco.mjtGeom.mjGEOM_MESH,
+        meshname=visual.meshname,
+        group=authoring.COLLISION_GROUP,
+        contype=1,
+        conaffinity=1,
+        mass=obj.meta["mass"],
+    )
+    report = authoring.check(authoring.from_spec(spec, obj))
+    assert any("(floor_gap)" in f for f in report.failures), str(report)
+
+
 def test_a_stale_size_in_the_metadata_fails():
     """Grasp and place planning read geometric_properties, not the geoms."""
     obj = authoring.load("notebook")
