@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import argparse
 import importlib.metadata
+import os
 import shutil
 import tempfile
 import xml.etree.ElementTree as ET
@@ -389,6 +390,7 @@ def verify(archive_path, out):
             name: importlib.metadata.version(name)
             for name in ("prl_assets", "asset_manager", "numpy", "mujoco", "trimesh", "scipy", "pillow")
         },
+        rendering_backend=os.environ.get("MUJOCO_GL", "default"),
         installed_root=str(OBJECTS_DIR),
         catalog_count=len(catalog.list()),
         collection_count=len(ids),
