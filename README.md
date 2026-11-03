@@ -314,6 +314,7 @@ uv run --extra authoring python scripts/validate_objects.py
 | `viz_all_objects.py` | Display movable catalog objects in a grid with collision geometry |
 | `viz_stacking_demo.py` | Physics demo: stacked dishes on tray, objects in tote |
 | `validate_objects.py` | Check objects the way CI does: conventions, mass, collision geometry against the visual mesh, open interiors |
+| `collider_baseline.py` | Measure each collision model's composition, load time and simulation cost (resting, and a pile of 8); timings belong to the host they ran on |
 | `recenter_mesh.py` | Utility to re-center mesh origin to centroid |
 | `audit_ycbv.py` | Check YCB-V objects' declared frames against the pinned BOP models by shape and texture; writes `artifacts/ycbv_audit.json`, and with `--record` `docs/ycbv_catalog.json` |
 
