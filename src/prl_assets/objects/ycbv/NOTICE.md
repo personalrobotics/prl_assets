@@ -32,7 +32,14 @@ declares the MIT license.
 > <https://huggingface.co/datasets/bop-benchmark/ycbv/tree/5c2c4aa229800355648cd268040aa814f8dc94f0>,
 > SHA-256 `1e517a9b513cadb8eaf406ac3ce3c5f1d6fc4a80161c866b4e2a73d13de5e554`.
 
-The SHA-256 of each reference model file used is recorded in `docs/ycbv_audit.json`.
+The SHA-256 of each reference model file used is recorded in `docs/ycbv_catalog.json`
+(and the earlier overlap decisions in `docs/ycbv_audit.json`). The wheel includes these
+as `catalog_audit.json` and `overlap_audit.json` beside this notice.
+
+Full source license texts accompany the data in `LICENSE-CC-BY-4.0.txt` and
+`LICENSE-YCB-VIDEO-MIT.txt`. The latter is the YCB-Video release notice at commit
+`d08b645d406b93a988087fea42a5f6ac7330933c`; it does not replace the original scans’
+CC BY attribution. The distribution metadata therefore lists `MIT AND CC-BY-4.0`.
 
 New imports retain the BOP visual vertices and UVs, converted from millimetres to metres,
 with 1024 by 1024 textures and separate convex collision pieces. Reference YCB masses

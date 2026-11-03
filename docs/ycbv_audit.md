@@ -30,7 +30,8 @@ Declaring the identity for `sugar_box` gives a 68 mm 99th percentile and a 90° 
 and labelling `cracker_box` as BOP object 7 gives 92 mm.
 
 To reproduce (writes `artifacts/ycbv_audit.json`; `--record` also replaces the
-committed `docs/ycbv_audit.json`, and only if every asset passes):
+current full-catalog `docs/ycbv_catalog.json`, and only if all 21 assets pass; the
+earlier overlap artifact remains unchanged):
 
 ```bash
 uv run --extra dev python scripts/audit_ycbv.py [--record]

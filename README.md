@@ -32,10 +32,7 @@ assets = AssetManager(OBJECTS_DIR)
 
 # List available objects
 print(assets.list())
-# ['can', 'cracker_box', 'fuze_bottle', 'gelatin_box', 'herring_tin',
-#  'lunchbox', 'notebook', 'plastic_bowl', 'plastic_glass', 'plastic_plate',
-#  'pocky_box', 'pop_tarts_case', 'spam_can', 'recycle_bin', 'sugar_box',
-#  'wicker_tray', 'yellow_tote']
+# Includes the nested YCB-V collection and the other catalog assets.
 
 # Get path to simulation model
 can_path = assets.get_path("can", "mujoco")
@@ -119,14 +116,13 @@ change, so code that looks them up through `AssetManager` is unaffected. Code th
 builds paths such as `OBJECTS_DIR / "cracker_box"` must use
 `AssetManager(OBJECTS_DIR).get_path("cracker_box", "mujoco")` instead.
 
-## Available Objects
+## Other Catalog Objects
 
 | Object | Description | Collision |
 |--------|-------------|-----------|
+| `ada_table` | Hospital over-bed table (fixed furniture) | slab, feet and support columns |
 | `can` | Aluminum soda/beer can | cylinder |
-| `cracker_box` | Cheez-It crackers box (YCB-V 2) | box |
 | `fuze_bottle` | Beverage bottle with texture | 11 stacked cylinders (body, shoulder, neck) |
-| `gelatin_box` | Jell-O gelatin box (YCB-V 8) | box |
 | `herring_tin` | MW Polar herring tin | box + 2 cylinders |
 | `lunchbox` | Wildkin insulated lunch box | convex hull of the scan |
 | `notebook` | Amazon Basics hardcover notebook | box |
@@ -135,9 +131,7 @@ builds paths such as `OBJECTS_DIR / "cracker_box"` must use
 | `plastic_plate` | Dinner plate (stackable) | open shell, 113 boxes |
 | `pocky_box` | Pocky biscuit sticks box | box |
 | `pop_tarts_case` | Pop-Tarts food box | box |
-| `spam_can` | SPAM canned meat (YCB-V 9, potted meat can) | box |
 | `recycle_bin` | Open-top recycling bin (hollow) | 5 boxes |
-| `sugar_box` | Domino sugar box (YCB-V 3) | box |
 | `wicker_tray` | Serving tray (hollow) | floor + 4 tapered walls |
 | `yellow_tote` | Storage tote (hollow) | floor + 4 tapered walls + rim lip |
 
@@ -321,7 +315,7 @@ uv run --extra authoring python scripts/validate_objects.py
 | `viz_stacking_demo.py` | Physics demo: stacked dishes on tray, objects in tote |
 | `validate_objects.py` | Check objects the way CI does: conventions, mass, collision geometry against the visual mesh, open interiors |
 | `recenter_mesh.py` | Utility to re-center mesh origin to centroid |
-| `audit_ycbv.py` | Check YCB-V objects' declared frames against the pinned BOP models by shape and texture; writes `artifacts/ycbv_audit.json`, and with `--record` `docs/ycbv_audit.json` |
+| `audit_ycbv.py` | Check YCB-V objects' declared frames against the pinned BOP models by shape and texture; writes `artifacts/ycbv_audit.json`, and with `--record` `docs/ycbv_catalog.json` |
 
 ## License
 
@@ -374,3 +368,58 @@ and texture against the source with the independent audit, verifies every report
 output hash, and confirms invalid requests leave all assets unchanged. Inspect
 `artifacts/ycbv_import_validation.json`; no dataset download occurs in the default
 test suite.
+
+## Verifying the distributed wheel
+
+The wheel bundles all 35 catalog entries, including the 21 YCB-V objects, meshes,
+textures, source notices and audit measurements. It is approximately 35.7 MB compressed
+and 63.7 MB unpacked. Runtime loading needs no dataset download. The separately cached
+525 MB reference archive is used for conversion and independent source verification.
+
+Build once with the locked backend, then verify that exact wheel in a fresh environment
+outside the checkout. On the lab's Linux compute host:
+
+```bash
+uv sync --locked --all-extras
+uv build --wheel --no-build-isolation --out-dir artifacts/dist
+MUJOCO_GL=egl OPENBLAS_NUM_THREADS=1 uv run --locked --all-extras \
+  python scripts/verify_wheel.py artifacts/dist/*.whl \
+  /path/to/ycbv_models.zip artifacts/wheel-verification
+```
+
+Use a new output directory for each run. The verifier first checks a base installation
+without MuJoCo or SciPy, then installs the locked optional dependencies and pinned
+`asset_manager`. It runs from the temporary installation with Python's isolated mode.
+The wheel copied into the output directory is the exact file that passed. CI uploads
+that file and its SHA-256 in `wheel-manifest.json`, rather than rebuilding it afterward.
+
+Inspect `inspection/validation.json` for the full result and per-object measurements.
+`contact-sheet.png` shows two views of every visual model and collision overlay, body
+axes, dimensions and resting clearance. Per-object JSON and projection images record
+four source/asset silhouette comparisons, including the two clamps in the original
+BOP frames. Visible handle openings are checked against the actual convex pieces; a
+deliberately filled mug handle must fail that check. Open-container probes also run as
+part of collision validation. The measurement contract is in [docs/schema.md](docs/schema.md#installed-asset-verification).
+
+`mixed-scene.png`, `mixed-scene.xml` and `mixed-scene-state.npz` describe a seeded
+spaced tabletop drop with two copies each of the cracker box, mustard bottle, mug and
+large clamp. The XML's referenced resources and their source notices are included in
+`scene-assets/`, so the scene reopens after the temporary environment is removed.
+To inspect the settled state, load the XML, assign the saved `qpos` and `qvel`, and call
+`mujoco.mj_forward`. The scene uses 2 ms steps, `implicitfast`, an elliptic friction
+cone and `impratio=10` for 4 seconds. It requires finite states, final support clearance
+between -1 and +5 mm and linear speed below 0.05 m/s for each instance. These physical
+invariants tolerate numerical differences across platforms. Cluttered manipulation,
+articulated motion and task-specific grasp or stacking policies require separate evaluation.
+
+The source audit also runs directly from an installed package with the `ycbv` extra:
+
+```bash
+python -m prl_assets.ycbv_audit --archive /path/to/ycbv_models.zip --out audit.json
+```
+
+The checkout wrapper `scripts/audit_ycbv.py --record` updates
+`docs/ycbv_catalog.json` only when the complete collection passes. The earlier overlap
+decisions remain in `docs/ycbv_audit.json`. `uv.lock` pins the verification and build
+dependencies; CI pins its action commits and gives the dispatch credential only to the
+existing downstream-notification job.
