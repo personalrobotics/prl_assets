@@ -7,6 +7,9 @@ on:
     branches: [main]
   workflow_dispatch:
 
+permissions:
+  contents: read
+
 concurrency:
   group: ci-${{ github.ref }}
   cancel-in-progress: true
@@ -19,21 +22,24 @@ jobs:
       matrix:
         python-version: ["3.10", "3.11", "3.12"]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
 
       - name: Set up uv
-        uses: astral-sh/setup-uv@v5
+        uses: astral-sh/setup-uv@e58605a9b6da7c637471fab8847a5e5a6b8df081 # v5
         with:
           enable-cache: true
+          version: "0.12.15"
           python-version: ${{ matrix.python-version }}
 
       - name: Install dependencies
-        run: uv sync --all-extras --dev
+        run: uv sync --locked --all-extras
 
       # asset_manager is a sibling package, not a prl_assets dependency; without it the
       # registry tests skip. Pinned to the v0.2.0 commit.
       - name: Install asset_manager for the registry tests
-        run: uv pip install "asset-manager @ git+https://github.com/personalrobotics/asset_manager.git@f421eb375fe76a0d9c69dcf0dd08ef48d718a969"
+        run: uv pip install --no-build-isolation "asset-manager @ git+https://github.com/personalrobotics/asset_manager.git@f421eb375fe76a0d9c69dcf0dd08ef48d718a969"
 
       - name: Ruff lint
         run: uv run ruff check .
@@ -51,7 +57,7 @@ jobs:
 
       - name: Keep the asset validation measurements
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: collision-fit-${{ matrix.python-version }}
           path: artifacts/
@@ -60,33 +66,36 @@ jobs:
   ycbv-audit:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
 
       - name: Set up uv
-        uses: astral-sh/setup-uv@v5
+        uses: astral-sh/setup-uv@e58605a9b6da7c637471fab8847a5e5a6b8df081 # v5
         with:
           enable-cache: true
+          version: "0.12.15"
           python-version: "3.12"
 
       - name: Install dependencies
-        run: uv sync --all-extras --dev
+        run: uv sync --locked --all-extras
 
       # The pinned BOP archive (525 MB); the audit verifies its SHA-256 before use.
       # Restored and saved separately, so a failing audit does not download it again.
       - name: Restore the BOP YCB-V models
         id: bop-cache
-        uses: actions/cache/restore@v4
+        uses: actions/cache/restore@0057852bfaa89a56745cba8c7296529d2fc39830 # v4
         with:
           path: ~/.cache/prl_assets
           key: bop-ycbv-models-1e517a9b513cadb8eaf406ac3ce3c5f1d6fc4a80161c866b4e2a73d13de5e554
 
       - name: Fetch and verify the BOP YCB-V models
         timeout-minutes: 15
-        run: uv run python scripts/audit_ycbv.py --fetch-only
+        run: uv run python -m prl_assets.ycbv_audit --fetch-only
 
       - name: Save the BOP YCB-V models
         if: steps.bop-cache.outputs.cache-hit != 'true'
-        uses: actions/cache/save@v4
+        uses: actions/cache/save@0057852bfaa89a56745cba8c7296529d2fc39830 # v4
         with:
           path: ~/.cache/prl_assets
           key: bop-ycbv-models-1e517a9b513cadb8eaf406ac3ce3c5f1d6fc4a80161c866b4e2a73d13de5e554
@@ -99,24 +108,39 @@ jobs:
 
       - name: YCB-V frames agree with the BOP models
         timeout-minutes: 15
-        run: uv run python scripts/audit_ycbv.py --out artifacts/ycbv_audit.json
+        run: uv run python -m prl_assets.ycbv_audit --out artifacts/ycbv_audit.json
+
+      - name: Build the wheel once with the locked backend
+        run: uv build --wheel --no-build-isolation --out-dir artifacts/dist
+
+      - name: Verify the exact wheel outside the checkout
+        timeout-minutes: 15
+        env:
+          MUJOCO_GL: egl
+          OPENBLAS_NUM_THREADS: "1"
+        run: >-
+          uv run --locked --all-extras python scripts/verify_wheel.py
+          artifacts/dist/*.whl "$HOME/.cache/prl_assets/ycbv_models.zip"
+          artifacts/wheel-verification
 
       - name: Keep the audit
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: ycbv-audit
           path: |
             artifacts/ycbv_audit.json
             artifacts/ycbv_import_validation.json
+            artifacts/wheel-verification/
 
   notify-robot-code:
+    permissions: {}
     needs: [test, ycbv-audit]
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     steps:
       - name: Dispatch integration run
-        uses: peter-evans/repository-dispatch@v3
+        uses: peter-evans/repository-dispatch@ff45666b9427631e3450c54a1bcbee4d9ff4d7c0 # v3
         with:
           token: ${{ secrets.ROBOT_CODE_DISPATCH_TOKEN }}
           repository: personalrobotics/robot-code

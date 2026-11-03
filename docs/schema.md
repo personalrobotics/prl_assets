@@ -122,7 +122,7 @@ Translations are zero: the asset and BOP origins coincide, at the BOP model orig
 the geometric centre. New objects in the collection use the identity.
 
 `scripts/audit_ycbv.py` checks each declared transform against the BOP model, by shape
-and by texture, and records the result in `docs/ycbv_audit.json`; see
+and by texture. Current full-catalog results are in `docs/ycbv_catalog.json`; see
 [the audit](ycbv_audit.md).
 
 ## Symmetries: `symmetries`
@@ -177,3 +177,35 @@ parts are counted. This is a uniform-density inertia estimate, not a measurement
 Their box-shaped `geometric_properties` is a grasp envelope whose dimensions match
 the collision bounds. It is not a claim that the object has solid box collision
 geometry. Concave collision pieces remain separate mesh geoms in MuJoCo.
+
+## Installed asset verification
+
+The distributed wheel contains the visual and collision resources, identity/frame
+metadata, source notices and both source-audit artifacts. The base package imports
+without simulator or scientific authoring dependencies. `ycbv` supplies those optional
+dependencies; `asset_manager` remains a separate consumer-owned package.
+
+For rendered frame verification, world coordinates equal the BOP model coordinates in
+metres. The reference mesh is converted from the pinned PLY; the asset's compiled body
+is placed at `inverse(T_asset_bop)`, replacing its initial resting placement. The same
+camera renders both. Four views at 320 by 240 pixels must each have foreground
+silhouette intersection-over-union of at least 0.97. Camera position, vertical field of
+view, look-at point and azimuth/elevation are recorded with every result. Foreground is
+depth below 99% of the far clipping distance. The tolerance allows the four retained
+remeshings' edge differences; the separate texture audit protects orientation of nearly
+symmetric objects.
+
+A visible aperture is an enclosed background region in the reference silhouette,
+eroded by two pixels to avoid boundary discretization. When at least 25 pixels remain,
+at most 10% may be occupied by the rendered convex collision pieces. A deliberately
+solid-hull mug must violate this condition. This checks visible through-openings in the
+chosen views. Open interiors additionally use the physical floor probe specified above.
+The capped pitcher scan declares no open interior.
+
+Per-object verification also requires finite positive compiled mass and principal
+inertia, finite nonnegative friction, a loaded texture, the collision/metadata contract,
+and resting collision clearance within 1 mm of the support. The JSON artifact records
+the physical parameters, source/frame measurements, projection/aperture measurements
+and file hashes. A successful overall artifact requires every object and the seeded
+scene to pass and the filled-handle negative control to be detected. README owns the
+reproduction commands, scene settings and interpretation of rendered artifacts.
