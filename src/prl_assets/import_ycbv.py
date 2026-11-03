@@ -123,7 +123,7 @@ def _obj(mesh, path: Path, textured: bool) -> None:
         header=None,
     )
     # MuJoCo binds the texture in MJCF. Avoid dangling MTL references from OBJ export.
-    text = "\n".join(line for line in text.splitlines() if not line.startswith(("mtllib ", "usemtl "))) + "\n"
+    text = "\n".join(line for line in text.splitlines() if not line.startswith(("mtllib ", "usemtl "))).rstrip() + "\n"
     path.write_text(text)
 
 
