@@ -1,0 +1,90 @@
+name: mustard_bottle
+description: YCB-V 006_mustard_bottle
+category:
+- food_package
+- graspable
+mass: 0.603
+dimensions: &id001
+- 0.09715000010462972
+- 0.06659571702799212
+- 0.1914014618104261
+material: plastic
+geometric_properties:
+  type: box
+  size: *id001
+mujoco:
+  xml_path: mustard_bottle.xml
+  scale: 1.0
+  friction:
+  - 0.6
+  - 0.005
+  - 0.0001
+perception:
+  aliases:
+  - 006_mustard_bottle
+  - YCB mustard bottle
+dataset:
+  ycbv:
+    bop_id: 5
+    ycb_name: 006_mustard_bottle
+frames:
+  T_asset_bop:
+  - - 1.0
+    - 0.0
+    - 0.0
+    - 0.0
+  - - 0.0
+    - 1.0
+    - 0.0
+    - 0.0
+  - - 0.0
+    - 0.0
+    - 1.0
+    - 0.0
+  - - 0.0
+    - 0.0
+    - 0.0
+    - 1.0
+symmetries:
+  frame: bop
+  discrete: []
+  continuous: []
+provenance:
+  geometry: Pinned BOP PLY converted mm to m without alignment or simplification;
+    texture resized to 1024x1024
+  reference_model: models/obj_000005.ply in the pinned BOP ycbv_models.zip
+  license: CC-BY-4.0
+  attribution: YCB Object and Model Set; see collection NOTICE.md
+  archive_sha256: 1e517a9b513cadb8eaf406ac3ce3c5f1d6fc4a80161c866b4e2a73d13de5e554
+  source_members:
+    models/obj_000005.ply: c1d093e33fe9b447812b2950c26b80fb26648a4205445986c9cc8b1731496811
+    models/obj_000005.png: 5ab81c84e1b0a945c9f1a3f20fe765720ab607ca2841a1da3454b9cf443893b1
+  physical_properties:
+    mass_source: https://personalrobotics.cs.washington.edu/publications/calli2015ycb.pdf#page=5
+    mass_note: Reference YCB object mass, not a measurement of a lab copy
+    inertia: Estimated by MuJoCo from uniformly dense convex parts; overlaps are counted
+    friction: Unmeasured nominal contact parameters
+  conversion:
+    coacd: 1.0.14
+    settings:
+      threshold: 0.002
+      real_metric: true
+      seed: 0
+      preprocess_mode: auto
+      preprocess_resolution: 50
+      resolution: 2000
+      mcts_nodes: 20
+      mcts_iterations: 150
+      mcts_max_depth: 3
+      merge: true
+      decimate: true
+      max_ch_vertex: 128
+    texture_size:
+    - 1024
+    - 1024
+    environment:
+      numpy: 2.5.4
+      trimesh: 5.2.0
+      mujoco: 3.17.0
+      pillow: 13.0.0
+      scipy: 1.18.1

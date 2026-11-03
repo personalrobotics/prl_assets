@@ -311,6 +311,16 @@ class TestBinCatches:
         spec.option.cone = mujoco.mjtCone.mjCONE_ELLIPTIC
         spec.option.impratio = 10.0
         spec.worldbody.add_geom(type=mujoco.mjtGeom.mjGEOM_PLANE, size=[2, 2, 0.1])
+        # A non-colliding measurement plane at the bin floor. Native signed
+        # distance measures actual convex support, not phantom corners of AABBs.
+        spec.worldbody.add_geom(
+            name="floor_measurement",
+            type=mujoco.mjtGeom.mjGEOM_PLANE,
+            pos=[0, 0, floor],
+            size=[2, 2, 0.1],
+            contype=0,
+            conaffinity=0,
+        )
         container = mujoco.MjSpec.from_file(str(OBJECTS_DIR / "recycle_bin" / "recycle_bin.xml"))
         stand = spec.worldbody.add_frame()
         stand.attach_body(container.body("recycle_bin"), "bin/", "")
@@ -328,21 +338,37 @@ class TestBinCatches:
         for _ in range(self._SETTLE_STEPS):
             mujoco.mj_step(model, data)
         body = mujoco.mj_name2id(model, mujoco.mjtObj.mjOBJ_BODY, dropped.name)
+        mujoco.mj_forward(model, data)
         x, y, _ = data.xpos[body]
-        assert abs(x) <= inner[0] / 2 and abs(y) <= inner[1] / 2, (x, y)
-        # The lowest corner of its collision geoms' bounding boxes: on the floor, not in it.
-        corners = np.array(np.meshgrid([-1, 1], [-1, 1], [-1, 1])).T.reshape(-1, 3)
-        lowest = min(
-            float(
-                (
-                    data.geom_xpos[g][:, None]
-                    + data.geom_xmat[g].reshape(3, 3)
-                    @ (model.geom_aabb[g][:3][:, None] + (corners * model.geom_aabb[g][3:]).T)
-                )[2].min()
-            )
+        plane = mujoco.mj_name2id(model, mujoco.mjtObj.mjOBJ_GEOM, "floor_measurement")
+        clearance = min(
+            mujoco.mj_geomDistance(model, data, plane, g, 1.0, None)
             for g in range(model.ngeom)
-            if model.geom_bodyid[g] == body and model.geom_contype[g]
+            if model.geom_bodyid[g] == body and (model.geom_contype[g] or model.geom_conaffinity[g])
         )
+        lowest = floor + clearance
+        import json
+        import os
+
+        artifact = Path(os.environ.get("PRL_ASSETS_ARTIFACTS", "artifacts")) / "bin_drop"
+        artifact.mkdir(parents=True, exist_ok=True)
+        (artifact / f"{name}.json").write_text(
+            json.dumps(
+                dict(
+                    object=name,
+                    floor_top_m=floor,
+                    lowest_collision_point_m=lowest,
+                    penetration_limit_m=self._SUNK,
+                    body_position_m=data.xpos[body].tolist(),
+                    timestep_s=0.002,
+                    steps=self._SETTLE_STEPS,
+                ),
+                indent=2,
+                allow_nan=False,
+            )
+            + "\n"
+        )
+        assert abs(x) <= inner[0] / 2 and abs(y) <= inner[1] / 2, (x, y)
         assert floor - self._SUNK <= lowest < outer[2], (
             f"its lowest point rests at {lowest:.4f} m, the floor's top at {floor:.4f} m"
         )
