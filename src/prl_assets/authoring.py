@@ -281,8 +281,12 @@ def visual_floor(obj: Compiled, xy: tuple[float, float] | None = None) -> float:
     hit = np.zeros(1, dtype=np.int32)
     dist = mujoco.mj_ray(m, d, np.array([x, y, top]), np.array([0.0, 0.0, -1.0]), groups, 1, -1, hit)
     if dist < 0:
-        raise ValueError(f"{obj.name}: no visual surface below ({x:.3f}, {y:.3f})")
+        raise NoSurfaceBelow(f"{obj.name}: no visual surface below ({x:.3f}, {y:.3f})")
     return top - dist
+
+
+class NoSurfaceBelow(ValueError):
+    """No visual surface lies beneath the point looked down from."""
 
 
 class ProbeLeftObject(ValueError):
@@ -299,11 +303,17 @@ def _floor_probe(obj: Compiled) -> dict:
 
 
 def floor_gap(obj: Compiled, xy: tuple[float, float] | None = None) -> float:
-    """Millimetres between where a 1 cm sphere dropped at ``xy`` comes to rest, held in
-    the fixed object, and the visual surface beneath that resting point. A filled
-    interior shows as a gap the size of its depth. A probe that rolls off a filled top
-    and comes to rest beside the object raises ``ProbeLeftObject``: comparing it with
-    the floor beneath the drop point would let a solid bowl pass by its base."""
+    """Millimetres a 1 cm sphere dropped at ``xy`` (default: above the body origin),
+    held in the fixed object, comes to rest above the visual inner floor.
+
+    This is the larger of its height above the visual surface beneath where it comes to
+    rest, and above the visual floor beneath the drop point. A filled interior holds the
+    probe up by its depth. A probe that rolls downhill inside an open interior (an
+    interior need not be centred on the body origin) scores about zero on both; one
+    that rolls off a filled top and comes to rest on a handle stays high above the floor
+    beneath the drop point. A probe with no visual surface beneath it, such as one that
+    rolled off a solid bowl onto the ground, raises ``ProbeLeftObject``."""
+    floor_at_drop = visual_floor(obj, xy)
     scene = mujoco.MjSpec()
     scene.option.timestep = 0.002
     scene.worldbody.add_geom(type=mujoco.mjtGeom.mjGEOM_PLANE, size=[2, 2, 0.1])
@@ -322,10 +332,11 @@ def floor_gap(obj: Compiled, xy: tuple[float, float] | None = None) -> float:
         mujoco.mj_step(model, data)
     position = data.xpos[mujoco.mj_name2id(model, mujoco.mjtObj.mjOBJ_BODY, "probe")]
     try:
-        floor = visual_floor(obj, (position[0], position[1]))
-    except ValueError as error:
+        floor_at_rest = visual_floor(obj, (position[0], position[1]))
+    except NoSurfaceBelow as error:
         raise ProbeLeftObject(f"{obj.name}: the dropped probe came to rest off the object") from error
-    return _mm(1e3 * (position[2] - _PROBE_RADIUS - floor))
+    bottom = position[2] - _PROBE_RADIUS
+    return _mm(1e3 * max(bottom - floor_at_rest, bottom - floor_at_drop))
 
 
 # ------------------------------------------------------------------------- checks

@@ -176,6 +176,41 @@ def _existing(root: Path) -> dict[int, Path]:
     return result
 
 
+def _check_contained(directory: Path) -> Path:
+    """Refuse an existing asset whose model or resources resolve outside its directory.
+    Returns the resolved model path."""
+    import xml.etree.ElementTree as ET
+
+    import yaml
+
+    meta = yaml.safe_load((directory / "meta.yaml").read_text())
+    simulator = meta.get("mujoco")
+    if not isinstance(simulator, dict) or not isinstance(simulator.get("xml_path"), str):
+        raise ValueError(f"invalid MuJoCo metadata: {directory}")
+    model_path = (directory / simulator["xml_path"]).resolve()
+    if not model_path.is_relative_to(directory.resolve()):
+        raise ValueError(f"MuJoCo path leaves {directory}")
+    try:
+        tree = ET.parse(model_path)
+    except ET.ParseError as error:
+        raise ValueError(f"invalid MuJoCo XML in {model_path}: {error}") from error
+    if list(tree.iter("include")):
+        raise ValueError("retained YCB-V assets must not have XML includes")
+    for element in tree.iter():
+        if element.tag == "compiler" and any(
+            element.get(k) for k in ("meshdir", "texturedir", "assetdir")
+        ):
+            raise ValueError("retained YCB-V assets must use local resource paths")
+        if element.get("file") and not (directory / element.get("file")).resolve().is_relative_to(
+            directory.resolve()
+        ):
+            raise ValueError(f"resource path leaves {directory}")
+    for resource in directory.rglob("*"):
+        if resource.is_file() and not resource.resolve().is_relative_to(directory.resolve()):
+            raise ValueError(f"linked resource leaves {directory}")
+    return model_path
+
+
 def _obj(mesh, path: Path, textured: bool) -> None:
     import trimesh
 
@@ -387,37 +422,9 @@ def import_objects(objects: list[str], output: Path, archive: Path) -> dict:
                 bop_id = allowed[name]
                 if bop_id in existing:
                     directory = existing[bop_id]
-                    import xml.etree.ElementTree as ET
-
-                    import yaml
-
                     from prl_assets import authoring
 
-                    meta = yaml.safe_load((directory / "meta.yaml").read_text())
-                    simulator = meta.get("mujoco")
-                    if not isinstance(simulator, dict) or not isinstance(simulator.get("xml_path"), str):
-                        raise ValueError(f"invalid MuJoCo metadata: {directory}")
-                    model_path = (directory / simulator["xml_path"]).resolve()
-                    if not model_path.is_relative_to(directory.resolve()):
-                        raise ValueError(f"MuJoCo path leaves {directory}")
-                    try:
-                        tree = ET.parse(model_path)
-                    except ET.ParseError as error:
-                        raise ValueError(f"invalid MuJoCo XML in {model_path}: {error}") from error
-                    if list(tree.iter("include")):
-                        raise ValueError("retained YCB-V assets must not have XML includes")
-                    for element in tree.iter():
-                        if element.tag == "compiler" and any(
-                            element.get(k) for k in ("meshdir", "texturedir", "assetdir")
-                        ):
-                            raise ValueError("retained YCB-V assets must use local resource paths")
-                        if element.get("file") and not (directory / element.get("file")).resolve().is_relative_to(
-                            directory.resolve()
-                        ):
-                            raise ValueError(f"resource path leaves {directory}")
-                    for resource in directory.rglob("*"):
-                        if resource.is_file() and not resource.resolve().is_relative_to(directory.resolve()):
-                            raise ValueError(f"linked resource leaves {directory}")
+                    _check_contained(directory)
                     report = authoring.check(directory)
                     if not report.ok:
                         raise ValueError(f"existing asset {directory} fails validation: {report.failures}")
@@ -475,6 +482,25 @@ def _dump_like(meta: dict, previous: str) -> str:
     return "\n".join(out) + "\n"
 
 
+def _collision_parts(path: Path) -> tuple[bytes, frozenset]:
+    """A model file without its collision meshes, collision geoms and resting position,
+    and the set of attribute sets its collision geoms carry beyond name, mesh and mass."""
+    import xml.etree.ElementTree as ET
+
+    tree = ET.parse(path).getroot()
+    attributes = set()
+    for parent in tree.iter():
+        for child in list(parent):
+            if child.tag == "mesh" and child.get("name", "").startswith("collision_"):
+                parent.remove(child)
+            elif child.tag == "geom" and child.get("mesh", "").startswith("collision_"):
+                attributes.add(frozenset((k, v) for k, v in child.attrib.items() if k not in ("name", "mesh", "mass")))
+                parent.remove(child)
+    for body in tree.iter("body"):
+        body.attrib.pop("pos", None)
+    return ET.tostring(tree), frozenset(attributes)
+
+
 def rebuild_collisions(objects: list[str], output: Path, archive: Path) -> dict:
     """Rebuild existing assets' collision models from their current recipes.
 
@@ -483,11 +509,15 @@ def rebuild_collisions(objects: list[str], output: Path, archive: Path) -> dict:
     ``geometric_properties.size`` that tracked them, and ``provenance.conversion``.
     Every other file and metadata section, including hand-authored ones such as
     ``grasp_regions``, is kept. The regenerated visual mesh must equal the committed
-    one, so the collider is derived from the geometry that is shown. Each object is
-    validated before it replaces the old directory, which survives any failure.
-    """
-    import xml.etree.ElementTree as ET
+    one, so the collider is derived from the geometry that is shown, and the model file
+    must agree outside its collision geoms, including any collision-geom attribute a
+    person tuned by hand.
 
+    Every requested object is rebuilt and validated before any is replaced. Staged and
+    retired copies hold their metadata under hidden names, so a registry never sees
+    them, and a failure while replacing restores every object already replaced.
+    """
+    import mujoco
     import yaml
 
     from prl_assets import authoring
@@ -497,7 +527,7 @@ def rebuild_collisions(objects: list[str], output: Path, archive: Path) -> dict:
         raise ValueError("select distinct canonical YCB-V names (no paths or unknown names)")
     archive = verify_archive(archive)
     output = Path(output).resolve()
-    rows = []
+    rows, staged = [], []
     with _lock(output), tempfile.TemporaryDirectory(dir=output, prefix=".ycbv-stage-") as temporary:
         existing = _existing(output)
         with zipfile.ZipFile(archive) as z:
@@ -506,14 +536,27 @@ def rebuild_collisions(objects: list[str], output: Path, archive: Path) -> dict:
                 if bop_id not in existing or bop_id not in RECIPES:
                     raise ValueError(f"{name} is not an imported asset with a recipe")
                 directory = existing[bop_id]
+                model_path = _check_contained(directory)
+                if any(p.is_symlink() for p in directory.rglob("*")):
+                    raise ValueError(f"{name}: refusing to rebuild an asset that contains symbolic links")
                 built = Path(temporary) / f"{name}.built"
                 built.mkdir()
                 _build(z, built, bop_id)
                 visual = f"{name}_visual.obj"
                 if (built / visual).read_bytes() != (directory / visual).read_bytes():
                     raise ValueError(f"{name}: the regenerated visual mesh differs from the committed one")
+                rebuilt, rebuilt_attributes = _collision_parts(built / f"{name}.xml")
+                committed, committed_attributes = _collision_parts(model_path)
+                if rebuilt != committed:
+                    raise ValueError(f"{name}: the model file differs outside its collision geometry")
+                if rebuilt_attributes != committed_attributes:
+                    raise ValueError(
+                        f"{name}: the committed collision geoms carry attributes the recipe does not "
+                        "reproduce; add them to the recipe before rebuilding"
+                    )
 
-                old_meta = yaml.safe_load((directory / "meta.yaml").read_text())
+                previous = (directory / "meta.yaml").read_text()
+                old_meta = yaml.safe_load(previous)
                 new_meta = yaml.safe_load((built / ".meta.yaml.pending").read_text())
                 meta = dict(old_meta)
                 gp = dict(meta.get("geometric_properties") or {})
@@ -523,44 +566,34 @@ def rebuild_collisions(objects: list[str], output: Path, archive: Path) -> dict:
                 meta["dimensions"] = new_meta["dimensions"]
                 meta["provenance"] = {**old_meta["provenance"], "conversion": new_meta["provenance"]["conversion"]}
 
-                # The model file is regenerated whole; everything but its collision
-                # parts and resting position must be what is committed.
-                def shape(path):
-                    tree = ET.parse(path).getroot()
-                    for parent in tree.iter():
-                        for child in list(parent):
-                            collision = child.get("mesh", "").startswith("collision_") or child.get(
-                                "name", ""
-                            ).startswith("collision_")
-                            if child.tag in ("mesh", "geom") and collision:
-                                parent.remove(child)
-                    for body in tree.iter("body"):
-                        body.attrib.pop("pos", None)
-                    return ET.tostring(tree)
-
-                xml = meta["mujoco"]["xml_path"]
-                if shape(built / f"{name}.xml") != shape(directory / xml):
-                    raise ValueError(f"{name}: the model file differs outside its collision geometry")
-
                 stage = Path(temporary) / name
-                shutil.copytree(directory, stage, symlinks=True)
+                shutil.copytree(directory, stage)
+                (stage / "meta.yaml").unlink()
                 for old in stage.glob("collision_*.obj"):
                     old.unlink()
                 for new in built.glob("collision_*.obj"):
                     shutil.copyfile(new, stage / new.name)
-                shutil.copyfile(built / f"{name}.xml", stage / xml)
-                (stage / "meta.yaml").write_text(_dump_like(meta, (directory / "meta.yaml").read_text()))
-                report = authoring.check(stage)
+                shutil.copyfile(built / f"{name}.xml", stage / model_path.relative_to(directory.resolve()))
+                (stage / ".meta.yaml.pending").write_text(_dump_like(meta, previous))
+                spec = mujoco.MjSpec.from_file(str(stage / model_path.relative_to(directory.resolve())))
+                report = authoring.check(authoring._compiled(name, stage, meta, spec))
                 if not report.ok:
                     raise ValueError(f"{name} failed collision validation: {report.failures}")
+                staged.append((name, bop_id, directory, stage, old_meta, new_meta, report))
 
+        # Publish. The old object becomes invisible (hidden metadata) before it moves, and
+        # the new one visible only once it is in place; on any failure, including an
+        # interruption, every object already replaced is put back.
+        done = []
+        try:
+            for name, bop_id, directory, stage, old_meta, new_meta, report in staged:
                 retired = Path(temporary) / f"{name}.retired"
+                os.rename(directory / "meta.yaml", directory / ".meta.yaml.retired")
+                done.append((directory, retired, False))
                 os.rename(directory, retired)
-                try:
-                    os.rename(stage, directory)
-                except OSError:
-                    os.rename(retired, directory)
-                    raise
+                done[-1] = (directory, retired, True)
+                os.rename(stage, directory)
+                os.rename(directory / ".meta.yaml.pending", directory / "meta.yaml")
                 rows.append(
                     dict(
                         name=name,
@@ -573,6 +606,14 @@ def rebuild_collisions(objects: list[str], output: Path, archive: Path) -> dict:
                         files={p.name: sha256(p) for p in sorted(directory.iterdir()) if p.is_file()},
                     )
                 )
+        except BaseException:
+            for directory, retired, moved in reversed(done):
+                if moved:
+                    if directory.exists():
+                        shutil.rmtree(directory)
+                    os.rename(retired, directory)
+                os.rename(directory / ".meta.yaml.retired", directory / "meta.yaml")
+            raise
     return dict(source=dict(url=ARCHIVE_URL, sha256=ARCHIVE_SHA256), objects=rows)
 
 

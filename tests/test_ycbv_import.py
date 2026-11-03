@@ -135,3 +135,68 @@ def test_real_archive_import_and_failed_requests_preserve_assets(tmp_path):
         )
         + "\n"
     )
+
+
+def test_collision_rebuild_reproduces_the_committed_colliders_and_is_all_or_nothing(tmp_path):
+    """--rebuild-collision regenerates only an object's collider (#42). On the platform
+    the committed colliders were built on, rebuilding a committed object reproduces it
+    byte for byte. A request in which one object fails replaces none of them and leaves
+    no staged or retired copy that a registry could discover."""
+    source = os.environ.get("PRL_ASSETS_YCBV_ARCHIVE")
+    if not source:
+        pytest.skip("real-archive authoring check; run in the cached YCB-V audit job")
+    pytest.importorskip("coacd")
+    import platform
+
+    from prl_assets import authoring
+
+    archive = Path(source).expanduser().resolve(strict=True)
+    collection = tmp_path / "collection"
+    collection.mkdir()
+    for name in ("mug", "banana"):
+        shutil.copytree(YCBV_OBJECTS_DIR / name, collection / name)
+
+    def inventory():
+        return {
+            str(p.relative_to(collection)): sha256(p)
+            for p in sorted(collection.rglob("*"))
+            if p.is_file() and p.name != ".import.lock"
+        }
+
+    def rebuild(*objects):
+        return subprocess.run(
+            [
+                sys.executable,
+                "-m",
+                "prl_assets.import_ycbv",
+                "--rebuild-collision",
+                "--objects",
+                *objects,
+                "--output",
+                str(collection),
+                "--archive",
+                str(archive),
+                "--report",
+                str(tmp_path / "rebuild.json"),
+            ],
+            capture_output=True,
+            text=True,
+            timeout=600,
+        )
+
+    committed = inventory()
+    result = rebuild("mug")
+    assert result.returncode == 0, result.stderr
+    if platform.system() == "Linux" and platform.machine() == "x86_64":
+        assert inventory() == committed, "rebuilding the committed mug changed it"
+
+    # A visual mesh that no longer matches the archive makes the banana fail; the mug,
+    # requested first and valid, must not be replaced either.
+    before = inventory()
+    banana = collection / "banana" / "banana_visual.obj"
+    banana.write_text(banana.read_text() + "# edited\n")
+    before = inventory()
+    result = rebuild("mug", "banana")
+    assert result.returncode != 0 and "visual mesh differs" in result.stderr, result.stderr
+    assert inventory() == before
+    assert set(authoring.object_dirs(collection)) == {"mug", "banana"}
