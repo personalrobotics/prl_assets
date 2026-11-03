@@ -197,13 +197,9 @@ def _check_contained(directory: Path) -> Path:
     if list(tree.iter("include")):
         raise ValueError("retained YCB-V assets must not have XML includes")
     for element in tree.iter():
-        if element.tag == "compiler" and any(
-            element.get(k) for k in ("meshdir", "texturedir", "assetdir")
-        ):
+        if element.tag == "compiler" and any(element.get(k) for k in ("meshdir", "texturedir", "assetdir")):
             raise ValueError("retained YCB-V assets must use local resource paths")
-        if element.get("file") and not (directory / element.get("file")).resolve().is_relative_to(
-            directory.resolve()
-        ):
+        if element.get("file") and not (directory / element.get("file")).resolve().is_relative_to(directory.resolve()):
             raise ValueError(f"resource path leaves {directory}")
     for resource in directory.rglob("*"):
         if resource.is_file() and not resource.resolve().is_relative_to(directory.resolve()):
