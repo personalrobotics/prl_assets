@@ -39,6 +39,7 @@ import yaml
 from scipy.spatial import ConvexHull
 
 from prl_assets import OBJECTS_DIR
+from prl_assets.grasp_regions import parse as parse_grasp_regions
 
 VISUAL_GROUP = 2
 COLLISION_GROUP = 3
@@ -53,7 +54,8 @@ DEFAULT_TOLERANCE_MM = {
     "floor_gap": 3.0,  # open objects: a dropped sphere's rest height above the visual inner floor
 }
 # How far a size in geometric_properties or dimensions may differ from the collision
-# geometry's extent: grasp and place planning read these fields, not the geoms.
+# geometry's extent: legacy placement readers still treat these as physical sizes.
+# New grasp regions have a separate frame/bounds check and are not compared here.
 SIZE_TOLERANCE_MM = 2.0
 
 _SAMPLES = 20000
@@ -96,6 +98,7 @@ def load(obj: str | Path, root: Path = OBJECTS_DIR) -> Compiled:
     """Compile an object by name (searched under ``root``) or by directory."""
     obj_dir = Path(obj) if Path(obj).is_dir() else object_dirs(root)[str(obj)]
     meta = yaml.safe_load((obj_dir / "meta.yaml").read_text()) or {}
+    parse_grasp_regions(meta)
     spec = mujoco.MjSpec.from_file(str(obj_dir / meta["mujoco"]["xml_path"]))
     return _compiled(meta.get("name", obj_dir.name), obj_dir, meta, spec)
 
@@ -107,6 +110,7 @@ def from_spec(spec: mujoco.MjSpec, like: Compiled, meta: dict | None = None) -> 
 
 
 def _compiled(name, obj_dir, meta, spec) -> Compiled:
+    parse_grasp_regions(meta)
     model = spec.compile()
     data = mujoco.MjData(model)
     mujoco.mj_forward(model, data)
@@ -386,6 +390,7 @@ def check(obj: Compiled | str | Path) -> Report:
     """Check an object against the conventions in the README and the tolerances above."""
     if not isinstance(obj, Compiled):
         obj = load(obj)
+    regions = parse_grasp_regions(obj.meta)
     m = obj.model
     failures = []
 
@@ -409,6 +414,16 @@ def check(obj: Compiled | str | Path) -> Report:
     if not collision:
         return Report(obj.name, Fit(resting=math.nan, collision_extent=[]), failures)
 
+    if regions:
+        if not visual:
+            failures.append("grasp_regions: visual mesh required for in-frame bounds validation")
+        else:
+            vertices = to_body(obj, np.vstack([geom_mesh(obj, g).vertices for g in visual]))
+            low, high = vertices.min(axis=0) - 0.01, vertices.max(axis=0) + 0.01
+            for region in regions:
+                bounds = region.bounds_in_asset()
+                if np.any(bounds[0] < low) or np.any(bounds[1] > high):
+                    failures.append(f"grasp_regions.{region.name}.bounds: outside visual bounds plus 10 mm")
     fit = collision_fit(obj)
     limits = [("resting", abs(fit.resting), "the model file's pose does not rest the object on z = 0")]
     if visual:

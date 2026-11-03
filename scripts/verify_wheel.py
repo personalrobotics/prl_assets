@@ -127,6 +127,8 @@ def main():
         # implicit dataset cache can make this base installation succeed.
         check = """import importlib.util, pathlib, sys
 import prl_assets
+from prl_assets.grasp_regions import parse
+assert parse({'name': 'legacy', 'geometric_properties': {'type': 'box'}}) == ()
 assert pathlib.Path(prl_assets.__file__).resolve().is_relative_to(pathlib.Path(sys.prefix).resolve())
 assert importlib.util.find_spec('mujoco') is None
 assert importlib.util.find_spec('scipy') is None
@@ -136,6 +138,29 @@ print('PASS base wheel imports and includes all 21 identities without authoring 
         run([python, "-I", "-c", check], cwd=work)
         run(["uv", "pip", "install", "--python", python, "--require-hashes", "-r", full])
         run(["uv", "pip", "install", "--python", python, "--no-deps", "--no-build-isolation", REGISTRY])
+        regions_check = """import sys
+from pathlib import Path
+from asset_manager import AssetManager
+from prl_assets import OBJECTS_DIR
+from prl_assets.grasp_regions import parse
+from prl_assets.ycbv_audit import write_json
+catalog = AssetManager(OBJECTS_DIR)
+rows = []
+for name in catalog.list():
+    meta = catalog.get(name)
+    regions = parse(meta)
+    rows.append(dict(name=name, migration_status='grasp_regions' if 'grasp_regions' in meta else 'legacy only',
+        aliases=meta.get('perception', {}).get('aliases', []),
+        bop_id=meta.get('dataset', {}).get('ycbv', {}).get('bop_id'),
+        T_asset_bop=meta.get('frames', {}).get('T_asset_bop'),
+        regions=[dict(name=r.name, primitive=r.primitive, params=dict(r.params),
+            strategies=r.strategies, T_asset_region=r.T_asset_region,
+            bottom_face_frame=r.bottom_face_frame().tolist(), bounds_in_asset=r.bounds_in_asset().tolist()) for r in regions]))
+assert [r.name for r in parse(catalog.get('mug'))] == ['body', 'handle']
+write_json(Path(sys.argv[1]), dict(objects=rows))
+print('PASS installed asset grasp regions and preserved catalog identities')
+"""
+        run([python, "-I", "-c", regions_check, output / "grasp_regions.json"], cwd=work)
         env = os.environ.copy()
         env.pop("PYTHONPATH", None)
         env.setdefault("MUJOCO_GL", "egl")
