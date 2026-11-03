@@ -226,6 +226,8 @@ class Fit:
     collision_excess_max: float | None = None
     sink: float | None = None
     floor_gap: float | None = None
+    # Open objects: the dropped probe came to rest off the object (rolled off a filled top).
+    probe_left_object: bool = False
     visual_extent: list[float] | None = None
 
 
@@ -253,7 +255,7 @@ def collision_fit(obj: Compiled, n: int = _SAMPLES) -> Fit:
         collision_excess_p99=_mm(np.percentile(excess, 99)),
         collision_excess_max=_mm(excess.max()),
         sink=_mm(1e3 * (bottom - vis_vertices[:, 2].min())),
-        floor_gap=floor_gap(obj) if is_open(obj) else None,
+        **_floor_probe(obj),
         visual_extent=[_mm(1e3 * v) for v in np.ptp(vis_vertices, axis=0)],
     )
 
@@ -283,11 +285,25 @@ def visual_floor(obj: Compiled, xy: tuple[float, float] | None = None) -> float:
     return top - dist
 
 
+class ProbeLeftObject(ValueError):
+    """The dropped probe came to rest where no visual surface lies beneath it."""
+
+
+def _floor_probe(obj: Compiled) -> dict:
+    if not is_open(obj):
+        return {}
+    try:
+        return dict(floor_gap=floor_gap(obj))
+    except ProbeLeftObject:
+        return dict(probe_left_object=True)
+
+
 def floor_gap(obj: Compiled, xy: tuple[float, float] | None = None) -> float:
     """Millimetres between where a 1 cm sphere dropped at ``xy`` comes to rest, held in
-    the fixed object, and the visual surface beneath it. A filled interior shows as a
-    gap the size of its depth."""
-    floor = visual_floor(obj, xy)
+    the fixed object, and the visual surface beneath that resting point. A filled
+    interior shows as a gap the size of its depth. A probe that rolls off a filled top
+    and comes to rest beside the object raises ``ProbeLeftObject``: comparing it with
+    the floor beneath the drop point would let a solid bowl pass by its base."""
     scene = mujoco.MjSpec()
     scene.option.timestep = 0.002
     scene.worldbody.add_geom(type=mujoco.mjtGeom.mjGEOM_PLANE, size=[2, 2, 0.1])
@@ -304,8 +320,12 @@ def floor_gap(obj: Compiled, xy: tuple[float, float] | None = None) -> float:
     data = mujoco.MjData(model)
     for _ in range(1500):
         mujoco.mj_step(model, data)
-    rest = data.xpos[mujoco.mj_name2id(model, mujoco.mjtObj.mjOBJ_BODY, "probe")][2] - _PROBE_RADIUS
-    return _mm(1e3 * (rest - floor))
+    position = data.xpos[mujoco.mj_name2id(model, mujoco.mjtObj.mjOBJ_BODY, "probe")]
+    try:
+        floor = visual_floor(obj, (position[0], position[1]))
+    except ValueError as error:
+        raise ProbeLeftObject(f"{obj.name}: the dropped probe came to rest off the object") from error
+    return _mm(1e3 * (position[2] - _PROBE_RADIUS - floor))
 
 
 # ------------------------------------------------------------------------- checks
@@ -434,6 +454,8 @@ def check(obj: Compiled | str | Path) -> Report:
         ]
     if fit.floor_gap is not None:
         limits.append(("floor_gap", abs(fit.floor_gap), "a dropped object does not reach the visual inner floor"))
+    if fit.probe_left_object:
+        failures.append("a dropped object rolls off the object instead of entering its interior (floor_gap)")
     for key, value, why in limits:
         if value > tol[key]:
             failures.append(f"{why}: {value:.1f} mm > {tol[key]:.1f} mm ({key})")
