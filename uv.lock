@@ -691,6 +691,9 @@ version = "0.1.0"
 source = { editable = "." }
 dependencies = [
     { name = "fast-simplification" },
+    { name = "numpy", version = "2.2.6", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11'" },
+    { name = "numpy", version = "2.4.6", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version == '3.11.*'" },
+    { name = "numpy", version = "2.5.4", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.12'" },
     { name = "trimesh" },
 ]
 
@@ -733,6 +736,7 @@ requires-dist = [
     { name = "mujoco", marker = "extra == 'authoring'", specifier = ">=3.3" },
     { name = "mujoco", marker = "extra == 'dev'", specifier = ">=3.3" },
     { name = "mujoco", marker = "extra == 'ycbv'", specifier = ">=3.3" },
+    { name = "numpy", specifier = ">=1.22" },
     { name = "pillow", marker = "extra == 'dev'", specifier = ">=10.0" },
     { name = "pillow", marker = "extra == 'ycbv'", specifier = ">=10.0" },
     { name = "pytest", marker = "extra == 'dev'", specifier = ">=7.0" },

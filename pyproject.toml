@@ -13,6 +13,7 @@ maintainers = [
     {name = "Siddhartha Srinivasa", email = "siddhartha.srinivasa@gmail.com"},
 ]
 dependencies = [
+    "numpy>=1.22",
     "fast-simplification>=0.1.13",
     "trimesh>=4.11.1",
 ]

@@ -91,3 +91,57 @@ provenance:
       mujoco: 3.17.0
       pillow: 13.0.0
       scipy: 1.17.1
+
+grasp_regions:
+  version: 1
+  regions:
+  - name: body
+    primitive: cylinder
+    radius: 0.039
+    height: 0.074
+    T_asset_region:
+    - - 1.0
+      - 0.0
+      - 0.0
+      - -0.011774273067372281
+    - - 0.0
+      - 1.0
+      - 0.0
+      - -0.00016874629554637638
+    - - 0.0
+      - 0.0
+      - 1.0
+      - 0.0
+    - - 0.0
+      - 0.0
+      - 0.0
+      - 1.0
+    strategies:
+    - side
+    - top
+  - name: handle
+    primitive: box
+    size:
+    - 0.028
+    - 0.012
+    - 0.056
+    T_asset_region:
+    - - 0.9988275660160769
+      - 0.04840964125460411
+      - 0.0
+      - 0.045
+    - - -0.04840964125460411
+      - 0.9988275660160769
+      - 0.0
+      - -0.0031024567164179098
+    - - 0.0
+      - 0.0
+      - 1.0
+      - 0.0
+    - - 0.0
+      - 0.0
+      - 0.0
+      - 1.0
+    strategies:
+    - face_x
+    - face_y

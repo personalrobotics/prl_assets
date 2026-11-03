@@ -116,6 +116,9 @@ def test_a_stale_size_in_the_metadata_fails():
     meta = {**obj.meta, "geometric_properties": {**gp, "size": [gp["size"][0] + 0.005, *gp["size"][1:]]}}
     report = authoring.check(authoring.from_spec(obj.spec.copy(), obj, meta))
     assert any("geometric_properties.size" in f for f in report.failures), str(report)
+    meta = {**obj.meta, "dimensions": [obj.meta["dimensions"][0] + 0.005, *obj.meta["dimensions"][1:]]}
+    report = authoring.check(authoring.from_spec(obj.spec.copy(), obj, meta))
+    assert any("dimensions" in f for f in report.failures), str(report)
 
 
 def test_a_tolerance_must_state_its_reason():

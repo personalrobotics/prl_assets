@@ -35,8 +35,9 @@ object with no visual mesh renders its collision geoms, which are then its shape
 The model must also have a free joint on its top-level body (unless `category` includes
 `fixture`), and its compiled mass must equal `mass`.
 
-Grasp and place planning read sizes from the metadata, not the geoms, so each size the
-metadata states must match the collision geometry's extent along the asset axes within
+Legacy readers still use `geometric_properties` for physical placement shapes. Until
+those readers migrate, physical `dimensions` and legacy sizes must match the collision
+geometry's extent along the asset axes within
 2 mm: `dimensions`, `geometric_properties.size` and `outer_size` (full x, y, z extents),
 and `radius` or `outer_radius` (as a diameter in x and y, with `height` in z).
 
@@ -174,9 +175,10 @@ snapshot for simultaneous readers.
 reference mass source, and the assumptions behind inertia and friction. New
 compound collision models distribute mass by convex-part volume; overlapping
 parts are counted. This is a uniform-density inertia estimate, not a measurement.
-Their box-shaped `geometric_properties` is a grasp envelope whose dimensions match
-the collision bounds. It is not a claim that the object has solid box collision
-geometry. Concave collision pieces remain separate mesh geoms in MuJoCo.
+Their box-shaped `geometric_properties` is a deprecated legacy approximation whose
+dimensions match the collision bounds. New grasp readers use only `grasp_regions`;
+the importer and catalog-wide migration remain follow-up work after consumers migrate.
+This legacy approximation is not a claim of solid box collision geometry. Concave collision pieces remain separate mesh geoms in MuJoCo.
 
 ## Installed asset verification
 
@@ -209,3 +211,77 @@ the physical parameters, source/frame measurements, projection/aperture measurem
 and file hashes. A successful overall artifact requires every object and the seeded
 scene to pass and the filled-handle negative control to be detected. README owns the
 reproduction commands, scene settings and interpretation of rendered artifacts.
+
+## Grasp regions (version 1)
+
+`grasp_regions` describes robot-neutral primitive approximations used to generate grasp
+TSRs. It does not describe collision geometry, a support, a usable container interior,
+a stable placement shape or a physical footprint. A region need not enclose the object
+or fit its collider, and it certifies neither collision freedom nor grasp feasibility.
+Hand/aperture, finger geometry, TCP offsets, approach distances and TSR tolerances remain
+in the explicitly selected hand/profile/task configuration.
+
+```yaml
+grasp_regions:
+  version: 1
+  regions:
+    - name: body
+      primitive: cylinder
+      radius: 0.039
+      height: 0.074
+      T_asset_region: [[1,0,0,-0.012], [0,1,0,0], [0,0,1,0], [0,0,0,1]]
+      strategies: [side, top]
+```
+
+The section requires exactly `version` (integer 1) and `regions` (a list, possibly
+empty). A missing section means no regions. An explicit null or malformed section is
+an error. Region names are unique and match `[a-z][a-z0-9_]*`. Each region requires
+`name`, `primitive`, and exactly its primitive's parameters:
+
+| Primitive | Parameters (metres) | Default strategies |
+| --- | --- | --- |
+| cylinder | positive `radius`, `height` | side, top, bottom |
+| box | positive `size: [x,y,z]`, full extents | top, bottom, face_x, face_y |
+| sphere | positive `radius` | all |
+| torus | positive `major_radius`, `minor_radius`, minor < major | side, span |
+
+Optional `strategies` is a nonempty list of distinct members of the corresponding
+vocabulary. Names correspond to existing sstsr factories, including
+`grasp_cylinder_side`, `grasp_box_face_x`, `grasp_sphere` and `grasp_torus_span`.
+This is a primitive-description schema, separate from sstsr's serialized TSR templates.
+
+Every primitive has its origin at its geometric centre, with z the cylinder/torus axis
+and the box's local z direction. Optional `T_asset_region` defaults to identity. It is
+a row-major 4 by 4 rigid transform mapping region points into the asset frame, with
+translation in metres, orthonormal rotation and determinant +1. Validation tolerances
+are 1e-6 for rotation/determinant and 1e-8 for the homogeneous bottom row.
+
+`T_world_region = T_world_asset @ T_asset_region`. sstsr's cylinder and box **grasp**
+factories use a bottom-centre origin, so `bottom_face_frame()` returns
+`T_asset_region @ Tz(-height/2)` (`size[2]` for a box). For sphere/torus it returns the
+unchanged centre frame. Compose `T_world_asset @ region.bottom_face_frame()` once;
+do not subtract another half-height. StablePlacer's placement convention is centred
+and must not use this grasp-factory shift.
+
+`prl_assets.grasp_regions.parse(meta)` takes an already loaded metadata dictionary,
+uses only NumPy and the standard library, and returns immutable `GraspRegion` records.
+Unknown keys, unsupported primitives/strategies, bools, numeric strings, nonfinite or
+nonpositive parameters, duplicate names/strategies, malformed or nonrigid transforms,
+and missing/unsupported versions raise `GraspRegionError` naming the object, region
+and field as applicable. No malformed value is coerced or ignored. Returned frame and
+bounds arrays can be edited without mutating the record.
+
+Authoring checks parse this section before model construction and validate each region's
+exact asset-frame AABB against the visual mesh's vertex bounds plus 10 mm on every
+side. This is a coarse unit/frame plausibility guard, not a geometric fit, alignment
+certificate or grasp-success claim. Collision bounds are not used for this check.
+A declared region requires a visual mesh. Physical and legacy dimensions retain their
+separate 2 mm collision-extent check.
+
+`geometric_properties` remains a deprecated **legacy view** for legacy readers only.
+It may coexist with the new section during migration, but new readers never merge
+fields or fall back to legacy geometry. Placement/containment stay in existing
+`open`, `outer_size`, `inner_size` and `wall_thickness` fields for now; a dedicated
+placement section is follow-up work. Only the mug opts in in this change. Consumer
+migration (ssgrasping#46 and geodude#260), catalog/importer migration and eventual
+legacy-read retirement follow in that order under prl_assets#36/#37.

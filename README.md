@@ -427,3 +427,46 @@ The checkout wrapper `scripts/audit_ycbv.py --record` updates
 decisions remain in `docs/ycbv_audit.json`. `uv.lock` pins the verification and build
 dependencies; CI pins its action commits and gives the dispatch credential only to the
 existing downstream-notification job.
+
+## Reading grasp regions
+
+The mug provides body and handle primitive regions independently of its visual mesh,
+collider and legacy placement shape. Load the metadata through asset_manager, then
+validate the new section without importing a simulator or YAML parser:
+
+```python
+from asset_manager import AssetManager
+from prl_assets import OBJECTS_DIR
+from prl_assets.grasp_regions import parse
+
+meta = AssetManager(OBJECTS_DIR).get("mug")
+regions = parse(meta)
+body = next(region for region in regions if region.name == "body")
+# With an observed T_world_asset and an explicitly selected sstsr hand:
+# T_world_factory = T_world_asset @ body.bottom_face_frame()
+# templates = hand.grasp_cylinder_side(body.params["radius"], body.params["height"])
+# candidates = [template.instantiate(T_world_factory) for template in templates]
+```
+
+The complete contract, supported primitives/strategies, centred region frames and
+sstsr's bottom-face grasp convention are in [docs/schema.md](docs/schema.md#grasp-regions-version-1).
+These are approximate candidate-generation regions; actual hand feasibility, collisions
+and physical outcomes need separate checks.
+
+This first slice adds the schema/reader and the mug only. Existing consumers keep their
+legacy fields. New consumers read only `grasp_regions`, with no legacy fallback.
+Consumers migrate through ssgrasping#46 and geodude#260 before catalog/importer migration
+and legacy retirement under prl_assets#36/#37. Placement and containment remain in the
+existing fields until their dedicated schema is defined with ssgrasping#4.
+
+Reproduce the region checks with `uv run --locked --all-extras pytest tests/test_grasp_regions.py -q`.
+`artifacts/grasp_regions.json` records every object's regions, migration status,
+identities/aliases/BOP frames and physical-independence evidence. Rejection controls and
+analytic rotated-primitive checks write companion JSON artifacts. The wheel verifier's
+`grasp_regions.json` loads the actual installed assets through AssetManager.
+
+For the mug, the body centre was measured by a least-squares circle fit to visual
+vertices with |z| < 3 mm and x < 25 mm. The handle bearing uses the mean of vertices
+with x > 35 mm and |z| < 25 mm relative to that centre (about -2.77 degrees). Region
+sizes are explicit grasp approximations, rather than fitted collision models. The
+legacy metadata and all visual/collision resources are preserved byte-for-byte.
