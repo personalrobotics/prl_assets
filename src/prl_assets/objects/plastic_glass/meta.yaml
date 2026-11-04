@@ -42,3 +42,16 @@ grasp_regions:
     radius: 0.048
     height: 0.171
     strategies: [side]
+
+placement:
+  version: 1
+  rests:
+  - name: upright
+    T_support_asset: [[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 1, 0.0855], [0, 0, 0, 1]]
+    footprint_radius: 0.04901
+  openings:
+  - name: top
+    shape: circle
+    radius: 0.04401
+    depth: 0.16126
+    T_asset_opening: [[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 1, 0.08576], [0, 0, 0, 1]]

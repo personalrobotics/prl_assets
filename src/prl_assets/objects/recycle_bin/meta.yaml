@@ -34,3 +34,16 @@ policy:
   manipulation:
     movable: false  # typically a fixture
     stable_poses: [upright]
+
+placement:
+  version: 1
+  rests:
+  - name: upright
+    T_support_asset: [[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 1, 0], [0, 0, 0, 1]]
+    footprint_radius: 0.19169
+  openings:
+  - name: top
+    shape: rectangle
+    size: [0.238, 0.238]
+    depth: 0.757
+    T_asset_opening: [[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 1, 0.797], [0, 0, 0, 1]]

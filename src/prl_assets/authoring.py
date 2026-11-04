@@ -40,6 +40,8 @@ from scipy.spatial import ConvexHull
 
 from prl_assets import OBJECTS_DIR
 from prl_assets.grasp_regions import parse as parse_grasp_regions
+from prl_assets.placement import SHAPES, Opening, Placement, Rest, Support
+from prl_assets.placement import parse as parse_placement
 
 VISUAL_GROUP = 2
 COLLISION_GROUP = 3
@@ -99,6 +101,7 @@ def load(obj: str | Path, root: Path = OBJECTS_DIR) -> Compiled:
     obj_dir = Path(obj) if Path(obj).is_dir() else object_dirs(root)[str(obj)]
     meta = yaml.safe_load((obj_dir / "meta.yaml").read_text()) or {}
     parse_grasp_regions(meta)
+    parse_placement(meta)
     spec = mujoco.MjSpec.from_file(str(obj_dir / meta["mujoco"]["xml_path"]))
     return _compiled(meta.get("name", obj_dir.name), obj_dir, meta, spec)
 
@@ -111,6 +114,7 @@ def from_spec(spec: mujoco.MjSpec, like: Compiled, meta: dict | None = None) -> 
 
 def _compiled(name, obj_dir, meta, spec) -> Compiled:
     parse_grasp_regions(meta)
+    parse_placement(meta)
     model = spec.compile()
     data = mujoco.MjData(model)
     mujoco.mj_forward(model, data)
@@ -339,6 +343,252 @@ def floor_gap(obj: Compiled, xy: tuple[float, float] | None = None) -> float:
     return _mm(1e3 * max(bottom - floor_at_rest, bottom - floor_at_drop))
 
 
+# ---------------------------------------------------------------------- placement
+#
+# Every field of a ``placement`` section (docs/schema.md) is measured here from the
+# compiled model at the model file's pose, which rests the object on z = 0. ``check``
+# compares what an object declares with these measurements; ``measure_placement`` and
+# ``placement_yaml`` write them, so nothing in the section is typed by hand.
+
+_CORNERS = np.array([[x, y, z] for x in (-1, 1) for y in (-1, 1) for z in (-1, 1)])
+_RIM_BELOW = 0.003  # opening rays run this far below the rim, inside the walls
+_RAYS = 64  # directions sampled for a circular opening's inscribed radius
+_ROUND = 5  # metres to 10 micrometres; rotations to 1e-5
+
+
+def _subtree_geoms(obj: Compiled) -> list[int]:
+    m = obj.model
+    return [g for g in range(m.ngeom) if m.body_rootid[m.geom_bodyid[g]] == obj.body]
+
+
+def _reach(obj: Compiled, g: int, origin: np.ndarray) -> float:
+    """How far geom ``g`` reaches horizontally from ``origin``: a mesh by its vertices and
+    a box by its corners, exactly; a sphere by its centre and radius, and a capsule or
+    cylinder by its two end centres and radius, at any orientation (exact for a capsule
+    and an upright cylinder, a tight bound for a tilted one). Anything else by the
+    corners of its bounding box."""
+    m, d = obj.model, obj.data
+    rotation = d.geom_xmat[g].reshape(3, 3)
+    centre = d.geom_xpos[g]
+    kind = int(m.geom_type[g])
+    geom = mujoco.mjtGeom
+    radius = float(m.geom_size[g][0])
+    if kind == int(geom.mjGEOM_SPHERE):
+        ends = centre[None, :]
+    elif kind in (int(geom.mjGEOM_CYLINDER), int(geom.mjGEOM_CAPSULE)):
+        half = float(m.geom_size[g][1]) * rotation[:, 2]
+        ends = np.stack([centre - half, centre + half])
+    else:
+        if kind == int(geom.mjGEOM_MESH):
+            mesh = m.geom_dataid[g]
+            start, count = m.mesh_vertadr[mesh], m.mesh_vertnum[mesh]
+            local = m.mesh_vert[start : start + count]
+        elif kind == int(geom.mjGEOM_BOX):
+            local = _CORNERS * m.geom_size[g]
+        else:
+            local = m.geom_aabb[g][:3] + _CORNERS * m.geom_aabb[g][3:]
+        world = local @ rotation.T + centre
+        return float(np.hypot(*(world[:, :2] - origin).T).max())
+    return float(np.hypot(*(ends[:, :2] - origin).T).max()) + radius
+
+
+def _asset_pose(obj: Compiled) -> np.ndarray:
+    return _pose(obj.data.xpos[obj.body], obj.data.xmat[obj.body])
+
+
+def _collision_vertices(obj: Compiled) -> np.ndarray:
+    return np.vstack([geom_mesh(obj, g).vertices for g in collision_geoms(obj)])
+
+
+def _collision_ray(obj: Compiled, start, direction) -> float:
+    """Distance to the first collision geom hit, or NaN."""
+    groups = np.zeros(6, dtype=np.uint8)
+    for g in collision_geoms(obj):
+        groups[obj.model.geom_group[g]] = 1
+    hit = np.zeros(1, dtype=np.int32)
+    start, direction = np.asarray(start, dtype=float), np.asarray(direction, dtype=float)
+    dist = mujoco.mj_ray(obj.model, obj.data, start, direction, groups, 1, -1, hit)
+    return dist if dist >= 0 else math.nan
+
+
+def _in_asset(obj: Compiled, T_world: np.ndarray) -> list[list[float]]:
+    T = np.linalg.inv(_asset_pose(obj)) @ T_world
+    return [[round(float(v), _ROUND) + 0.0 for v in row] for row in T]
+
+
+def measure_rest(obj: Compiled, name: str = "upright") -> Rest:
+    """The rest the model file's pose gives ``obj``: its orientation there, its asset
+    origin's height above the collision geometry's lowest point, and the horizontal
+    reach of every geom of the object about the asset origin's vertical."""
+    T = _asset_pose(obj)
+    origin = T[:2, 3].copy()
+    T[:2, 3] = 0.0
+    T[2, 3] -= float(_collision_vertices(obj)[:, 2].min())
+    reach = max(_reach(obj, g, origin) for g in _subtree_geoms(obj))
+    rounded = [[round(float(v), _ROUND) + 0.0 for v in row] for row in T]
+    return Rest(name, rounded, round(reach, _ROUND))
+
+
+def measure_opening(obj: Compiled, shape: str, name: str = "top") -> Opening:
+    """``obj``'s top opening, from rays cast in its collision geometry: the rim at the top
+    of the geometry, the interior centred between opposing walls just below the rim, and
+    the floor straight below that centre. A rectangle's size is the wall-to-wall width
+    along x and y; a circle's radius is the shortest of ``_RAYS`` rays to the wall, the
+    largest circle that fits. A rectangle whose corner rays end short of its corners does
+    not describe the opening, and raises ``ValueError``."""
+    if shape not in SHAPES:
+        raise ValueError(f"{obj.name}: opening shape must be one of {tuple(SHAPES)}, not {shape!r}")
+    rim = float(_collision_vertices(obj)[:, 2].max())
+    z = rim - _RIM_BELOW
+    centre = obj.data.xpos[obj.body][:2].copy()
+
+    def wall(direction) -> float:
+        dist = _collision_ray(obj, [*centre, z], [*direction, 0.0])
+        if math.isnan(dist):
+            raise ValueError(f"{obj.name}: no wall around the opening along {direction}")
+        return dist
+
+    for _ in range(3):  # opposing walls move the centre to the interior's middle
+        centre += [(wall((1, 0)) - wall((-1, 0))) / 2, (wall((0, 1)) - wall((0, -1))) / 2]
+    half = [(wall((1, 0)) + wall((-1, 0))) / 2, (wall((0, 1)) + wall((0, -1))) / 2]
+    depth = _collision_ray(obj, [*centre, rim], [0.0, 0.0, -1.0])
+    if math.isnan(depth):
+        raise ValueError(f"{obj.name}: no floor below the opening")
+    if shape == "rectangle":
+        size = [round(2 * h, _ROUND) for h in half]
+        for sx in (-1, 1):
+            for sy in (-1, 1):
+                angle = math.atan2(sy * half[1], sx * half[0])
+                if wall((math.cos(angle), math.sin(angle))) < math.hypot(*half) - SIZE_TOLERANCE_MM / 1e3:
+                    raise ValueError(f"{obj.name}: the opening has no corners where a rectangle has them")
+    else:
+        angles = np.linspace(0, 2 * math.pi, _RAYS, endpoint=False)
+        size = round(min(wall((math.cos(a), math.sin(a))) for a in angles), _ROUND)
+    frame = np.eye(4)
+    frame[:3, 3] = [*centre, rim]
+    return Opening(name, shape, size, round(float(depth), _ROUND), _in_asset(obj, frame))
+
+
+def measure_support(obj: Compiled, name: str = "top") -> Support:
+    """``obj``'s top surface as a rectangle: the height of its collision geometry's
+    highest point, and the x-y bounds of the collision geoms that reach it."""
+    tops = {g: geom_mesh(obj, g).vertices for g in collision_geoms(obj)}
+    height = max(v[:, 2].max() for v in tops.values())
+    surface = np.vstack([v for v in tops.values() if v[:, 2].max() > height - 1e-3])
+    low, high = surface[:, :2].min(axis=0), surface[:, :2].max(axis=0)
+    frame = np.eye(4)
+    frame[:3, 3] = [*((low + high) / 2), height]
+    size = [round(float(e), _ROUND) for e in high - low]
+    return Support(name, "rectangle", size, _in_asset(obj, frame))
+
+
+def measure_placement(
+    obj: Compiled, openings: dict[str, str] | None = None, supports: tuple[str, ...] = ()
+) -> Placement:
+    """``obj``'s canonical rest, and the openings (``{name: shape}``) and supports
+    (names) asked for, each measured."""
+    return Placement(
+        rests=(measure_rest(obj),),
+        openings=tuple(measure_opening(obj, shape, name) for name, shape in (openings or {}).items()),
+        supports=tuple(measure_support(obj, name) for name in supports),
+    )
+
+
+def placement_yaml(placement: Placement) -> str:
+    """``placement`` as a ``meta.yaml`` section, in the layout of the catalog's files."""
+
+    def n(value: float) -> str:  # fixed point: YAML reads "1e-05" as a string
+        text = f"{value:.{_ROUND}f}".rstrip("0").rstrip(".")
+        return "0" if text in ("", "-0") else text
+
+    def matrix(T) -> str:
+        return "[" + ", ".join("[" + ", ".join(n(v) for v in row) + "]" for row in T) + "]"
+
+    def outline(entry) -> str:
+        if entry.shape == "rectangle":
+            return f"    size: [{n(entry.size[0])}, {n(entry.size[1])}]\n"
+        return f"    radius: {n(entry.size)}\n"
+
+    lines = "placement:\n  version: 1\n  rests:\n"
+    for rest in placement.rests:
+        lines += (
+            f"  - name: {rest.name}\n"
+            f"    T_support_asset: {matrix(rest.T_support_asset)}\n"
+            f"    footprint_radius: {n(rest.footprint_radius)}\n"
+        )
+    if placement.openings:
+        lines += "  openings:\n"
+        for opening in placement.openings:
+            lines += f"  - name: {opening.name}\n    shape: {opening.shape}\n" + outline(opening)
+            lines += f"    depth: {n(opening.depth)}\n    T_asset_opening: {matrix(opening.T_asset_opening)}\n"
+    if placement.supports:
+        lines += "  supports:\n"
+        for support in placement.supports:
+            lines += f"  - name: {support.name}\n    shape: {support.shape}\n" + outline(support)
+            lines += f"    T_asset_support: {matrix(support.T_asset_support)}\n"
+    return lines
+
+
+def write_placement(obj: Compiled, placement: Placement) -> Path:
+    """Write ``placement`` into ``obj``'s ``meta.yaml``: replace its ``placement``
+    section, or append one, leaving every other line as it was, and refuse a result that
+    would not read back as ``placement``."""
+    path = obj.dir / "meta.yaml"
+    lines = path.read_text().splitlines(keepends=True)
+    start = next((i for i, line in enumerate(lines) if line.startswith("placement:")), None)
+    if start is None:
+        text = "".join(lines).rstrip("\n") + "\n\n" + placement_yaml(placement)
+    else:
+        end = next((i for i in range(start + 1, len(lines)) if re.match(r"[^\s#]", lines[i])), len(lines))
+        while end > start + 1 and not lines[end - 1].strip():
+            end -= 1
+        text = "".join(lines[:start]) + placement_yaml(placement) + "".join(lines[end:])
+    if parse_placement(yaml.safe_load(text)) != placement:
+        raise ValueError(f"{obj.name}: the written placement section would not read back as measured")
+    _write_atomic(path, text)
+    return path
+
+
+def _placement_failures(obj: Compiled, declared: Placement) -> list[str]:
+    """How ``declared`` differs from what ``obj``'s compiled model measures."""
+    failures = []
+    tol = SIZE_TOLERANCE_MM / 1e3
+
+    def frames(field, a, b):
+        a, b = np.asarray(a), np.asarray(b)
+        if np.abs(a[:3, 3] - b[:3, 3]).max() > tol or np.abs(a[:3, :3] - b[:3, :3]).max() > 1e-3:
+            failures.append(f"{field} differs from the measured frame {np.round(b, 4).tolist()}")
+
+    def sizes(field, a, b):
+        if np.abs(np.atleast_1d(a) - np.atleast_1d(b)).max() > tol:
+            failures.append(f"{field} {a} differs from the measured {b}")
+
+    if len(declared.rests) > 1:
+        failures.append("placement.rests: only the canonical rest is measured; declare one")
+    rest, measured = declared.canonical, measure_rest(obj)
+    frames(f"placement.rests.{rest.name}.T_support_asset", rest.T_support_asset, measured.T_support_asset)
+    sizes(f"placement.rests.{rest.name}.footprint_radius", rest.footprint_radius, measured.footprint_radius)
+    for opening in declared.openings:
+        field = f"placement.openings.{opening.name}"
+        try:
+            found = measure_opening(obj, opening.shape, opening.name)
+        except ValueError as error:
+            failures.append(f"{field}: {error}")
+            continue
+        sizes(f"{field}.{SHAPES[opening.shape]}", opening.size, found.size)
+        sizes(f"{field}.depth", opening.depth, found.depth)
+        frames(f"{field}.T_asset_opening", opening.T_asset_opening, found.T_asset_opening)
+    for support in declared.supports:
+        field = f"placement.supports.{support.name}"
+        found = measure_support(obj, support.name)
+        if support.shape != found.shape:
+            failures.append(f"{field}.shape: a top surface is measured as a {found.shape}")
+            continue
+        sizes(f"{field}.size", support.size, found.size)
+        frames(f"{field}.T_asset_support", support.T_asset_support, found.T_asset_support)
+    return failures
+
+
 # ------------------------------------------------------------------------- checks
 
 
@@ -422,6 +672,7 @@ def check(obj: Compiled | str | Path) -> Report:
     if not isinstance(obj, Compiled):
         obj = load(obj)
     regions = parse_grasp_regions(obj.meta)
+    placement = parse_placement(obj.meta)
     m = obj.model
     failures = []
 
@@ -455,6 +706,10 @@ def check(obj: Compiled | str | Path) -> Report:
                 bounds = region.bounds_in_asset()
                 if np.any(bounds[0] < low) or np.any(bounds[1] > high):
                     failures.append(f"grasp_regions.{region.name}.bounds: outside visual bounds plus 10 mm")
+    if placement is None:
+        failures.append("no placement section: write it with scripts/author_placement.py")
+    else:
+        failures += _placement_failures(obj, placement)
     fit = collision_fit(obj)
     limits = [("resting", abs(fit.resting), "the model file's pose does not rest the object on z = 0")]
     if visual:

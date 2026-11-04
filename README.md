@@ -209,14 +209,19 @@ with the `authoring` extra (`uv sync --extra authoring`).
    | Open box (tote, tray, bin) | `tapered_open_box` or `open_box`, and declare `open: true` |
    | Convex without a cavity, faces that bulge (a soft bag) | `hull_of` |
 
-4. Run `uv run --extra authoring python scripts/validate_objects.py <name>` until it
+4. Measure and write its `placement` section (how it rests, and a container's opening
+   or a surface's top; see [docs/schema.md](docs/schema.md#placement-version-1)):
+   `uv run --extra authoring python scripts/author_placement.py <name>`, adding
+   `--opening top=rectangle` (or `=circle`) for a container and `--support top` for a
+   surface. Rerun it after any collider change; it rewrites only that section.
+5. Run `uv run --extra authoring python scripts/validate_objects.py <name>` until it
    passes, and look at the result with `scripts/inspect_object.py <name>`. Where a
    primitive deliberately departs from the scan, such as a box with flat faces for a
    scan with rounded edges, declare the tolerance and the reason (see
    [docs/schema.md](docs/schema.md#collision-geometry)).
-5. Add the object to the table above.
+6. Add the object to the table above.
 
-For a cup, steps 2 to 4 look like this:
+For a cup, steps 2 to 5 look like this:
 
 ```python
 from pathlib import Path
@@ -246,6 +251,8 @@ authoring.replace_collision_geoms(
     body_pos=(0.0, 0.0, -points[:, 2].min()),  # rest the file's pose on z = 0
     comment="Collision geometry: open cup from authoring.fit_revolved_shell",
 )
+obj = authoring.load(cup)
+authoring.write_placement(obj, authoring.measure_placement(obj, openings={"top": "circle"}))
 print(authoring.check(cup))
 ```
 
@@ -473,8 +480,8 @@ and physical outcomes need separate checks.
 This first slice adds the schema/reader and the mug only. Existing consumers keep their
 legacy fields. New consumers read only `grasp_regions`, with no legacy fallback.
 Consumers migrate through ssgrasping#46 and geodude#260 before catalog/importer migration
-and legacy retirement under prl_assets#36/#37. Placement and containment remain in the
-existing fields until their dedicated schema is defined with ssgrasping#4.
+and legacy retirement under prl_assets#36/#37. Placement and containment have their own
+section, `placement` (below).
 
 Reproduce the region checks with `uv run --locked --all-extras pytest tests/test_grasp_regions.py -q`.
 `artifacts/grasp_regions.json` records every object's regions, migration status,
@@ -487,3 +494,28 @@ vertices with |z| < 3 mm and x < 25 mm. The handle bearing uses the mean of vert
 with x > 35 mm and |z| < 25 mm relative to that centre (about -2.77 degrees). Region
 sizes are explicit grasp approximations, rather than fitted collision models. The
 legacy metadata and all visual/collision resources are preserved byte-for-byte.
+
+## Reading placement
+
+Every object declares how it rests, and containers and surfaces declare their opening
+or top, in `placement` ([docs/schema.md](docs/schema.md#placement-version-1)). Nothing in
+it is typed by hand: `scripts/author_placement.py` measures it from the compiled model,
+and CI checks each object's section against its model.
+
+```python
+from asset_manager import AssetManager
+from prl_assets import OBJECTS_DIR
+from prl_assets.placement import parse
+
+placement = parse(AssetManager(OBJECTS_DIR).get("recycle_bin"))
+rest, opening = placement.canonical, placement.openings[0]
+# Standing the bin on a support at T_world_support:
+# T_world_bin = T_world_support @ rest.frame()
+# Its opening, 0.238 m square at the rim, 0.757 m above the floor inside:
+# T_world_opening = T_world_bin @ opening.frame(); opening.size, opening.depth
+```
+
+A held object rests on a support at `T_world_support @ rest.frame()`, slid anywhere that
+keeps its asset origin `rest.footprint_radius` inside the support's edge, at any yaw.
+Reproduce the checks with `uv run --locked --all-extras pytest tests/test_placement.py -q`;
+`artifacts/placement.json` records every object's section next to its legacy fields.

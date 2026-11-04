@@ -146,3 +146,16 @@ grasp_regions:
     strategies:
     - face_x
     - face_y
+
+placement:
+  version: 1
+  rests:
+  - name: upright
+    T_support_asset: [[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 1, 0.04068], [0, 0, 0, 1]]
+    footprint_radius: 0.05851
+  openings:
+  - name: top
+    shape: circle
+    radius: 0.03392
+    depth: 0.078
+    T_asset_opening: [[1, 0, 0, -0.01192], [0, 1, 0, -0.00009], [0, 0, 1, 0.04069], [0, 0, 0, 1]]

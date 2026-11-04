@@ -34,3 +34,10 @@ grasp_regions:
     primitive: box
     size: [0.2747, 0.2202, 0.1038]
     strategies: [face_x, face_y, top, bottom]
+
+placement:
+  version: 1
+  rests:
+  - name: upright
+    T_support_asset: [[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 1, 0.0519], [0, 0, 0, 1]]
+    footprint_radius: 0.15284

@@ -28,3 +28,15 @@ mujoco:
 # Perception aliases
 perception:
   aliases: ["table", "hospital table", "over-bed table", "feeding table"]
+
+placement:
+  version: 1
+  rests:
+  - name: upright
+    T_support_asset: [[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 1, 0], [0, 0, 0, 1]]
+    footprint_radius: 0.99756
+  supports:
+  - name: top
+    shape: rectangle
+    size: [1.852, 0.742]
+    T_asset_support: [[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 1, 0.735], [0, 0, 0, 1]]

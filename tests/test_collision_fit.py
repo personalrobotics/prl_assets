@@ -157,7 +157,7 @@ def test_the_readme_new_object_example_builds_an_object_that_passes(tmp_path):
     directory: writing a model and metadata, fitting a shell, rewriting the collision
     geoms, and checking the result."""
     readme = (Path(__file__).parent.parent / "README.md").read_text()
-    section = readme[readme.index("For a cup, steps 2 to 4") :]
+    section = readme[readme.index("For a cup, steps 2 to 5") :]
     code = section[
         section.index("```python\n") + len("```python\n") : section.index("\n```", section.index("```python"))
     ]
