@@ -253,3 +253,46 @@ def test_catalog_regions_and_physics_remain_independent(tmp_path):
             ),
         ),
     )
+
+
+# Objects whose one grasp region is their legacy grasp primitive, at the object frame, with
+# the families the legacy grasp path uses (personalrobotics/prl_assets#40): a consumer
+# switching from geometric_properties to grasp_regions makes the same candidates for them.
+LEGACY_PARITY = {
+    "can",
+    "fuze_bottle",
+    "plastic_glass",
+    "spam_can",
+    "cracker_box",
+    "gelatin_box",
+    "sugar_box",
+    "pocky_box",
+    "pop_tarts_case",
+    "herring_tin",
+    "notebook",
+    "lunchbox",
+}
+LEGACY_FAMILIES = {"cylinder": ("side",), "box": ("face_x", "face_y", "top", "bottom")}
+
+
+def test_legacy_parity_regions_equal_their_legacy_primitive_and_fixtures_declare_none():
+    seen = set()
+    for p in sorted(OBJECTS_DIR.rglob("meta.yaml")):
+        meta = yaml.safe_load(p.read_text())
+        if "fixture" in (meta.get("category") or []):
+            # A fixture is never picked up, so it declares nothing to grasp it by.
+            assert "grasp_regions" not in meta, meta["name"]
+        if meta["name"] not in LEGACY_PARITY:
+            continue
+        seen.add(meta["name"])
+        legacy = meta["geometric_properties"]
+        (region,) = parse(meta)
+        assert region.name == "body" and region.primitive == legacy["type"], meta["name"]
+        np.testing.assert_array_equal(np.asarray(region.T_asset_region), np.eye(4))
+        if legacy["type"] == "cylinder":
+            assert dict(region.params) == {"radius": legacy["radius"], "height": legacy["height"]}
+        else:
+            assert list(region.params["size"]) == list(legacy["size"]), meta["name"]
+        assert tuple(region.strategies) == LEGACY_FAMILIES[legacy["type"]], meta["name"]
+        assert authoring.check(p.parent).ok, meta["name"]
+    assert seen == LEGACY_PARITY
