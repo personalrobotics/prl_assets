@@ -292,6 +292,21 @@ separate 2 mm collision-extent check.
 It may coexist with the new section during migration, but new readers never merge
 fields or fall back to legacy geometry. Placement/containment stay in existing
 `open`, `outer_size`, `inner_size` and `wall_thickness` fields for now; a dedicated
-placement section is follow-up work. Only the mug opts in in this change. Consumer
-migration (ssgrasping#46 and geodude#260), catalog/importer migration and eventual
-legacy-read retirement follow in that order under prl_assets#36/#37.
+placement section is follow-up work. Consumer migration (ssgrasping#46 and
+geodude#260), catalog/importer migration and eventual legacy-read retirement follow in
+that order under prl_assets#36/#37.
+
+Which objects declare regions (prl_assets#40):
+
+- The mug: a `body` cylinder and a framed `handle` box, measured from its scan.
+- **Legacy parity.** Twelve objects whose frame is centred on their collision geometry
+  and whose legacy grasp primitive is their shape: `can`, `fuze_bottle`, `plastic_glass`,
+  `spam_can`, `cracker_box`, `gelatin_box`, `sugar_box`, `pocky_box`, `pop_tarts_case`,
+  `herring_tin`, `notebook`, `lunchbox`. Each declares one region, `body`: its legacy
+  `geometric_properties` primitive at the object frame, with the grasp families the
+  legacy grasp path uses (a cylinder `side`; a box `face_x`, `face_y`, `top`, `bottom`).
+  A consumer switching paths therefore makes the same candidates for them;
+  `tests/test_grasp_regions.py` holds them to it.
+- Fixtures (`category` includes `fixture`) declare none: they are never picked up.
+- The remaining YCB-V objects get regions measured from their scans, and the containers
+  (bowl, plate, tray, tote) their rim and handle regions, in follow-up work.
