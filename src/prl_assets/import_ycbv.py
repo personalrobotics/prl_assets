@@ -559,6 +559,13 @@ def rebuild_collisions(objects: list[str], output: Path, archive: Path) -> dict:
                 if gp.get("type") == "box" and gp.get("size") == old_meta.get("dimensions"):
                     gp["size"] = new_meta["dimensions"]
                 meta["geometric_properties"] = gp
+                if "grasp_regions" in old_meta and new_meta["dimensions"] != old_meta.get("dimensions"):
+                    # Regions are authored against the object's shape; refuse rather than
+                    # leave them describing a different one.
+                    raise ValueError(
+                        f"{name}: the rebuild changes dimensions, and the object declares "
+                        "grasp_regions; re-author them with the new collider"
+                    )
                 meta["dimensions"] = new_meta["dimensions"]
                 meta["provenance"] = {**old_meta["provenance"], "conversion": new_meta["provenance"]["conversion"]}
 

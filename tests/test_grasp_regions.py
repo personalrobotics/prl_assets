@@ -275,16 +275,34 @@ LEGACY_PARITY = {
 LEGACY_FAMILIES = {"cylinder": ("side",), "box": ("face_x", "face_y", "top", "bottom")}
 
 
+def _categories(meta):
+    category = meta.get("category") or []
+    return [category] if isinstance(category, str) else list(category)
+
+
+def _collision_centre(directory):
+    """The centre of an object's compiled collision geometry's box, in its body frame."""
+    obj = authoring.load(directory)
+    corners = np.array([[x, y, z] for x in (-1, 1) for y in (-1, 1) for z in (-1, 1)])
+    m, d, body = obj.model, obj.data, obj.body
+    points = []
+    for g in authoring.collision_geoms(obj):
+        local = m.geom_aabb[g][:3] + corners * m.geom_aabb[g][3:]
+        points.append(local @ d.geom_xmat[g].reshape(3, 3).T + d.geom_xpos[g])
+    world = np.vstack(points)
+    centre = (world.min(axis=0) + world.max(axis=0)) / 2
+    return d.xmat[body].reshape(3, 3).T @ (centre - d.xpos[body])
+
+
 def test_legacy_parity_regions_equal_their_legacy_primitive_and_fixtures_declare_none():
-    seen = set()
+    rows = {}
     for p in sorted(OBJECTS_DIR.rglob("meta.yaml")):
-        meta = yaml.safe_load(p.read_text())
-        if "fixture" in (meta.get("category") or []):
+        meta = yaml.safe_load(p.read_text()) or {}
+        if "fixture" in _categories(meta):
             # A fixture is never picked up, so it declares nothing to grasp it by.
-            assert "grasp_regions" not in meta, meta["name"]
-        if meta["name"] not in LEGACY_PARITY:
+            assert "grasp_regions" not in meta, meta.get("name")
+        if meta.get("name") not in LEGACY_PARITY:
             continue
-        seen.add(meta["name"])
         legacy = meta["geometric_properties"]
         (region,) = parse(meta)
         assert region.name == "body" and region.primitive == legacy["type"], meta["name"]
@@ -294,5 +312,16 @@ def test_legacy_parity_regions_equal_their_legacy_primitive_and_fixtures_declare
         else:
             assert list(region.params["size"]) == list(legacy["size"]), meta["name"]
         assert tuple(region.strategies) == LEGACY_FAMILIES[legacy["type"]], meta["name"]
-        assert authoring.check(p.parent).ok, meta["name"]
-    assert seen == LEGACY_PARITY
+        # The region is at the object frame, so the frame must be the shape's centre.
+        centre = _collision_centre(p.parent)
+        assert np.abs(centre).max() <= 1e-3, (meta["name"], centre)
+        rows[meta["name"]] = {
+            "primitive": region.primitive,
+            "params": {k: list(v) if isinstance(v, tuple) else v for k, v in region.params.items()},
+            "strategies": list(region.strategies),
+            "collision_centre_in_frame_mm": [round(1e3 * float(c), 3) for c in centre],
+        }
+    assert set(rows) == LEGACY_PARITY
+    out = Path(os.environ.get("PRL_ASSETS_ARTIFACTS", "artifacts"))
+    out.mkdir(parents=True, exist_ok=True)
+    write_json(out / "grasp_region_parity.json", rows)
