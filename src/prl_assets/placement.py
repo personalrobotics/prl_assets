@@ -136,8 +136,9 @@ class Opening:
 
 @dataclass(frozen=True)
 class Support:
-    """A surface other objects may be placed on: a rectangle or circle centred on the
-    surface, z its outward normal."""
+    """A surface other objects may be placed on: a rectangle centred on the surface, z
+    its outward normal. (A support is measured as its top's x-y bounds, so version 1 has
+    rectangles only.)"""
 
     name: str
     shape: str
@@ -147,6 +148,8 @@ class Support:
     def __post_init__(self):
         context = f"support {self.name!r}"
         _name(self.name, f"{context}.name")
+        if self.shape != "rectangle":
+            raise PlacementError(f"{context}.shape: expected rectangle, not {self.shape!r}")
         object.__setattr__(self, "size", _outline(context, self.shape, self.size))
         object.__setattr__(self, "T_asset_support", _rigid(self.T_asset_support, f"{context}.T_asset_support"))
 

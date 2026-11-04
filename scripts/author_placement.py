@@ -23,32 +23,39 @@ import argparse
 import sys
 
 from prl_assets import authoring
-from prl_assets.placement import parse
+from prl_assets.placement import SHAPES, parse
+
+
+def _opening(text: str) -> tuple[str, str]:
+    name, _, shape = text.partition("=")
+    if not name or shape not in SHAPES:
+        raise argparse.ArgumentTypeError(f"expected NAME=SHAPE, SHAPE one of {', '.join(SHAPES)}; not {text!r}")
+    return name, shape
 
 
 def main() -> int:
     parser = argparse.ArgumentParser(description="Measure and write objects' placement sections")
     parser.add_argument("objects", nargs="*", help="Object names")
     parser.add_argument("--all", action="store_true", help="every object")
-    parser.add_argument("--opening", action="append", default=[], metavar="NAME=SHAPE", help="rectangle or circle")
+    parser.add_argument("--opening", action="append", default=[], type=_opening, metavar="NAME=SHAPE")
     parser.add_argument("--support", action="append", default=[], metavar="NAME", help="a top surface")
     args = parser.parse_args()
+    if not args.all and not args.objects:
+        parser.error("name the objects, or pass --all")
 
     known = authoring.object_dirs()
     names = sorted(known) if args.all else args.objects
     unknown = [n for n in names if n not in known]
-    if unknown or not names:
+    if unknown:
         print(f"Unknown objects: {', '.join(unknown)}. Available: {', '.join(sorted(known))}")
         return 2
-    asked = dict(item.split("=", 1) for item in args.opening)
     for name in names:
         obj = authoring.load(name)
         declared = parse(obj.meta)
-        openings = dict(asked)
-        supports = tuple(args.support)
-        if declared is not None:
-            openings = {o.name: o.shape for o in declared.openings} | openings
-            supports = tuple(dict.fromkeys((*(s.name for s in declared.supports), *supports)))
+        openings = {} if declared is None else {o.name: o.shape for o in declared.openings}
+        supports = () if declared is None else tuple(s.name for s in declared.supports)
+        openings |= dict(args.opening)
+        supports = tuple(dict.fromkeys((*supports, *args.support)))
         placement = authoring.measure_placement(obj, openings, supports)
         before = obj.dir.joinpath("meta.yaml").read_text()
         path = authoring.write_placement(obj, placement)

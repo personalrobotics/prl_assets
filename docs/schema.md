@@ -352,7 +352,7 @@ validated as in grasp regions (1e-6 rotation and determinant, 1e-8 bottom row).
 | --- | --- | --- |
 | rest | `T_support_asset`, `footprint_radius` | The asset frame in a support frame whose origin lies on the support plane directly below the asset origin, z up, so its translation is `(0, 0, h)`; and the horizontal radius about that vertical that bounds every geom of the object. `rests[0]` is the canonical rest, the one the model file's pose gives. |
 | opening | `shape`, `size` or `radius`, `depth`, optional `T_asset_opening` | A rectangle (full `size: [x, y]`) or circle (`radius`) centred on the rim plane, z pointing out of the container, with the interior floor `depth` below it along -z. A circle's radius is the largest circle inside the rim. |
-| support | `shape`, `size` or `radius`, optional `T_asset_support` | A surface centred on itself, z its outward normal. |
+| support | `shape: rectangle`, `size`, optional `T_asset_support` | A rectangular surface centred on itself, z its outward normal. Version 1 measures a support as its top's x-y bounds, so it has rectangles only. |
 
 Omitted opening and support frames are the identity. The object frame need not be
 centred on anything: a YCB-V object keeps its BOP frame, and its rest and opening frames
@@ -373,7 +373,8 @@ model file's pose, which rests the object on z = 0:
   geometry 3 mm below the rim centre the interior between opposing walls, give a
   rectangle's wall-to-wall width along x and y, or a circle's shortest of 64 rays, and
   the floor below the centre gives the depth. A rectangle whose corner rays end short of
-  its corners does not describe the opening and is refused.
+  its corners does not describe the opening and is refused, as is a non-convex collision
+  mesh: MuJoCo collides it as its hull, while a ray meets its triangles.
 - A support is the top surface: the highest collision point, and the x-y bounds of the
   collision geoms that reach it.
 

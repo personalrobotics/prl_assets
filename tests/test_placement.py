@@ -201,16 +201,48 @@ def _opening(placement):
     ]
 
 
-def test_catalog_placement_is_measured_and_matches_legacy_containment():
+def test_rewriting_placement_keeps_every_other_line_and_is_idempotent(tmp_path):
+    """The writer replaces only its section, so a following section and the comment that
+    heads it survive, and a second write of the same measurement changes nothing."""
+    directory = _copy(tmp_path, "can")
+    path = directory / "meta.yaml"
+    tail = "\n# Notes for a later section\nnotes_section:\n  kept: true\n"
+    path.write_text(path.read_text() + tail)
+    obj = authoring.load(directory)
+    placement = authoring.measure_placement(obj)
+    authoring.write_placement(obj, placement)
+    first = path.read_text()
+    authoring.write_placement(authoring.load(directory), placement)
+    assert path.read_text() == first
+    assert first.endswith(tail) and parse(yaml.safe_load(first)) == placement
+
+
+def test_a_turned_rest_measures_as_a_valid_rigid_frame(tmp_path):
+    """A rest at a rotation off the axes (here the can's model file turned 30 degrees about
+    z) measures, writes and passes check: its rotation is a rigid transform to 1e-6."""
+    directory = _copy(tmp_path, "can")
+    xml = directory / "can.xml"
+    xml.write_text(
+        xml.read_text().replace(
+            '<body name="can" pos="0 0 0.0615">', '<body name="can" pos="0 0 0.0615" quat="0.96592583 0 0 0.25881905">'
+        )
+    )
+    obj = authoring.load(directory)
+    authoring.write_placement(obj, authoring.measure_placement(obj))
+    rest = parse(yaml.safe_load((directory / "meta.yaml").read_text())).canonical
+    np.testing.assert_allclose(rest.frame()[:2, :2], [[0.8660254, -0.5], [0.5, 0.8660254]], atol=1e-7)
+    report = authoring.check(directory)
+    assert report.ok, str(report)
+
+
+def test_catalog_placement_matches_legacy_containment():
+    """Every object declares a section (``check`` holds each to its model in
+    test_collision_fit), and the bin's opening is its legacy containment."""
     rows = []
     for path in sorted(OBJECTS_DIR.rglob("meta.yaml")):
         meta = yaml.safe_load(path.read_text())
         declared = parse(meta)
         assert declared is not None, f"{meta['name']}: no placement section"
-        obj = authoring.load(path.parent)
-        openings = {o.name: o.shape for o in declared.openings}
-        measured = authoring.measure_placement(obj, openings, tuple(s.name for s in declared.supports))
-        assert measured == declared, f"{meta['name']}: declared placement is not what the measurers write"
         legacy = meta.get("geometric_properties") or {}
         rows.append(
             dict(

@@ -59,6 +59,7 @@ RECIPES = {
         material="unspecified",
         category=["container", "tableware", "graspable"],
         open=True,
+        opening="circle",  # placement.openings.top
         decomposition=dict(threshold=0.0075, max_convex_hull=32),
     ),
     14: dict(
@@ -66,6 +67,7 @@ RECIPES = {
         material="unspecified",
         category=["container", "tableware", "graspable"],
         open=True,
+        opening="circle",
         decomposition=dict(threshold=0.01, max_convex_hull=32),
     ),
     15: dict(mass=0.895, material="unspecified", category=["tool", "graspable"], decomposition=dict(threshold=0.02)),
@@ -375,13 +377,17 @@ def _build(archive: zipfile.ZipFile, stage: Path, bop_id: int, recipe: dict | No
     )
     spec = mujoco.MjSpec.from_file(str(stage / f"{name}.xml"))
     compiled = authoring._compiled(name, stage, meta, spec)
+    # Placement is measured from the model just built, like every catalog object's.
+    placement = authoring.measure_placement(compiled, {"top": recipe["opening"]} if "opening" in recipe else None)
+    meta["placement"] = authoring.placement_section(placement)  # compiled.meta is this dict
     report = authoring.check(compiled)
     if not report.ok:
         raise ValueError(f"{name} failed collision validation: {report.failures}")
     shutil.rmtree(source)
     # No discoverable metadata exists until publication. A partial staged import
     # is therefore invisible even if output is inside the catalog being scanned.
-    (stage / ".meta.yaml.pending").write_text(yaml.safe_dump(meta, sort_keys=False))
+    rest = yaml.safe_dump({k: v for k, v in meta.items() if k != "placement"}, sort_keys=False)
+    (stage / ".meta.yaml.pending").write_text(authoring.with_placement(rest, placement))
     return dict(
         name=name,
         bop_id=bop_id,
@@ -502,9 +508,10 @@ def rebuild_collisions(objects: list[str], output: Path, archive: Path) -> dict:
 
     Only the collision parts are replaced: the collision mesh files, the collision
     geoms and resting body position in the model file, ``dimensions`` and a legacy box
-    ``geometric_properties.size`` that tracked them, and ``provenance.conversion``.
-    Every other file and metadata section, including hand-authored ones such as
-    ``grasp_regions``, is kept. The regenerated visual mesh must equal the committed
+    ``geometric_properties.size`` that tracked them, ``provenance.conversion``, and
+    ``placement``, re-measured from the new collider with the openings and supports it
+    declares. Every other file and metadata section, including hand-authored ones such
+    as ``grasp_regions``, is kept. The regenerated visual mesh must equal the committed
     one, so the collider is derived from the geometry that is shown, and the model file
     must agree outside its collision geoms, including any collision-geom attribute a
     person tuned by hand.
@@ -517,6 +524,7 @@ def rebuild_collisions(objects: list[str], output: Path, archive: Path) -> dict:
     import yaml
 
     from prl_assets import authoring
+    from prl_assets.placement import parse as parse_placement
 
     allowed = {canonical_name(i): i for i in BOP_YCB_NAMES}
     if not objects or len(set(objects)) != len(objects) or any(name not in allowed for name in objects):
@@ -577,9 +585,13 @@ def rebuild_collisions(objects: list[str], output: Path, archive: Path) -> dict:
                 for new in built.glob("collision_*.obj"):
                     shutil.copyfile(new, stage / new.name)
                 shutil.copyfile(built / f"{name}.xml", stage / model_path.relative_to(directory.resolve()))
-                (stage / ".meta.yaml.pending").write_text(_dump_like(meta, previous))
                 spec = mujoco.MjSpec.from_file(str(stage / model_path.relative_to(directory.resolve())))
-                report = authoring.check(authoring._compiled(name, stage, meta, spec))
+                compiled = authoring._compiled(name, stage, meta, spec)
+                placement = authoring.remeasure_placement(compiled, parse_placement(old_meta))
+                meta["placement"] = authoring.placement_section(placement)  # compiled.meta is this dict
+                rest = _dump_like({k: v for k, v in meta.items() if k != "placement"}, previous)
+                (stage / ".meta.yaml.pending").write_text(authoring.with_placement(rest, placement))
+                report = authoring.check(compiled)
                 if not report.ok:
                     raise ValueError(f"{name} failed collision validation: {report.failures}")
                 staged.append((name, bop_id, directory, stage, old_meta, new_meta, report))

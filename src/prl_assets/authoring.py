@@ -353,7 +353,8 @@ def floor_gap(obj: Compiled, xy: tuple[float, float] | None = None) -> float:
 _CORNERS = np.array([[x, y, z] for x in (-1, 1) for y in (-1, 1) for z in (-1, 1)])
 _RIM_BELOW = 0.003  # opening rays run this far below the rim, inside the walls
 _RAYS = 64  # directions sampled for a circular opening's inscribed radius
-_ROUND = 5  # metres to 10 micrometres; rotations to 1e-5
+_ROUND = 5  # lengths to 10 micrometres
+_ROUND_ROTATION = 10  # rotation entries: 1e-5 would break the 1e-6 rigid-transform check
 
 
 def _subtree_geoms(obj: Compiled) -> list[int]:
@@ -400,20 +401,41 @@ def _collision_vertices(obj: Compiled) -> np.ndarray:
     return np.vstack([geom_mesh(obj, g).vertices for g in collision_geoms(obj)])
 
 
-def _collision_ray(obj: Compiled, start, direction) -> float:
-    """Distance to the first collision geom hit, or NaN."""
-    groups = np.zeros(6, dtype=np.uint8)
-    for g in collision_geoms(obj):
-        groups[obj.model.geom_group[g]] = 1
+def _collision_ray(obj: Compiled, groups: np.ndarray, start, direction) -> float:
+    """Distance to the first geom in ``groups`` hit, or NaN."""
     hit = np.zeros(1, dtype=np.int32)
     start, direction = np.asarray(start, dtype=float), np.asarray(direction, dtype=float)
     dist = mujoco.mj_ray(obj.model, obj.data, start, direction, groups, 1, -1, hit)
     return dist if dist >= 0 else math.nan
 
 
+def _ray_groups(obj: Compiled) -> np.ndarray:
+    """The geom groups rays see: the collision geoms' groups, which hold no visual geom
+    when the object has one (``check``). A mesh geom collides as its convex hull while a
+    ray meets its triangles, so a non-convex collision mesh is refused: its opening would
+    be measured where simulation has none."""
+    m = obj.model
+    groups = np.zeros(mujoco.mjNGROUP, dtype=np.uint8)
+    for g in collision_geoms(obj):
+        if m.geom_type[g] == mujoco.mjtGeom.mjGEOM_MESH:
+            mesh = geom_mesh(obj, g)  # a hull part saved and reloaded is convex to round-off
+            if mesh.convex_hull.volume > 1.01 * abs(mesh.volume):
+                raise ValueError(f"{obj.name}: collision mesh geom {g} is not convex; MuJoCo collides it as its hull")
+        if m.geom_group[g] >= mujoco.mjNGROUP:
+            raise ValueError(f"{obj.name}: collision geom {g} is in group {m.geom_group[g]}, which rays cannot see")
+        groups[m.geom_group[g]] = 1
+    return groups
+
+
+def _rounded(T: np.ndarray) -> list[list[float]]:
+    out = [[round(float(v), _ROUND_ROTATION) + 0.0 for v in row] for row in T]
+    for row in range(3):
+        out[row][3] = round(float(T[row, 3]), _ROUND) + 0.0
+    return out
+
+
 def _in_asset(obj: Compiled, T_world: np.ndarray) -> list[list[float]]:
-    T = np.linalg.inv(_asset_pose(obj)) @ T_world
-    return [[round(float(v), _ROUND) + 0.0 for v in row] for row in T]
+    return _rounded(np.linalg.inv(_asset_pose(obj)) @ T_world)
 
 
 def measure_rest(obj: Compiled, name: str = "upright") -> Rest:
@@ -425,8 +447,7 @@ def measure_rest(obj: Compiled, name: str = "upright") -> Rest:
     T[:2, 3] = 0.0
     T[2, 3] -= float(_collision_vertices(obj)[:, 2].min())
     reach = max(_reach(obj, g, origin) for g in _subtree_geoms(obj))
-    rounded = [[round(float(v), _ROUND) + 0.0 for v in row] for row in T]
-    return Rest(name, rounded, round(reach, _ROUND))
+    return Rest(name, _rounded(T), round(reach, _ROUND))
 
 
 def measure_opening(obj: Compiled, shape: str, name: str = "top") -> Opening:
@@ -441,9 +462,10 @@ def measure_opening(obj: Compiled, shape: str, name: str = "top") -> Opening:
     rim = float(_collision_vertices(obj)[:, 2].max())
     z = rim - _RIM_BELOW
     centre = obj.data.xpos[obj.body][:2].copy()
+    groups = _ray_groups(obj)
 
     def wall(direction) -> float:
-        dist = _collision_ray(obj, [*centre, z], [*direction, 0.0])
+        dist = _collision_ray(obj, groups, [*centre, z], [*direction, 0.0])
         if math.isnan(dist):
             raise ValueError(f"{obj.name}: no wall around the opening along {direction}")
         return dist
@@ -451,7 +473,7 @@ def measure_opening(obj: Compiled, shape: str, name: str = "top") -> Opening:
     for _ in range(3):  # opposing walls move the centre to the interior's middle
         centre += [(wall((1, 0)) - wall((-1, 0))) / 2, (wall((0, 1)) - wall((0, -1))) / 2]
     half = [(wall((1, 0)) + wall((-1, 0))) / 2, (wall((0, 1)) + wall((0, -1))) / 2]
-    depth = _collision_ray(obj, [*centre, rim], [0.0, 0.0, -1.0])
+    depth = _collision_ray(obj, groups, [*centre, rim], [0.0, 0.0, -1.0])
     if math.isnan(depth):
         raise ValueError(f"{obj.name}: no floor below the opening")
     if shape == "rectangle":
@@ -494,12 +516,30 @@ def measure_placement(
     )
 
 
+def remeasure_placement(obj: Compiled, declared: Placement | None) -> Placement:
+    """``measure_placement`` with the openings and supports ``declared`` names, as after a
+    collider change; with nothing declared, the canonical rest alone."""
+    if declared is None:
+        return measure_placement(obj)
+    return measure_placement(
+        obj, {o.name: o.shape for o in declared.openings}, tuple(s.name for s in declared.supports)
+    )
+
+
+def placement_section(placement: Placement) -> dict:
+    """``placement`` as the mapping its ``meta.yaml`` section loads as."""
+    return yaml.safe_load(placement_yaml(placement))["placement"]
+
+
 def placement_yaml(placement: Placement) -> str:
     """``placement`` as a ``meta.yaml`` section, in the layout of the catalog's files."""
 
     def n(value: float) -> str:  # fixed point: YAML reads "1e-05" as a string
-        text = f"{value:.{_ROUND}f}".rstrip("0").rstrip(".")
+        text = f"{value:.{_ROUND_ROTATION}f}".rstrip("0").rstrip(".")
         return "0" if text in ("", "-0") else text
+
+    def name(value: str) -> str:  # a name YAML would read as something else is quoted
+        return value if yaml.safe_load(value) == value else f'"{value}"'
 
     def matrix(T) -> str:
         return "[" + ", ".join("[" + ", ".join(n(v) for v in row) + "]" for row in T) + "]"
@@ -512,40 +552,46 @@ def placement_yaml(placement: Placement) -> str:
     lines = "placement:\n  version: 1\n  rests:\n"
     for rest in placement.rests:
         lines += (
-            f"  - name: {rest.name}\n"
+            f"  - name: {name(rest.name)}\n"
             f"    T_support_asset: {matrix(rest.T_support_asset)}\n"
             f"    footprint_radius: {n(rest.footprint_radius)}\n"
         )
     if placement.openings:
         lines += "  openings:\n"
         for opening in placement.openings:
-            lines += f"  - name: {opening.name}\n    shape: {opening.shape}\n" + outline(opening)
+            lines += f"  - name: {name(opening.name)}\n    shape: {opening.shape}\n" + outline(opening)
             lines += f"    depth: {n(opening.depth)}\n    T_asset_opening: {matrix(opening.T_asset_opening)}\n"
     if placement.supports:
         lines += "  supports:\n"
         for support in placement.supports:
-            lines += f"  - name: {support.name}\n    shape: {support.shape}\n" + outline(support)
+            lines += f"  - name: {name(support.name)}\n    shape: {support.shape}\n" + outline(support)
             lines += f"    T_asset_support: {matrix(support.T_asset_support)}\n"
     return lines
 
 
-def write_placement(obj: Compiled, placement: Placement) -> Path:
-    """Write ``placement`` into ``obj``'s ``meta.yaml``: replace its ``placement``
-    section, or append one, leaving every other line as it was, and refuse a result that
-    would not read back as ``placement``."""
-    path = obj.dir / "meta.yaml"
-    lines = path.read_text().splitlines(keepends=True)
+def with_placement(text: str, placement: Placement) -> str:
+    """``meta.yaml`` text with its ``placement`` section replaced by ``placement``, or
+    one appended, and every other line, comments included, as it was. The section ends
+    at the next line that starts in column 0, a comment heading the next section
+    included. A result that would not read back as ``placement`` is refused."""
+    lines = text.splitlines(keepends=True)
     start = next((i for i, line in enumerate(lines) if line.startswith("placement:")), None)
     if start is None:
-        text = "".join(lines).rstrip("\n") + "\n\n" + placement_yaml(placement)
+        out = "".join(lines).rstrip("\n") + "\n\n" + placement_yaml(placement)
     else:
-        end = next((i for i in range(start + 1, len(lines)) if re.match(r"[^\s#]", lines[i])), len(lines))
+        end = next((i for i in range(start + 1, len(lines)) if re.match(r"\S", lines[i])), len(lines))
         while end > start + 1 and not lines[end - 1].strip():
             end -= 1
-        text = "".join(lines[:start]) + placement_yaml(placement) + "".join(lines[end:])
-    if parse_placement(yaml.safe_load(text)) != placement:
-        raise ValueError(f"{obj.name}: the written placement section would not read back as measured")
-    _write_atomic(path, text)
+        out = "".join(lines[:start]) + placement_yaml(placement) + "".join(lines[end:])
+    if parse_placement(yaml.safe_load(out)) != placement:
+        raise ValueError("the written placement section would not read back as measured")
+    return out
+
+
+def write_placement(obj: Compiled, placement: Placement) -> Path:
+    """Write ``placement`` into ``obj``'s ``meta.yaml`` (``with_placement``), atomically."""
+    path = obj.dir / "meta.yaml"
+    _write_atomic(path, with_placement(path.read_text(), placement))
     return path
 
 
@@ -581,9 +627,6 @@ def _placement_failures(obj: Compiled, declared: Placement) -> list[str]:
     for support in declared.supports:
         field = f"placement.supports.{support.name}"
         found = measure_support(obj, support.name)
-        if support.shape != found.shape:
-            failures.append(f"{field}.shape: a top surface is measured as a {found.shape}")
-            continue
         sizes(f"{field}.size", support.size, found.size)
         frames(f"{field}.T_asset_support", support.T_asset_support, found.T_asset_support)
     return failures
