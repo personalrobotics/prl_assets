@@ -27,9 +27,6 @@ policy:
   manipulation:
     stable_poses: [flat]
 
-# Grasp regions (docs/schema.md): the legacy grasp primitive above as one region at
-# the object frame, with the grasp families the legacy path uses, so either path
-# makes the same candidates. geometric_properties stays until its readers migrate.
 grasp_regions:
   version: 1
   regions:

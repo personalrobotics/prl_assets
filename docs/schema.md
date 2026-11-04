@@ -299,14 +299,18 @@ that order under prl_assets#36/#37.
 Which objects declare regions (prl_assets#40):
 
 - The mug: a `body` cylinder and a framed `handle` box, measured from its scan.
-- **Legacy parity.** Twelve objects whose frame is centred on their collision geometry
-  and whose legacy grasp primitive is their shape: `can`, `fuze_bottle`, `plastic_glass`,
-  `spam_can`, `cracker_box`, `gelatin_box`, `sugar_box`, `pocky_box`, `pop_tarts_case`,
-  `herring_tin`, `notebook`, `lunchbox`. Each declares one region, `body`: its legacy
-  `geometric_properties` primitive at the object frame, with the grasp families the
-  legacy grasp path uses (a cylinder `side`; a box `face_x`, `face_y`, `top`, `bottom`).
-  A consumer switching paths therefore makes the same candidates for them;
-  `tests/test_grasp_regions.py` holds them to it.
+- **Legacy parity.** The objects in `tests/test_grasp_regions.py`'s `LEGACY_PARITY`
+  (the nine recycling kinds and three other boxes), whose frame is centred on their
+  collision geometry (within 1 mm) and whose legacy grasp primitive is their shape. Each
+  declares one region, `body`: its legacy `geometric_properties` primitive at the object
+  frame, with the grasp families the legacy grasp path uses (a cylinder `side`; a box
+  `face_x`, `face_y`, `top`, `bottom`). A consumer switching its grasping to them makes
+  the same grasp candidates; the test holds them to it and writes
+  `artifacts/grasp_region_parity.json`. Parity is about grasp candidates only: a
+  consumer that treats declaring regions as a reason to stage or place an object
+  differently (Geodude stages such objects from their physical data) will see those
+  change. A collider rebuild that would change such an object's `dimensions` is refused
+  until its regions are re-authored.
 - Fixtures (`category` includes `fixture`) declare none: they are never picked up.
 - The remaining YCB-V objects get regions measured from their scans, and the containers
   (bowl, plate, tray, tote) their rim and handle regions, in follow-up work.
