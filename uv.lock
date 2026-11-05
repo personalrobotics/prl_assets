@@ -717,6 +717,10 @@ dev = [
     { name = "scipy", version = "1.17.1", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version == '3.11.*'" },
     { name = "scipy", version = "1.18.1", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.12'" },
 ]
+placement = [
+    { name = "mujoco" },
+    { name = "sstsr" },
+]
 ycbv = [
     { name = "coacd" },
     { name = "mujoco" },
@@ -735,6 +739,7 @@ requires-dist = [
     { name = "hatchling", marker = "extra == 'dev'", specifier = "==1.32.4" },
     { name = "mujoco", marker = "extra == 'authoring'", specifier = ">=3.3" },
     { name = "mujoco", marker = "extra == 'dev'", specifier = ">=3.3" },
+    { name = "mujoco", marker = "extra == 'placement'", specifier = ">=3.3" },
     { name = "mujoco", marker = "extra == 'ycbv'", specifier = ">=3.3" },
     { name = "numpy", specifier = ">=1.22" },
     { name = "pillow", marker = "extra == 'dev'", specifier = ">=10.0" },
@@ -747,9 +752,10 @@ requires-dist = [
     { name = "scipy", marker = "extra == 'authoring'", specifier = ">=1.10" },
     { name = "scipy", marker = "extra == 'dev'", specifier = ">=1.10" },
     { name = "scipy", marker = "extra == 'ycbv'", specifier = ">=1.10" },
+    { name = "sstsr", marker = "extra == 'placement'", git = "https://github.com/personalrobotics/sstsr?rev=d33f39a0ad39ea5020f53dd4b967a4d8b0969e54" },
     { name = "trimesh", specifier = ">=4.11.1" },
 ]
-provides-extras = ["ycbv", "authoring", "dev"]
+provides-extras = ["ycbv", "authoring", "placement", "dev"]
 
 [[package]]
 name = "pygments"
@@ -1081,6 +1087,20 @@ wheels = [
     { url = "https://files.pythonhosted.org/packages/cf/d9/135be205d9de8783193aff9cc3bf483a03a38e4b29432c954e8cb66ac14e/scipy-1.18.1-cp315-cp315t-musllinux_1_2_x86_64.whl", hash = "sha256:179ce34a8d0fe273d8883ba59e17e052247d08973dfcb743ca52bb1cce2d60b0", size = 37521946, upload-time = "2026-08-21T23:28:35.245Z" },
     { url = "https://files.pythonhosted.org/packages/5c/a2/5b7d5270621ab7cfa3f7766067bf95dc360b5efb6394694e8143b4156e2b/scipy-1.18.1-cp315-cp315t-win_amd64.whl", hash = "sha256:5632e3ae3d09197c446310cd5187de63e28448ce22f0f67b2b93d97503c0c230", size = 37408295, upload-time = "2026-08-21T23:28:40.724Z" },
     { url = "https://files.pythonhosted.org/packages/63/ad/741c19fcb66755ff953daf9243af8480e4bf3d7fbe57583c178c7d2b6b51/scipy-1.18.1-cp315-cp315t-win_arm64.whl", hash = "sha256:eda632a7981f69730d6281f451db9c1c370993a2c0d7ddb43e2a809a2862b83a", size = 25319710, upload-time = "2026-08-21T23:28:45.713Z" },
+]
+
+[[package]]
+name = "sstsr"
+version = "4.2.1.dev1"
+source = { git = "https://github.com/personalrobotics/sstsr?rev=d33f39a0ad39ea5020f53dd4b967a4d8b0969e54#d33f39a0ad39ea5020f53dd4b967a4d8b0969e54" }
+dependencies = [
+    { name = "numpy", version = "2.2.6", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11'" },
+    { name = "numpy", version = "2.4.6", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version == '3.11.*'" },
+    { name = "numpy", version = "2.5.4", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.12'" },
+    { name = "pyyaml" },
+    { name = "scipy", version = "1.15.3", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11'" },
+    { name = "scipy", version = "1.17.1", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version == '3.11.*'" },
+    { name = "scipy", version = "1.18.1", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.12'" },
 ]
 
 [[package]]
