@@ -35,3 +35,12 @@ policy:
   manipulation:
     stable_poses: [upright]
     can_contain_objects: true
+
+placement:
+  version: 1
+  openings:
+  - name: top
+    shape: rectangle
+    size: [0.44169, 0.64155]
+    depth: 0.065
+    T_asset_opening: [[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 1, 0.075], [0, 0, 0, 1]]

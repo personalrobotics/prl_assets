@@ -35,3 +35,12 @@ policy:
     difficulty: medium
   manipulation:
     stable_poses: [upright, inverted]
+
+placement:
+  version: 1
+  openings:
+  - name: top
+    shape: circle
+    radius: 0.08082
+    depth: 0.06939
+    T_asset_opening: [[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 1, 0.07701], [0, 0, 0, 1]]

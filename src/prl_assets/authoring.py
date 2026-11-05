@@ -36,10 +36,12 @@ import mujoco
 import numpy as np
 import trimesh
 import yaml
-from scipy.spatial import ConvexHull
+from scipy.spatial import ConvexHull, QhullError
 
 from prl_assets import OBJECTS_DIR
 from prl_assets.grasp_regions import parse as parse_grasp_regions
+from prl_assets.placement import SHAPES, Opening, Placement, Support
+from prl_assets.placement import parse as parse_placement
 
 VISUAL_GROUP = 2
 COLLISION_GROUP = 3
@@ -99,6 +101,7 @@ def load(obj: str | Path, root: Path = OBJECTS_DIR) -> Compiled:
     obj_dir = Path(obj) if Path(obj).is_dir() else object_dirs(root)[str(obj)]
     meta = yaml.safe_load((obj_dir / "meta.yaml").read_text()) or {}
     parse_grasp_regions(meta)
+    parse_placement(meta)
     spec = mujoco.MjSpec.from_file(str(obj_dir / meta["mujoco"]["xml_path"]))
     return _compiled(meta.get("name", obj_dir.name), obj_dir, meta, spec)
 
@@ -111,6 +114,7 @@ def from_spec(spec: mujoco.MjSpec, like: Compiled, meta: dict | None = None) -> 
 
 def _compiled(name, obj_dir, meta, spec) -> Compiled:
     parse_grasp_regions(meta)
+    parse_placement(meta)
     model = spec.compile()
     data = mujoco.MjData(model)
     mujoco.mj_forward(model, data)
@@ -339,6 +343,280 @@ def floor_gap(obj: Compiled, xy: tuple[float, float] | None = None) -> float:
     return _mm(1e3 * max(bottom - floor_at_rest, bottom - floor_at_drop))
 
 
+# ---------------------------------------------------------------------- placement
+#
+# Every field of a ``placement`` section (docs/schema.md) is measured here from the
+# compiled model at the model file's pose, which rests the object on z = 0. How the
+# object itself rests is not declared: a placement planner works it out from the
+# collision geometry. ``check``
+# compares what an object declares with these measurements; ``measure_placement`` and
+# ``placement_yaml`` write them, so nothing in the section is typed by hand.
+
+_RIM_BELOW = 0.003  # opening rays run this far below the rim, inside the walls
+_RAYS = 64  # directions sampled around an opening
+_ROUNDNESS = 1.25  # a circle's longest ray over its shortest (a square's is 1.41)
+_TOP_PLANE = 1e-4  # vertices this close to the highest point lie on a support's top
+_ROUND = 5  # lengths to 10 micrometres
+_ROUND_ROTATION = 10  # rotation entries: 1e-5 would break the 1e-6 rigid-transform check
+
+
+def _asset_pose(obj: Compiled) -> np.ndarray:
+    return _pose(obj.data.xpos[obj.body], obj.data.xmat[obj.body])
+
+
+def _collision_vertices(obj: Compiled) -> np.ndarray:
+    return np.vstack([geom_mesh(obj, g).vertices for g in collision_geoms(obj)])
+
+
+def _collision_ray(obj: Compiled, groups: np.ndarray, start, direction) -> float:
+    """Distance to the first geom in ``groups`` hit, or NaN."""
+    hit = np.zeros(1, dtype=np.int32)
+    start, direction = np.asarray(start, dtype=float), np.asarray(direction, dtype=float)
+    dist = mujoco.mj_ray(obj.model, obj.data, start, direction, groups, 1, -1, hit)
+    return dist if dist >= 0 else math.nan
+
+
+def _ray_groups(obj: Compiled) -> np.ndarray:
+    """The geom groups rays see: the collision geoms' groups, which hold no visual geom
+    when the object has one (``check``). A mesh geom collides as its convex hull while a
+    ray meets its triangles, so a non-convex collision mesh is refused: its opening would
+    be measured where simulation has none."""
+    m = obj.model
+    groups = np.zeros(mujoco.mjNGROUP, dtype=np.uint8)
+    for g in collision_geoms(obj):
+        if m.geom_type[g] == mujoco.mjtGeom.mjGEOM_MESH:
+            mesh = geom_mesh(obj, g)  # a hull part saved and reloaded is convex to round-off
+            if mesh.convex_hull.volume > 1.01 * abs(mesh.volume):
+                raise ValueError(f"{obj.name}: collision mesh geom {g} is not convex; MuJoCo collides it as its hull")
+        if m.geom_group[g] >= mujoco.mjNGROUP:
+            raise ValueError(f"{obj.name}: collision geom {g} is in group {m.geom_group[g]}, which rays cannot see")
+        groups[m.geom_group[g]] = 1
+    return groups
+
+
+def _rounded(T: np.ndarray) -> list[list[float]]:
+    out = [[round(float(v), _ROUND_ROTATION) + 0.0 for v in row] for row in T]
+    for row in range(3):
+        out[row][3] = round(float(T[row, 3]), _ROUND) + 0.0
+    return out
+
+
+def _in_asset(obj: Compiled, T_world: np.ndarray) -> list[list[float]]:
+    return _rounded(np.linalg.inv(_asset_pose(obj)) @ T_world)
+
+
+def _level_axes(obj: Compiled) -> np.ndarray:
+    """The axes openings and supports are measured along, as world-frame columns at the
+    model file's pose: z up, x the asset's first horizontal axis, y completing them. An
+    asset with no axis vertical there is refused: its horizontal axes do not name the
+    sides of a rectangle."""
+    R = obj.data.xmat[obj.body].reshape(3, 3)
+    vertical = [i for i in range(3) if abs(abs(R[2, i]) - 1.0) < 1e-6]
+    if not vertical:
+        raise ValueError(f"{obj.name}: no asset axis is vertical at the model file's pose")
+    x = R[:, min(i for i in range(3) if i != vertical[0])].copy()
+    x[2] = 0.0
+    x /= np.linalg.norm(x)
+    return np.column_stack([x, np.cross([0.0, 0.0, 1.0], x), [0.0, 0.0, 1.0]])
+
+
+def measure_opening(obj: Compiled, shape: str, name: str = "top") -> Opening:
+    """``obj``'s top opening, from rays cast in its collision geometry along the
+    ``_level_axes``: the rim at the top of the geometry, the interior centred between
+    opposing walls just below the rim, and the floor straight below that centre. A
+    rectangle's size is the wall-to-wall width along x and y; a circle's radius is the
+    shortest of ``_RAYS`` rays to the wall, the largest circle that fits. An opening the
+    shape does not describe raises ``ValueError``: a rectangle any of whose rays ends
+    more than ``SIZE_TOLERANCE_MM`` from its outline, or a circle whose longest ray is
+    more than ``_ROUNDNESS`` times its shortest."""
+    if shape not in SHAPES:
+        raise ValueError(f"{obj.name}: opening shape must be one of {tuple(SHAPES)}, not {shape!r}")
+    axes = _level_axes(obj)
+    rim = float(_collision_vertices(obj)[:, 2].max())
+    centre = obj.data.xpos[obj.body].copy()
+    centre[2] = rim - _RIM_BELOW
+    groups = _ray_groups(obj)
+
+    def wall(a: float, b: float) -> float:
+        dist = _collision_ray(obj, groups, centre, a * axes[:, 0] + b * axes[:, 1])
+        if math.isnan(dist):
+            raise ValueError(f"{obj.name}: no wall around the opening along ({a:.3f}, {b:.3f})")
+        return dist
+
+    for _ in range(3):  # opposing walls move the centre to the interior's middle
+        centre += (wall(1, 0) - wall(-1, 0)) / 2 * axes[:, 0] + (wall(0, 1) - wall(0, -1)) / 2 * axes[:, 1]
+    hx, hy = (wall(1, 0) + wall(-1, 0)) / 2, (wall(0, 1) + wall(0, -1)) / 2
+    depth = _collision_ray(obj, groups, [*centre[:2], rim], [0.0, 0.0, -1.0])
+    if math.isnan(depth):
+        raise ValueError(f"{obj.name}: no floor below the opening")
+    angles = np.linspace(0, 2 * math.pi, _RAYS, endpoint=False)
+    rays = np.array([wall(math.cos(a), math.sin(a)) for a in angles])
+    if shape == "rectangle":
+        with np.errstate(divide="ignore"):
+            outline = np.minimum(hx / np.abs(np.cos(angles)), hy / np.abs(np.sin(angles)))
+        worst = int(np.argmax(np.abs(rays - outline)))
+        if abs(rays[worst] - outline[worst]) > SIZE_TOLERANCE_MM / 1e3:
+            raise ValueError(
+                f"{obj.name}: the opening is not a {2 * hx:.4f} by {2 * hy:.4f} m rectangle: at "
+                f"{math.degrees(angles[worst]):.1f} degrees its wall is {rays[worst]:.4f} m from the "
+                f"centre, not {outline[worst]:.4f} m"
+            )
+        size = [round(2 * hx, _ROUND), round(2 * hy, _ROUND)]
+    else:
+        if rays.max() > _ROUNDNESS * rays.min():
+            raise ValueError(
+                f"{obj.name}: the opening is not round: its wall is {rays.min():.4f} to {rays.max():.4f} m "
+                f"from the centre, more than {_ROUNDNESS} times apart"
+            )
+        size = round(float(rays.min()), _ROUND)
+    frame = np.eye(4)
+    frame[:3, :3] = axes
+    frame[:3, 3] = [*centre[:2], rim]
+    return Opening(name, shape, size, round(float(depth), _ROUND), _in_asset(obj, frame))
+
+
+def measure_support(obj: Compiled, name: str = "top") -> Support:
+    """``obj``'s top surface as a rectangle along the ``_level_axes``: the height of its
+    collision geometry's highest point, and the bounds of the collision vertices within
+    ``_TOP_PLANE`` of it, so a geom that flares below the top adds nothing. A top whose
+    outline falls short of its bounding rectangle by more than ``SIZE_TOLERANCE_MM``
+    along its perimeter (a round or bevelled top) raises ``ValueError``."""
+    axes = _level_axes(obj)
+    vertices = _collision_vertices(obj)
+    height = float(vertices[:, 2].max())
+    top = vertices[vertices[:, 2] > height - _TOP_PLANE] @ axes[:, :2]
+    low, high = top.min(axis=0), top.max(axis=0)
+    extent = high - low
+    try:
+        area = ConvexHull(top).volume
+    except QhullError:  # fewer than three points, or all on a line: no area
+        area = 0.0
+    if extent.prod() - area > SIZE_TOLERANCE_MM / 1e3 * 2 * extent.sum():
+        raise ValueError(f"{obj.name}: the top is not a rectangle: it fills {area:.4f} of {extent.prod():.4f} m^2")
+    frame = np.eye(4)
+    frame[:3, :3] = axes
+    frame[:3, 3] = axes[:, :2] @ ((low + high) / 2) + [0.0, 0.0, height]
+    return Support(name, "rectangle", [round(float(e), _ROUND) for e in extent], _in_asset(obj, frame))
+
+
+def measure_placement(
+    obj: Compiled, openings: dict[str, str] | None = None, supports: tuple[str, ...] = ()
+) -> Placement | None:
+    """The openings (``{name: shape}``) and supports (names) asked for, each measured;
+    ``None`` when none is asked for."""
+    if not openings and not supports:
+        return None
+    return Placement(
+        openings=tuple(measure_opening(obj, shape, name) for name, shape in (openings or {}).items()),
+        supports=tuple(measure_support(obj, name) for name in supports),
+    )
+
+
+def remeasure_placement(obj: Compiled, declared: Placement | None) -> Placement | None:
+    """``measure_placement`` with the openings and supports ``declared`` names, as after a
+    collider change; ``None`` when nothing is declared."""
+    if declared is None:
+        return None
+    return measure_placement(
+        obj, {o.name: o.shape for o in declared.openings}, tuple(s.name for s in declared.supports)
+    )
+
+
+def placement_section(placement: Placement) -> dict:
+    """``placement`` as the mapping its ``meta.yaml`` section loads as."""
+    return yaml.safe_load(placement_yaml(placement))["placement"]
+
+
+def placement_yaml(placement: Placement) -> str:
+    """``placement`` as a ``meta.yaml`` section, in the layout of the catalog's files."""
+
+    def n(value: float) -> str:  # fixed point: YAML reads "1e-05" as a string
+        text = f"{value:.{_ROUND_ROTATION}f}".rstrip("0").rstrip(".")
+        return "0" if text in ("", "-0") else text
+
+    def name(value: str) -> str:  # a name YAML would read as something else is quoted
+        return value if yaml.safe_load(value) == value else f'"{value}"'
+
+    def matrix(T) -> str:
+        return "[" + ", ".join("[" + ", ".join(n(v) for v in row) + "]" for row in T) + "]"
+
+    def outline(entry) -> str:
+        if entry.shape == "rectangle":
+            return f"    size: [{n(entry.size[0])}, {n(entry.size[1])}]\n"
+        return f"    radius: {n(entry.size)}\n"
+
+    lines = "placement:\n  version: 1\n"
+    if placement.openings:
+        lines += "  openings:\n"
+        for opening in placement.openings:
+            lines += f"  - name: {name(opening.name)}\n    shape: {opening.shape}\n" + outline(opening)
+            lines += f"    depth: {n(opening.depth)}\n    T_asset_opening: {matrix(opening.T_asset_opening)}\n"
+    if placement.supports:
+        lines += "  supports:\n"
+        for support in placement.supports:
+            lines += f"  - name: {name(support.name)}\n    shape: {support.shape}\n" + outline(support)
+            lines += f"    T_asset_support: {matrix(support.T_asset_support)}\n"
+    return lines
+
+
+def with_placement(text: str, placement: Placement) -> str:
+    """``meta.yaml`` text with its ``placement`` section replaced by ``placement``, or
+    one appended, and every other line, comments included, as it was. The section ends
+    at the next line that starts in column 0, a comment heading the next section
+    included. A result that would not read back as ``placement`` is refused."""
+    lines = text.splitlines(keepends=True)
+    start = next((i for i, line in enumerate(lines) if line.startswith("placement:")), None)
+    if start is None:
+        out = "".join(lines).rstrip("\n") + "\n\n" + placement_yaml(placement)
+    else:
+        end = next((i for i in range(start + 1, len(lines)) if re.match(r"\S", lines[i])), len(lines))
+        while end > start + 1 and not lines[end - 1].strip():
+            end -= 1
+        out = "".join(lines[:start]) + placement_yaml(placement) + "".join(lines[end:])
+    if parse_placement(yaml.safe_load(out)) != placement:
+        raise ValueError("the written placement section would not read back as measured")
+    return out
+
+
+def write_placement(obj: Compiled, placement: Placement) -> Path:
+    """Write ``placement`` into ``obj``'s ``meta.yaml`` (``with_placement``), atomically."""
+    path = obj.dir / "meta.yaml"
+    _write_atomic(path, with_placement(path.read_text(), placement))
+    return path
+
+
+def _placement_failures(obj: Compiled, declared: Placement) -> list[str]:
+    """How ``declared`` differs from what ``obj``'s compiled model measures."""
+    failures = []
+    tol = SIZE_TOLERANCE_MM / 1e3
+
+    def frames(field, a, b):
+        a, b = np.asarray(a), np.asarray(b)
+        if np.abs(a[:3, 3] - b[:3, 3]).max() > tol or np.abs(a[:3, :3] - b[:3, :3]).max() > 1e-3:
+            failures.append(f"{field} differs from the measured frame {np.round(b, 4).tolist()}")
+
+    def sizes(field, a, b):
+        if np.abs(np.atleast_1d(a) - np.atleast_1d(b)).max() > tol:
+            failures.append(f"{field} {a} differs from the measured {b}")
+
+    for opening in declared.openings:
+        field = f"placement.openings.{opening.name}"
+        try:
+            found = measure_opening(obj, opening.shape, opening.name)
+        except ValueError as error:
+            failures.append(f"{field}: {error}")
+            continue
+        sizes(f"{field}.{SHAPES[opening.shape]}", opening.size, found.size)
+        sizes(f"{field}.depth", opening.depth, found.depth)
+        frames(f"{field}.T_asset_opening", opening.T_asset_opening, found.T_asset_opening)
+    for support in declared.supports:
+        field = f"placement.supports.{support.name}"
+        found = measure_support(obj, support.name)
+        sizes(f"{field}.size", support.size, found.size)
+        frames(f"{field}.T_asset_support", support.T_asset_support, found.T_asset_support)
+    return failures
+
+
 # ------------------------------------------------------------------------- checks
 
 
@@ -422,6 +700,7 @@ def check(obj: Compiled | str | Path) -> Report:
     if not isinstance(obj, Compiled):
         obj = load(obj)
     regions = parse_grasp_regions(obj.meta)
+    placement = parse_placement(obj.meta)
     m = obj.model
     failures = []
 
@@ -455,6 +734,10 @@ def check(obj: Compiled | str | Path) -> Report:
                 bounds = region.bounds_in_asset()
                 if np.any(bounds[0] < low) or np.any(bounds[1] > high):
                     failures.append(f"grasp_regions.{region.name}.bounds: outside visual bounds plus 10 mm")
+    if is_open(obj) and not (placement and placement.openings):
+        failures.append("an open object declares no placement opening: write it with scripts/author_placement.py")
+    if placement is not None:
+        failures += _placement_failures(obj, placement)
     fit = collision_fit(obj)
     limits = [("resting", abs(fit.resting), "the model file's pose does not rest the object on z = 0")]
     if visual:
