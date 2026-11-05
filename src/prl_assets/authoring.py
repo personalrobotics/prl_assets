@@ -25,6 +25,7 @@ every object.
 
 from __future__ import annotations
 
+import hashlib
 import math
 import os
 import re
@@ -39,6 +40,8 @@ import yaml
 from scipy.spatial import ConvexHull, QhullError
 
 from prl_assets import OBJECTS_DIR
+from prl_assets.grasp_recipes import GRASP_RECIPES
+from prl_assets.grasp_regions import GraspRegion
 from prl_assets.grasp_regions import parse as parse_grasp_regions
 from prl_assets.placement import SHAPES, Opening, Placement, Support
 from prl_assets.placement import parse as parse_placement
@@ -617,6 +620,381 @@ def _placement_failures(obj: Compiled, declared: Placement) -> list[str]:
     return failures
 
 
+# ------------------------------------------------------------------ grasp regions
+#
+# Each region a recipe (prl_assets.grasp_recipes) names is fitted to the visual points
+# in its region of interest, in the asset frame at the model file's pose, z up: the
+# samples of ``visual_points`` and every visual vertex, so that the extremes are exact.
+# Every number in a recipe object's ``grasp_regions`` section is measured here, and
+# ``check`` holds the section to its re-measurement.
+
+COVERAGE_TOLERANCE_M = 1e-5  # the rounding of written values: every point lies within it
+TURN_TOLERANCE_DEG = 0.5  # how far a declared region's frame may turn from its measurement
+_MIN_ROI_POINTS = 200
+_MIN_ROI_EXTENT_M = 1e-3
+
+
+def select_points(points: np.ndarray, roi, exclude, name: str) -> np.ndarray:
+    """``points`` (asset frame) inside ``roi``'s box (all of them when ``None``), less
+    those inside any of ``exclude``'s ``(box, reason)``, refused when too few or flat to
+    measure a region ``name`` from."""
+    keep = np.ones(len(points), dtype=bool)
+    if roi is not None:
+        keep &= np.all((points >= roi[0]) & (points <= roi[1]), axis=1)
+    for box, _reason in exclude:
+        keep &= ~np.all((points >= box[0]) & (points <= box[1]), axis=1)
+    return _measurable(points[keep], name)
+
+
+def _measurable(points: np.ndarray, name: str) -> np.ndarray:
+    if len(points) < _MIN_ROI_POINTS:
+        raise ValueError(f"region {name!r}: {len(points)} points, fewer than {_MIN_ROI_POINTS} to measure from")
+    extent = np.ptp(points, axis=0)
+    if extent.min() < _MIN_ROI_EXTENT_M:
+        raise ValueError(f"region {name!r}: extent {np.round(extent, 4).tolist()} m is flat")
+    return points
+
+
+def _enclosing_circle(xy: np.ndarray) -> tuple[np.ndarray, float]:
+    """The smallest circle enclosing ``xy``: Welzl's algorithm over the points' hull, in
+    a fixed order, so the same points give the same circle."""
+    hull = xy[ConvexHull(xy).vertices]
+    order = np.random.default_rng(0).permutation(len(hull))
+
+    def circle(boundary):
+        if not boundary:
+            return np.zeros(2), -1.0
+        if len(boundary) == 1:
+            return boundary[0], 0.0
+        if len(boundary) == 2:
+            a, b = boundary
+            return (a + b) / 2, float(np.linalg.norm(a - b)) / 2
+        a, b, c = boundary
+        d = 2 * (a[0] * (b[1] - c[1]) + b[0] * (c[1] - a[1]) + c[0] * (a[1] - b[1]))
+        sa, sb, sc = a @ a, b @ b, c @ c
+        centre = np.array(
+            [
+                (sa * (b[1] - c[1]) + sb * (c[1] - a[1]) + sc * (a[1] - b[1])) / d,
+                (sa * (c[0] - b[0]) + sb * (a[0] - c[0]) + sc * (b[0] - a[0])) / d,
+            ]
+        )
+        return centre, float(np.linalg.norm(a - centre))
+
+    def inside(centre, radius, p):
+        return radius >= 0 and np.linalg.norm(p - centre) <= radius + 1e-12
+
+    points = [hull[i] for i in order]
+    centre, radius = circle([])
+    for i, p in enumerate(points):
+        if inside(centre, radius, p):
+            continue
+        centre, radius = p, 0.0
+        for j, q in enumerate(points[:i]):
+            if inside(centre, radius, q):
+                continue
+            centre, radius = circle([p, q])
+            for r in points[:j]:
+                if not inside(centre, radius, r):
+                    centre, radius = circle([p, q, r])
+    return np.asarray(centre), radius
+
+
+def _min_rectangle(xy: np.ndarray) -> tuple[float, tuple[float, float], np.ndarray]:
+    """The minimum-area rectangle enclosing ``xy``, canonicalized: (yaw in degrees, its
+    sides along the yaw and across it, its centre). The shorter side lies along the yaw,
+    which is in (-90, 90]; when the sides differ by less than ``SIZE_TOLERANCE_MM`` the
+    side nearer asset x does, and the yaw is in (-45, 45]. Among hull edges that give
+    equal areas, the one whose yaw is nearest asset x wins."""
+    hull = xy[ConvexHull(xy).vertices]
+    best = None
+    for a, b in zip(hull, np.roll(hull, -1, axis=0)):
+        angle = math.atan2(b[1] - a[1], b[0] - a[0])
+        c, s = math.cos(angle), math.sin(angle)
+        local = hull @ np.array([[c, -s], [s, c]])  # the hull in the edge's frame
+        lo, hi = local.min(axis=0), local.max(axis=0)
+        area = float(np.prod(hi - lo))
+        yaw = (math.degrees(angle) + 90.0) % 180.0 - 90.0  # one of the rectangle's axes
+        key = (round(area / 1e-9), abs(yaw))
+        if best is None or key < best[0]:
+            centre = np.array([[c, -s], [s, c]]) @ ((lo + hi) / 2)
+            best = (key, yaw, tuple(float(v) for v in hi - lo), centre)
+    _, yaw, (along, across), centre = best
+    if along > across:  # the shorter side along the yaw
+        yaw, along, across = yaw + 90.0, across, along
+    if abs(along - across) < SIZE_TOLERANCE_MM / 1e3:  # a near square: the axis nearer x
+        yaw = (yaw + 45.0) % 90.0 - 45.0
+        if yaw <= -45.0:
+            yaw += 90.0
+    else:
+        yaw = (yaw + 90.0) % 180.0 - 90.0
+        if yaw <= -90.0:
+            yaw += 180.0
+    c, s = math.cos(math.radians(yaw)), math.sin(math.radians(yaw))
+    local = xy @ np.array([[c, -s], [s, c]])
+    lo, hi = local.min(axis=0), local.max(axis=0)
+    centre = np.array([[c, -s], [s, c]]) @ ((lo + hi) / 2)
+    return yaw, (float(hi[0] - lo[0]), float(hi[1] - lo[1])), centre
+
+
+def _region_frame(yaw_deg: float, centre) -> list[list[float]]:
+    T = np.eye(4)
+    c, s = math.cos(math.radians(yaw_deg)), math.sin(math.radians(yaw_deg))
+    T[:3, :3] = [[c, -s, 0.0], [s, c, 0.0], [0.0, 0.0, 1.0]]
+    T[:3, 3] = centre
+    return _rounded(T)
+
+
+def _covering(value: float) -> float:
+    """A length rounded up to the written precision, so a rounded region still covers."""
+    return math.ceil(value * 10**_ROUND) / 10**_ROUND
+
+
+def fit_cylinder_region(points: np.ndarray, name: str, strategies, axis: str = "upright") -> GraspRegion:
+    """The cylinder that encloses ``points`` (asset frame). Upright, about the asset's
+    vertical: through the smallest circle enclosing their xy, over their z range. Lying,
+    along the long side of their xy's minimum-area rectangle (``_min_rectangle``), its
+    direction's yaw in (-90, 90]: through the smallest circle enclosing them across that
+    axis, over their range along it. The region's z is the cylinder's axis; lying, its
+    x is horizontal and its y is up."""
+    points = _measurable(points, name)
+    if axis == "upright":
+        centre, radius = _enclosing_circle(points[:, :2])
+        z0, z1 = float(points[:, 2].min()), float(points[:, 2].max())
+        frame, length = _region_frame(0.0, (*centre, (z0 + z1) / 2)), z1 - z0
+    elif axis == "lying":
+        yaw, _, _ = _min_rectangle(points[:, :2])
+        along = math.radians(yaw + 90.0 if yaw <= 0.0 else yaw - 90.0)  # the long side
+        u = np.array([math.cos(along), math.sin(along), 0.0])
+        v = np.array([-math.sin(along), math.cos(along), 0.0])
+        R = np.column_stack([v, [0.0, 0.0, 1.0], u])
+        local = points @ R  # across, up, along
+        centre, radius = _enclosing_circle(local[:, :2])
+        t0, t1 = float(local[:, 2].min()), float(local[:, 2].max())
+        T = np.eye(4)
+        T[:3, :3] = R
+        T[:3, 3] = R @ [*centre, (t0 + t1) / 2]
+        frame, length = _rounded(T), t1 - t0
+    else:
+        raise ValueError(f"region {name!r}: axis {axis!r} is neither upright nor lying")
+    return GraspRegion(
+        name, "cylinder", {"radius": _covering(radius), "height": _covering(length)}, frame, tuple(strategies)
+    )
+
+
+def fit_box_region(points: np.ndarray, name: str, strategies) -> GraspRegion:
+    """The upright box that encloses ``points`` (asset frame): the minimum-area rectangle
+    of their xy hull (``_min_rectangle``), over their z range; its x is the shorter side."""
+    points = _measurable(points, name)
+    yaw, (sx, sy), centre = _min_rectangle(points[:, :2])
+    z0, z1 = float(points[:, 2].min()), float(points[:, 2].max())
+    size = [_covering(sx), _covering(sy), _covering(z1 - z0)]
+    return GraspRegion(name, "box", {"size": size}, _region_frame(yaw, (*centre, (z0 + z1) / 2)), tuple(strategies))
+
+
+def _fit(recipe, points: np.ndarray) -> GraspRegion:
+    if recipe.primitive == "cylinder":
+        return fit_cylinder_region(points, recipe.name, recipe.strategies, recipe.axis)
+    return fit_box_region(points, recipe.name, recipe.strategies)
+
+
+def _visual_asset_points(obj: Compiled) -> np.ndarray:
+    vertices = np.vstack([geom_mesh(obj, g).vertices for g in visual_geoms(obj)])
+    return to_body(obj, np.vstack([visual_points(obj), vertices]))
+
+
+def _level(obj: Compiled) -> None:
+    R = obj.data.xmat[obj.body].reshape(3, 3)
+    if not np.allclose(R[:, 2], [0.0, 0.0, 1.0], atol=1e-6):
+        raise ValueError(f"{obj.name}: its asset z is not vertical at the model file's pose")
+
+
+def measure_grasp_regions(obj: Compiled) -> tuple[GraspRegion, ...]:
+    """``obj``'s grasp regions, measured by its recipe (``GRASP_RECIPES``)."""
+    _level(obj)
+    points = _visual_asset_points(obj)
+    return tuple(_fit(r, select_points(points, r.roi, r.exclude, r.name)) for r in GRASP_RECIPES[obj.name])
+
+
+def _outside(region: GraspRegion, points: np.ndarray) -> tuple[float, dict[str, float]]:
+    """How far the farthest of ``points`` lies outside ``region``, and per face, how far
+    the nearest point lies inside it: 0 where a point touches the face."""
+    T = np.asarray(region.T_asset_region)
+    local = (points - T[:3, 3]) @ T[:3, :3]
+    if region.primitive == "box":
+        half = np.asarray(region.params["size"]) / 2
+        gaps = {
+            f"{sign}{axis}": float((half[i] - sign_v * local[:, i]).min())
+            for i, axis in enumerate("xyz")
+            for sign, sign_v in (("+", 1), ("-", -1))
+        }
+        outside = float(np.max(np.abs(local) - half))
+    else:
+        r, h = region.params["radius"], region.params["height"] / 2
+        radial = np.hypot(local[:, 0], local[:, 1])
+        gaps = {
+            "radius": float(r - radial.max()),
+            "+z": float(h - local[:, 2].max()),
+            "-z": float(h + local[:, 2].min()),
+        }
+        outside = float(max((radial - r).max(), (np.abs(local[:, 2]) - h).max()))
+    return max(outside, 0.0), gaps
+
+
+def grasp_region_evidence(obj: Compiled) -> dict:
+    """What ``obj``'s recipe measures, region by region, for the record: the SHA-256 of
+    its compiled visual vertices, each region of interest and its exclusions, the points
+    selected, the fitted region, how far any point lies outside it, how near a point comes
+    to each face, and how the declared region differs."""
+    _level(obj)
+    vertices = np.vstack([geom_mesh(obj, g).vertices for g in visual_geoms(obj)])
+    points = _visual_asset_points(obj)
+    declared = {r.name: r for r in parse_grasp_regions(obj.meta)}
+    rows = []
+    for recipe in GRASP_RECIPES[obj.name]:
+        selected = select_points(points, recipe.roi, recipe.exclude, recipe.name)
+        fitted = _fit(recipe, selected)
+        outside, gaps = _outside(fitted, selected)
+        rows.append(
+            {
+                "name": recipe.name,
+                # An unbounded side of a region of interest as null: JSON has no infinity.
+                "roi": None
+                if recipe.roi is None
+                else [[v if math.isfinite(v) else None for v in c] for c in recipe.roi],
+                "roi_frame": "asset",
+                "exclude": [
+                    {"box": [[v if math.isfinite(v) else None for v in c] for c in box], "reason": why}
+                    for box, why in recipe.exclude
+                ],
+                "selected_points": int(len(selected)),
+                "fitted": {
+                    "primitive": fitted.primitive,
+                    **{k: v for k, v in fitted.params.items()},
+                    "T_asset_region": [list(r) for r in fitted.T_asset_region],
+                },
+                "coverage_residual_m": outside,
+                "face_gaps_m": gaps,
+                "declared_difference": _region_difference(declared.get(recipe.name), fitted),
+            }
+        )
+    digest = hashlib.sha256(np.ascontiguousarray(to_body(obj, vertices), dtype=np.float64).tobytes()).hexdigest()
+    return {"visual_vertices_sha256": digest, "regions": rows}
+
+
+def _region_difference(declared: GraspRegion | None, measured: GraspRegion) -> dict | None:
+    """How ``declared`` differs from ``measured``: the largest parameter and offset
+    difference (m) and the angle between their frames (degrees); None when nothing is declared."""
+    if declared is None:
+        return None
+    a, b = np.asarray(declared.T_asset_region), np.asarray(measured.T_asset_region)
+    turn = a[:3, :3].T @ b[:3, :3]
+    angle = math.degrees(math.acos(min(1.0, max(-1.0, (float(np.trace(turn)) - 1.0) / 2.0))))
+    params = (
+        max(
+            float(np.abs(np.atleast_1d(declared.params[k]) - np.atleast_1d(measured.params[k])).max())
+            for k in measured.params
+        )
+        if declared.primitive == measured.primitive
+        else math.inf
+    )
+    return {
+        "same_kind": declared.primitive == measured.primitive and declared.strategies == measured.strategies,
+        "params_m": params,
+        "offset_m": float(np.abs(a[:3, 3] - b[:3, 3]).max()),
+        "turn_deg": angle,
+    }
+
+
+def _grasp_region_failures(obj: Compiled, declared: tuple[GraspRegion, ...]) -> list[str]:
+    """How ``declared`` differs from its re-measurement by ``obj``'s recipe."""
+    recipe = GRASP_RECIPES[obj.name]
+    if not declared:
+        return ["grasp_regions: a recipe object declares none: write them with scripts/author_grasp_regions.py"]
+    if [r.name for r in declared] != [r.name for r in recipe]:
+        return [
+            f"grasp_regions: regions {[r.name for r in declared]} differ from the recipe's {[r.name for r in recipe]}"
+        ]
+    try:
+        measured = measure_grasp_regions(obj)
+    except ValueError as error:
+        return [f"grasp_regions: {error}"]
+    failures = []
+    for d, m in zip(declared, measured):
+        diff = _region_difference(d, m)
+        field = f"grasp_regions.{d.name}"
+        if not diff["same_kind"]:
+            failures.append(
+                f"{field}: {d.primitive} {d.strategies} differs from the recipe's {m.primitive} {m.strategies}"
+            )
+        elif max(diff["params_m"], diff["offset_m"]) > SIZE_TOLERANCE_MM / 1e3 or diff["turn_deg"] > TURN_TOLERANCE_DEG:
+            failures.append(f"{field}: differs from its measurement {_region_row(m)}")
+    return failures
+
+
+def _half_extent(region: GraspRegion) -> np.ndarray:
+    """A region's half extent along each of its own axes."""
+    p = region.params
+    if region.primitive == "box":
+        return np.asarray(p["size"]) / 2
+    if region.primitive == "cylinder":
+        return np.array([p["radius"], p["radius"], p["height"] / 2])
+    if region.primitive == "sphere":
+        return np.full(3, p["radius"])
+    reach = p["major_radius"] + p["minor_radius"]  # a torus about its z
+    return np.array([reach, reach, p["minor_radius"]])
+
+
+def _region_row(region: GraspRegion) -> dict:
+    row = {"name": region.name, "primitive": region.primitive}
+    row.update({k: list(v) if isinstance(v, tuple) else v for k, v in region.params.items()})
+    row["T_asset_region"] = [list(r) for r in region.T_asset_region]
+    row["strategies"] = list(region.strategies)
+    return row
+
+
+def grasp_regions_yaml(regions: tuple[GraspRegion, ...]) -> str:
+    """``regions`` as a ``meta.yaml`` section."""
+
+    def n(value: float) -> str:  # fixed point: YAML reads "1e-05" as a string
+        text = f"{value:.{_ROUND_ROTATION}f}".rstrip("0").rstrip(".")
+        return "0" if text in ("", "-0") else text
+
+    lines = "grasp_regions:\n  version: 1\n  regions:\n"
+    for region in regions:
+        lines += f"  - name: {region.name}\n    primitive: {region.primitive}\n"
+        for key, value in region.params.items():
+            text = "[" + ", ".join(n(v) for v in value) + "]" if isinstance(value, tuple) else n(value)
+            lines += f"    {key}: {text}\n"
+        matrix = "[" + ", ".join("[" + ", ".join(n(v) for v in row) + "]" for row in region.T_asset_region) + "]"
+        lines += f"    T_asset_region: {matrix}\n    strategies: [{', '.join(region.strategies)}]\n"
+    return lines
+
+
+def with_grasp_regions(text: str, regions: tuple[GraspRegion, ...]) -> str:
+    """``meta.yaml`` text with its ``grasp_regions`` section replaced by ``regions``, or
+    one appended, every other line as it was (``with_placement``'s rule). A result that
+    would not read back as ``regions`` is refused."""
+    lines = text.splitlines(keepends=True)
+    start = next((i for i, line in enumerate(lines) if line.startswith("grasp_regions:")), None)
+    if start is None:
+        out = "".join(lines).rstrip("\n") + "\n\n" + grasp_regions_yaml(regions)
+    else:
+        end = next((i for i in range(start + 1, len(lines)) if re.match(r"\S", lines[i])), len(lines))
+        while end > start + 1 and not lines[end - 1].strip():
+            end -= 1
+        out = "".join(lines[:start]) + grasp_regions_yaml(regions) + "".join(lines[end:])
+    if parse_grasp_regions(yaml.safe_load(out)) != regions:
+        raise ValueError("the written grasp_regions section would not read back as measured")
+    return out
+
+
+def write_grasp_regions(obj: Compiled, regions: tuple[GraspRegion, ...]) -> Path:
+    """Write ``regions`` into ``obj``'s ``meta.yaml`` (``with_grasp_regions``), atomically."""
+    path = obj.dir / "meta.yaml"
+    _write_atomic(path, with_grasp_regions(path.read_text(), regions))
+    return path
+
+
 # ------------------------------------------------------------------------- checks
 
 
@@ -729,11 +1107,17 @@ def check(obj: Compiled | str | Path) -> Report:
             failures.append("grasp_regions: visual mesh required for in-frame bounds validation")
         else:
             vertices = to_body(obj, np.vstack([geom_mesh(obj, g).vertices for g in visual]))
-            low, high = vertices.min(axis=0) - 0.01, vertices.max(axis=0) + 0.01
             for region in regions:
-                bounds = region.bounds_in_asset()
-                if np.any(bounds[0] < low) or np.any(bounds[1] > high):
+                # Along the region's own axes, so that a turned region is not held to the
+                # corners of an axis-aligned box it does not fill.
+                T = np.asarray(region.T_asset_region)
+                local = (vertices - T[:3, 3]) @ T[:3, :3]
+                if np.any(-_half_extent(region) < local.min(axis=0) - 0.01) or np.any(
+                    _half_extent(region) > local.max(axis=0) + 0.01
+                ):
                     failures.append(f"grasp_regions.{region.name}.bounds: outside visual bounds plus 10 mm")
+    if obj.name in GRASP_RECIPES:
+        failures += _grasp_region_failures(obj, regions)
     if is_open(obj) and not (placement and placement.openings):
         failures.append("an open object declares no placement opening: write it with scripts/author_placement.py")
     if placement is not None:

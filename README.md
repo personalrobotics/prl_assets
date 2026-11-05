@@ -215,7 +215,12 @@ with the `authoring` extra (`uv sync --extra authoring`).
    (or `=circle`), or `--support top`. Rerun it with just the name after any collider
    change; it rewrites only that section. How an object rests needs nothing declared:
    sstsr works that out from its collision geometry.
-5. Run `uv run --extra authoring python scripts/validate_objects.py <name>` until it
+5. Give it a grasp recipe in `prl_assets.grasp_recipes.GRASP_RECIPES`: which part of
+   the visual model is gripped as which primitive, with which strategies (see
+   [docs/schema.md](docs/schema.md#grasp-regions-version-1)). Then measure and write its
+   `grasp_regions` section: `uv run --extra authoring python scripts/author_grasp_regions.py <name>`.
+   Every number is measured; `check` holds the section to the recipe.
+6. Run `uv run --extra authoring python scripts/validate_objects.py <name>` until it
    passes, and look at the result with `scripts/inspect_object.py <name>`. Where a
    primitive deliberately departs from the scan, such as a box with flat faces for a
    scan with rounded edges, declare the tolerance and the reason (see
@@ -324,6 +329,8 @@ uv run --extra authoring python scripts/validate_objects.py
 | `validate_objects.py` | Check objects the way CI does: conventions, mass, collision geometry against the visual mesh, open interiors |
 | `collider_baseline.py` | Measure each collision model's composition, load time and simulation cost (resting, and a pile of 8); timings belong to the host they ran on |
 | `collider_sweep.py` | Build each over-decomposed YCB-V object under a grid of collision recipes and record parts, checks, aperture occupancy, bridge distance and pile contacts; the evidence for the recipes in `import_ycbv.RECIPES` |
+| `author_placement.py` | Measure and write objects' `placement` sections (openings and tops) |
+| `author_grasp_regions.py` | Measure and write objects' `grasp_regions` sections from their recipes (`prl_assets.grasp_recipes`) |
 | `recenter_mesh.py` | Utility to re-center mesh origin to centroid |
 | `audit_ycbv.py` | Check YCB-V objects' declared frames against the pinned BOP models by shape and texture; writes `artifacts/ycbv_audit.json`, and with `--record` `docs/ycbv_catalog.json` |
 
