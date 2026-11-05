@@ -46,8 +46,11 @@ def main() -> int:
             print(f"# {name}\n{authoring.grasp_regions_yaml(regions)}")
             continue
         before = obj.dir.joinpath("meta.yaml").read_text()
-        path = authoring.write_grasp_regions(obj, regions)
-        print(f"{name}: {'unchanged' if path.read_text() == before else 'written'}")
+        if authoring.with_grasp_regions(before, regions) == before:
+            print(f"{name}: unchanged")  # the file is not rewritten
+            continue
+        authoring.write_grasp_regions(obj, regions)
+        print(f"{name}: written")
     return 0
 
 

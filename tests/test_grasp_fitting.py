@@ -151,3 +151,53 @@ def test_fitted_regions_recover_known_primitives_and_the_catalog_is_measured():
             assert max(region["face_gaps_m"].values()) <= authoring.COVERAGE_TOLERANCE_M, (name, region)
         assert not authoring.check(obj).failures, (name, authoring.check(obj).failures)
     write_json(ARTIFACTS / "grasp_regions_analytic.json", rows)
+
+
+def _rewritten(tmp_path, name, change):
+    """A copy of catalog object ``name`` whose one region is ``change(region)``."""
+    import shutil
+
+    directory = tmp_path / name
+    shutil.copytree(authoring.object_dirs()[name], directory)
+    obj = authoring.load(directory)
+    region = authoring.measure_grasp_regions(obj)[0]
+    authoring.write_grasp_regions(obj, (change(region),))
+    return directory
+
+
+def _turned(region, turn, size=None):
+    """``region`` with its frame turned by ``turn`` (a rotation in its own frame) and its
+    box ``size`` given anew: the same geometry named by another frame."""
+    from prl_assets.grasp_regions import GraspRegion
+
+    T = np.asarray(region.T_asset_region)
+    T = T @ np.block([[turn, np.zeros((3, 1))], [np.zeros((1, 3)), np.ones((1, 1))]])
+    params = dict(region.params) if size is None else {"size": size}
+    return GraspRegion(region.name, region.primitive, params, [[float(v) for v in r] for r in T], region.strategies)
+
+
+def test_check_holds_a_region_to_its_geometry_whatever_frame_names_it(tmp_path):
+    """A box turned a half turn about its axis, a cylinder with its axis reversed, and a
+    near-square box turned a quarter turn with its sides swapped are each the region they
+    were: ``check`` accepts them. The same region moved 3 mm is not."""
+    half = np.diag([-1.0, -1.0, 1.0])  # a half turn about z
+    flip = np.diag([1.0, -1.0, -1.0])  # a half turn about x: the axis reversed
+    quarter = np.array([[0.0, -1.0, 0.0], [1.0, 0.0, 0.0], [0.0, 0.0, 1.0]])
+    same = {
+        "foam_brick": lambda r: _turned(r, half),
+        "large_marker": lambda r: _turned(r, flip),
+        "wood_block": lambda r: _turned(r, quarter, (r.params["size"][1], r.params["size"][0], r.params["size"][2])),
+    }
+    for name, change in same.items():
+        report = authoring.check(_rewritten(tmp_path / "same", name, change))
+        assert not report.failures, (name, report.failures)
+
+    def moved(region):
+        from prl_assets.grasp_regions import GraspRegion
+
+        T = [list(r) for r in region.T_asset_region]
+        T[0][3] = round(T[0][3] + 0.003, 5)  # at the written precision
+        return GraspRegion(region.name, region.primitive, region.params, T, region.strategies)
+
+    report = authoring.check(_rewritten(tmp_path / "moved", "foam_brick", moved))
+    assert any("differs from its measurement" in f for f in report.failures), report.failures
