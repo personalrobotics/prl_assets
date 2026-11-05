@@ -752,7 +752,7 @@ requires-dist = [
     { name = "scipy", marker = "extra == 'authoring'", specifier = ">=1.10" },
     { name = "scipy", marker = "extra == 'dev'", specifier = ">=1.10" },
     { name = "scipy", marker = "extra == 'ycbv'", specifier = ">=1.10" },
-    { name = "sstsr", marker = "extra == 'placement'", git = "https://github.com/personalrobotics/sstsr?rev=d33f39a0ad39ea5020f53dd4b967a4d8b0969e54" },
+    { name = "sstsr", marker = "extra == 'placement'", specifier = ">=4.3" },
     { name = "trimesh", specifier = ">=4.11.1" },
 ]
 provides-extras = ["ycbv", "authoring", "placement", "dev"]
@@ -1091,8 +1091,8 @@ wheels = [
 
 [[package]]
 name = "sstsr"
-version = "4.2.1.dev1"
-source = { git = "https://github.com/personalrobotics/sstsr?rev=d33f39a0ad39ea5020f53dd4b967a4d8b0969e54#d33f39a0ad39ea5020f53dd4b967a4d8b0969e54" }
+version = "4.3.0"
+source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "numpy", version = "2.2.6", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11'" },
     { name = "numpy", version = "2.4.6", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version == '3.11.*'" },
@@ -1101,6 +1101,10 @@ dependencies = [
     { name = "scipy", version = "1.15.3", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11'" },
     { name = "scipy", version = "1.17.1", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version == '3.11.*'" },
     { name = "scipy", version = "1.18.1", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.12'" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/62/d6/7ea5d956b464ae4ec36c3c7458809c546459c2c88dee0b6f62278f754cb5/sstsr-4.3.0.tar.gz", hash = "sha256:1ae64f30abbdf5e863a209ecf2c9f9040c21cc877b5609e08a3ddaa341fc7d8e", size = 1891241, upload-time = "2026-11-05T19:16:13.566Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/49/fb/62f07e44c5b9f8d488bb0dbe02afffcbc95e805789035c0b13749b79e9ef/sstsr-4.3.0-py3-none-any.whl", hash = "sha256:0f863a577e10d758c14b851826b33d456faec0790b825b94adfdb786f5630177", size = 150039, upload-time = "2026-11-05T19:16:11.701Z" },
 ]
 
 [[package]]

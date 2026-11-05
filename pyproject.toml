@@ -36,7 +36,7 @@ authoring = [
 # prl_assets.shape: an object's collision geometry for sstsr's StablePlacer.place.
 placement = [
     "mujoco>=3.3",
-    "sstsr>=4.2.1.dev1",  # the first with StablePlacer.place
+    "sstsr>=4.3",  # the first with StablePlacer.place
 ]
 dev = [
     "hatchling==1.32.4",
@@ -47,10 +47,6 @@ dev = [
     "ruff>=0.4",
     "scipy>=1.10",
 ]
-
-# StablePlacer.place is merged but not yet released; pinned to the merge commit.
-[tool.uv.sources]
-sstsr = { git = "https://github.com/personalrobotics/sstsr", rev = "d33f39a0ad39ea5020f53dd4b967a4d8b0969e54" }
 
 [build-system]
 requires = ["hatchling==1.32.4"]
