@@ -132,6 +132,14 @@ class Placement:
     supports: tuple[Support, ...] = ()
 
     def __post_init__(self):
+        for kind, cls in (("openings", Opening), ("supports", Support)):
+            entries = getattr(self, kind)
+            if not isinstance(entries, (list, tuple)) or not all(isinstance(e, cls) for e in entries):
+                raise PlacementError(f"placement.{kind}: expected a sequence of {cls.__name__} records")
+            names = [e.name for e in entries]
+            if len(set(names)) != len(names):
+                raise PlacementError(f"placement.{kind}: duplicate name")
+            object.__setattr__(self, kind, tuple(entries))
         if not self.openings and not self.supports:
             raise PlacementError("placement: expected at least one opening or support")
 
@@ -186,11 +194,7 @@ def parse(meta: dict) -> Placement | None:
         parsed = {}
         for kind in _ENTRIES:
             rows = _sequence(section.get(kind, []), f"placement.{kind}")
-            entries = tuple(_entry(kind, i, row) for i, row in enumerate(rows))
-            names = [e.name for e in entries]
-            if len(set(names)) != len(names):
-                raise PlacementError(f"placement.{kind}: duplicate name")
-            parsed[kind] = entries
+            parsed[kind] = tuple(_entry(kind, i, row) for i, row in enumerate(rows))
         return Placement(**parsed)
     except PlacementError as error:
         raise PlacementError(f"object {name!r}: {error}") from error

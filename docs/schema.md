@@ -357,21 +357,31 @@ centred on anything: a YCB-V object keeps its BOP frame, and its opening frame s
 where it opens relative to that frame.
 
 **Measurement** (`authoring.measure_opening`, `measure_support`), at the model file's
-pose, which rests the object on z = 0:
+pose, which rests the object on z = 0. Openings and supports face up there, and are
+measured along the asset's first horizontal axis (x) and the vertical (z); an asset with
+no axis vertical at that pose is refused, since its axes name no rectangle's sides.
 
 - An opening's rim is the top of the collision geometry. Rays cast in the collision
   geometry 3 mm below the rim centre the interior between opposing walls, give a
   rectangle's wall-to-wall width along x and y, or a circle's shortest of 64 rays, and
-  the floor below the centre gives the depth. A rectangle whose corner rays end short of
-  its corners does not describe the opening and is refused, as is a non-convex collision
-  mesh: MuJoCo collides it as its hull, while a ray meets its triangles.
-- A support is the top surface: the highest collision point, and the x-y bounds of the
-  collision geoms that reach it.
+  the floor below the centre gives the depth. A shape that does not describe the opening
+  is refused rather than approximated: a rectangle any of whose 64 rays ends more than
+  2 mm from its outline, and a circle whose longest ray is more than 1.25 times its
+  shortest (a square's is 1.41; the catalog's least round, the scanned YCB-V mug, is
+  1.18). So is a non-convex collision mesh: MuJoCo collides it as its hull, while a ray
+  meets its triangles.
+- A support is the top face: the highest collision point, and the bounds of the
+  collision vertices within 0.1 mm of it, so a geom that flares below the top adds
+  nothing. A top whose outline falls short of its bounding rectangle by more than 2 mm
+  along its perimeter (a round or bevelled top) is refused.
+
+Analytic models with known openings and tops on a turned, off-centre body are the
+measurers' oracle (`tests/test_placement.py`).
 
 `check` fails an object whose declared opening or support differs from its measurement
 by more than 2 mm, or 1e-3 in a rotation entry, and an open object
-(`geometric_properties.open`) that declares no opening. Rerun `scripts/author_placement.py <name>` after a collider change; it rewrites
-the section only, and a rerun on an unchanged object changes nothing.
+(`geometric_properties.open`) that declares no opening. Rerun
+`scripts/author_placement.py <name>` after a collider change; it rewrites the section only, and a rerun on an unchanged object changes nothing.
 
 `prl_assets.placement.parse(meta)` uses only NumPy and the standard library and returns
 immutable `Placement`, `Opening` and `Support` records. Unknown keys (`rests` among

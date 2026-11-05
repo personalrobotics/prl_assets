@@ -36,7 +36,7 @@ import mujoco
 import numpy as np
 import trimesh
 import yaml
-from scipy.spatial import ConvexHull
+from scipy.spatial import ConvexHull, QhullError
 
 from prl_assets import OBJECTS_DIR
 from prl_assets.grasp_regions import parse as parse_grasp_regions
@@ -353,7 +353,9 @@ def floor_gap(obj: Compiled, xy: tuple[float, float] | None = None) -> float:
 # ``placement_yaml`` write them, so nothing in the section is typed by hand.
 
 _RIM_BELOW = 0.003  # opening rays run this far below the rim, inside the walls
-_RAYS = 64  # directions sampled for a circular opening's inscribed radius
+_RAYS = 64  # directions sampled around an opening
+_ROUNDNESS = 1.25  # a circle's longest ray over its shortest (a square's is 1.41)
+_TOP_PLANE = 1e-4  # vertices this close to the highest point lie on a support's top
 _ROUND = 5  # lengths to 10 micrometres
 _ROUND_ROTATION = 10  # rotation entries: 1e-5 would break the 1e-6 rigid-transform check
 
@@ -403,58 +405,98 @@ def _in_asset(obj: Compiled, T_world: np.ndarray) -> list[list[float]]:
     return _rounded(np.linalg.inv(_asset_pose(obj)) @ T_world)
 
 
+def _level_axes(obj: Compiled) -> np.ndarray:
+    """The axes openings and supports are measured along, as world-frame columns at the
+    model file's pose: z up, x the asset's first horizontal axis, y completing them. An
+    asset with no axis vertical there is refused: its horizontal axes do not name the
+    sides of a rectangle."""
+    R = obj.data.xmat[obj.body].reshape(3, 3)
+    vertical = [i for i in range(3) if abs(abs(R[2, i]) - 1.0) < 1e-6]
+    if not vertical:
+        raise ValueError(f"{obj.name}: no asset axis is vertical at the model file's pose")
+    x = R[:, min(i for i in range(3) if i != vertical[0])].copy()
+    x[2] = 0.0
+    x /= np.linalg.norm(x)
+    return np.column_stack([x, np.cross([0.0, 0.0, 1.0], x), [0.0, 0.0, 1.0]])
+
+
 def measure_opening(obj: Compiled, shape: str, name: str = "top") -> Opening:
-    """``obj``'s top opening, from rays cast in its collision geometry: the rim at the top
-    of the geometry, the interior centred between opposing walls just below the rim, and
-    the floor straight below that centre. A rectangle's size is the wall-to-wall width
-    along x and y; a circle's radius is the shortest of ``_RAYS`` rays to the wall, the
-    largest circle that fits. A rectangle whose corner rays end short of its corners does
-    not describe the opening, and raises ``ValueError``."""
+    """``obj``'s top opening, from rays cast in its collision geometry along the
+    ``_level_axes``: the rim at the top of the geometry, the interior centred between
+    opposing walls just below the rim, and the floor straight below that centre. A
+    rectangle's size is the wall-to-wall width along x and y; a circle's radius is the
+    shortest of ``_RAYS`` rays to the wall, the largest circle that fits. An opening the
+    shape does not describe raises ``ValueError``: a rectangle any of whose rays ends
+    more than ``SIZE_TOLERANCE_MM`` from its outline, or a circle whose longest ray is
+    more than ``_ROUNDNESS`` times its shortest."""
     if shape not in SHAPES:
         raise ValueError(f"{obj.name}: opening shape must be one of {tuple(SHAPES)}, not {shape!r}")
+    axes = _level_axes(obj)
     rim = float(_collision_vertices(obj)[:, 2].max())
-    z = rim - _RIM_BELOW
-    centre = obj.data.xpos[obj.body][:2].copy()
+    centre = obj.data.xpos[obj.body].copy()
+    centre[2] = rim - _RIM_BELOW
     groups = _ray_groups(obj)
 
-    def wall(direction) -> float:
-        dist = _collision_ray(obj, groups, [*centre, z], [*direction, 0.0])
+    def wall(a: float, b: float) -> float:
+        dist = _collision_ray(obj, groups, centre, a * axes[:, 0] + b * axes[:, 1])
         if math.isnan(dist):
-            raise ValueError(f"{obj.name}: no wall around the opening along {direction}")
+            raise ValueError(f"{obj.name}: no wall around the opening along ({a:.3f}, {b:.3f})")
         return dist
 
     for _ in range(3):  # opposing walls move the centre to the interior's middle
-        centre += [(wall((1, 0)) - wall((-1, 0))) / 2, (wall((0, 1)) - wall((0, -1))) / 2]
-    half = [(wall((1, 0)) + wall((-1, 0))) / 2, (wall((0, 1)) + wall((0, -1))) / 2]
-    depth = _collision_ray(obj, groups, [*centre, rim], [0.0, 0.0, -1.0])
+        centre += (wall(1, 0) - wall(-1, 0)) / 2 * axes[:, 0] + (wall(0, 1) - wall(0, -1)) / 2 * axes[:, 1]
+    hx, hy = (wall(1, 0) + wall(-1, 0)) / 2, (wall(0, 1) + wall(0, -1)) / 2
+    depth = _collision_ray(obj, groups, [*centre[:2], rim], [0.0, 0.0, -1.0])
     if math.isnan(depth):
         raise ValueError(f"{obj.name}: no floor below the opening")
+    angles = np.linspace(0, 2 * math.pi, _RAYS, endpoint=False)
+    rays = np.array([wall(math.cos(a), math.sin(a)) for a in angles])
     if shape == "rectangle":
-        size = [round(2 * h, _ROUND) for h in half]
-        for sx in (-1, 1):
-            for sy in (-1, 1):
-                angle = math.atan2(sy * half[1], sx * half[0])
-                if wall((math.cos(angle), math.sin(angle))) < math.hypot(*half) - SIZE_TOLERANCE_MM / 1e3:
-                    raise ValueError(f"{obj.name}: the opening has no corners where a rectangle has them")
+        with np.errstate(divide="ignore"):
+            outline = np.minimum(hx / np.abs(np.cos(angles)), hy / np.abs(np.sin(angles)))
+        worst = int(np.argmax(np.abs(rays - outline)))
+        if abs(rays[worst] - outline[worst]) > SIZE_TOLERANCE_MM / 1e3:
+            raise ValueError(
+                f"{obj.name}: the opening is not a {2 * hx:.4f} by {2 * hy:.4f} m rectangle: at "
+                f"{math.degrees(angles[worst]):.1f} degrees its wall is {rays[worst]:.4f} m from the "
+                f"centre, not {outline[worst]:.4f} m"
+            )
+        size = [round(2 * hx, _ROUND), round(2 * hy, _ROUND)]
     else:
-        angles = np.linspace(0, 2 * math.pi, _RAYS, endpoint=False)
-        size = round(min(wall((math.cos(a), math.sin(a))) for a in angles), _ROUND)
+        if rays.max() > _ROUNDNESS * rays.min():
+            raise ValueError(
+                f"{obj.name}: the opening is not round: its wall is {rays.min():.4f} to {rays.max():.4f} m "
+                f"from the centre, more than {_ROUNDNESS} times apart"
+            )
+        size = round(float(rays.min()), _ROUND)
     frame = np.eye(4)
-    frame[:3, 3] = [*centre, rim]
+    frame[:3, :3] = axes
+    frame[:3, 3] = [*centre[:2], rim]
     return Opening(name, shape, size, round(float(depth), _ROUND), _in_asset(obj, frame))
 
 
 def measure_support(obj: Compiled, name: str = "top") -> Support:
-    """``obj``'s top surface as a rectangle: the height of its collision geometry's
-    highest point, and the x-y bounds of the collision geoms that reach it."""
-    tops = {g: geom_mesh(obj, g).vertices for g in collision_geoms(obj)}
-    height = max(v[:, 2].max() for v in tops.values())
-    surface = np.vstack([v for v in tops.values() if v[:, 2].max() > height - 1e-3])
-    low, high = surface[:, :2].min(axis=0), surface[:, :2].max(axis=0)
+    """``obj``'s top surface as a rectangle along the ``_level_axes``: the height of its
+    collision geometry's highest point, and the bounds of the collision vertices within
+    ``_TOP_PLANE`` of it, so a geom that flares below the top adds nothing. A top whose
+    outline falls short of its bounding rectangle by more than ``SIZE_TOLERANCE_MM``
+    along its perimeter (a round or bevelled top) raises ``ValueError``."""
+    axes = _level_axes(obj)
+    vertices = _collision_vertices(obj)
+    height = float(vertices[:, 2].max())
+    top = vertices[vertices[:, 2] > height - _TOP_PLANE] @ axes[:, :2]
+    low, high = top.min(axis=0), top.max(axis=0)
+    extent = high - low
+    try:
+        area = ConvexHull(top).volume
+    except QhullError:  # fewer than three points, or all on a line: no area
+        area = 0.0
+    if extent.prod() - area > SIZE_TOLERANCE_MM / 1e3 * 2 * extent.sum():
+        raise ValueError(f"{obj.name}: the top is not a rectangle: it fills {area:.4f} of {extent.prod():.4f} m^2")
     frame = np.eye(4)
-    frame[:3, 3] = [*((low + high) / 2), height]
-    size = [round(float(e), _ROUND) for e in high - low]
-    return Support(name, "rectangle", size, _in_asset(obj, frame))
+    frame[:3, :3] = axes
+    frame[:3, 3] = axes[:, :2] @ ((low + high) / 2) + [0.0, 0.0, height]
+    return Support(name, "rectangle", [round(float(e), _ROUND) for e in extent], _in_asset(obj, frame))
 
 
 def measure_placement(
@@ -470,7 +512,7 @@ def measure_placement(
     )
 
 
-def remeasure_placement(obj: Compiled, declared: Placement | None) -> Placement:
+def remeasure_placement(obj: Compiled, declared: Placement | None) -> Placement | None:
     """``measure_placement`` with the openings and supports ``declared`` names, as after a
     collider change; ``None`` when nothing is declared."""
     if declared is None:
