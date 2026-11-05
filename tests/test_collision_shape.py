@@ -4,13 +4,16 @@
 """``prl_assets.shape.collision_shape`` describes each object as MuJoCo collides it, so
 sstsr's ``StablePlacer.place`` puts it where it stays.
 
-Two oracles, neither of them the converter: each part's support function must match the
-compiled geom's own mesh (``authoring.geom_mesh``) in every direction, and the most stable
-rest ``place`` returns must hold when MuJoCo drops the object onto a floor in it.
+The shape's support function must match the compiled collision geoms' meshes
+(``authoring.geom_mesh``) in every direction. That checks each part's type, size and pose;
+a mesh's vertices come from the same compiled ``mesh_vert`` on both sides. The independent
+oracle is MuJoCo itself: the most stable rest ``place`` returns must hold when the object
+is dropped onto a floor in it.
 
 Writes artifacts/collision_shape.json (override the directory with PRL_ASSETS_ARTIFACTS):
 each object's parts, its rest count and the first rest's variant, the support error, and
-how far the object tilted and moved in height while settling, when every object was checked.
+how far the object tilted and moved in height while settling, and whether it passed
+(``ok``), when every object was checked.
 Reproduce with ``uv run --locked --all-extras pytest tests/test_collision_shape.py -q``.
 """
 
@@ -68,6 +71,7 @@ def _settle(obj, T_floor_obj: np.ndarray) -> tuple[float, float]:
         body.add_freejoint()
     scene.worldbody.add_frame().attach_body(body, "obj/", "")
     model = scene.compile()
+    assert model.njnt == 1 and model.jnt_type[0] == mujoco.mjtJoint.mjJNT_FREE, f"{obj.name}: not one free body"
     data = mujoco.MjData(model)
     quat = np.zeros(4)
     mujoco.mju_mat2Quat(quat, T_floor_obj[:3, :3].ravel())
@@ -82,6 +86,7 @@ def _settle(obj, T_floor_obj: np.ndarray) -> tuple[float, float]:
 
 @pytest.mark.parametrize("name", NAMES)
 def test_an_object_rests_where_place_puts_it(name):
+    _ROWS[name] = row = {"ok": False}  # a failure anywhere below leaves it unpassed
     obj = authoring.load(name)
     shape = shape_module.collision_shape(obj.model, obj.data, obj.body)
 
@@ -93,20 +98,15 @@ def test_an_object_rests_where_place_puts_it(name):
         assert np.allclose(shape.com, obj.model.body_ipos[obj.body], atol=1e-9), f"{name}: centre of mass moved"
 
     rests = placement.StablePlacer(table_x=1.0, table_y=1.0).place(shape, subject=name)
+    row.update(parts=sorted(type(p).__name__ for p in shape.parts), rests=len(rests))
+    row["support_error_mm"] = round(1e3 * error, 4)
     assert rests, f"{name}: place found no rest"
     tilt, height = _settle(obj, rests[0].T_ref_tsr @ rests[0].Tw_e)
-
-    _ROWS[name] = {
-        "parts": sorted(type(p).__name__ for p in shape.parts),
-        "rests": len(rests),
-        "first_rest": rests[0].variant,
-        "support_error_mm": round(1e3 * error, 4),
-        "settle_tilt_deg": round(tilt, 3),
-        "settle_height_mm": round(height, 3),
-    }
+    row.update(first_rest=rests[0].variant, settle_tilt_deg=round(tilt, 3), settle_height_mm=round(height, 3))
     assert 1e3 * error <= SUPPORT_TOLERANCE_MM, f"{name}: support differs from the geoms by {1e3 * error:.3f} mm"
     assert tilt <= TILT_TOLERANCE_DEG, f"{name}: tilted {tilt:.2f} deg settling in {rests[0].variant}"
     assert abs(height) <= HEIGHT_TOLERANCE_MM, f"{name}: settled {height:.2f} mm from its predicted height"
+    row["ok"] = True
 
 
 def test_a_geom_with_no_part_is_refused_not_dropped():

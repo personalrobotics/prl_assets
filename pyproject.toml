@@ -36,7 +36,7 @@ authoring = [
 # prl_assets.shape: an object's collision geometry for sstsr's StablePlacer.place.
 placement = [
     "mujoco>=3.3",
-    "sstsr",
+    "sstsr>=4.2.1.dev1",  # the first with StablePlacer.place
 ]
 dev = [
     "hatchling==1.32.4",

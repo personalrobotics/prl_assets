@@ -26,14 +26,15 @@ def collision_shape(model: mujoco.MjModel, data: mujoco.MjData, body: int | str)
     """``body``'s collision geometry and centre of mass, in ``body``'s frame.
 
     The collision geoms (those with contype or conaffinity) of ``body`` and every body
-    below it are taken at their poses in ``data``, which must hold the model's
-    kinematics (``mj_kinematics`` or ``mj_forward``): an articulated object is described
-    as it stands. A box, cylinder, sphere or capsule becomes the same primitive; a mesh
-    becomes its vertices' convex hull, which is what MuJoCo collides. The centre of mass
+    below it are taken at their poses in ``data``, which must be forwarded
+    (``mj_forward``, or ``mj_kinematics`` then ``mj_comPos`` for the centre of mass): an
+    articulated object is described as it stands. A box, cylinder, sphere or capsule
+    becomes the same primitive; a mesh becomes its vertices' convex hull, which is what
+    MuJoCo collides. The centre of mass
     is ``data.subtree_com``, so a non-uniform object rests where its mass says.
 
-    Raises ``ValueError`` when ``body`` has no collision geom, or one of a type that has
-    no part (a plane, ellipsoid, height field or SDF).
+    Raises ``ValueError`` when ``body`` has no collision geom, one of a type that has no
+    part (a plane, ellipsoid, height field or SDF), or a mesh that spans no volume.
     """
     b = mujoco.mj_name2id(model, mujoco.mjtObj.mjOBJ_BODY, body) if isinstance(body, str) else int(body)
     if not 0 < b < model.nbody:
@@ -64,10 +65,14 @@ def _part(model: mujoco.MjModel, g: int, pose: np.ndarray, body: str):
         return Sphere(s[0], pose=pose)
     if t == G.mjGEOM_CAPSULE:
         return Capsule(s[0], 2 * s[1], pose=pose)
+    geom = mujoco.mj_id2name(model, mujoco.mjtObj.mjOBJ_GEOM, g) or str(g)
     if t == G.mjGEOM_MESH:
         i = model.geom_dataid[g]
-        return Hull(model.mesh_vert[model.mesh_vertadr[i] : model.mesh_vertadr[i] + model.mesh_vertnum[i]], pose=pose)
-    geom = mujoco.mj_id2name(model, mujoco.mjtObj.mjOBJ_GEOM, g) or str(g)
+        vertices = model.mesh_vert[model.mesh_vertadr[i] : model.mesh_vertadr[i] + model.mesh_vertnum[i]]
+        try:
+            return Hull(vertices, pose=pose)
+        except ValueError as e:
+            raise ValueError(f"body {body!r}: collision mesh geom {geom!r}: {e}") from e
     raise ValueError(f"body {body!r}: collision geom {geom!r} is a {G(t).name}, which has no placement part")
 
 
