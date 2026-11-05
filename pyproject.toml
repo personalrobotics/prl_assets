@@ -33,6 +33,11 @@ authoring = [
     "pyyaml>=6.0",
     "scipy>=1.10",
 ]
+# prl_assets.shape: an object's collision geometry for sstsr's StablePlacer.place.
+placement = [
+    "mujoco>=3.3",
+    "sstsr>=4.3",  # the first with StablePlacer.place
+]
 dev = [
     "hatchling==1.32.4",
     "pytest>=7.0",

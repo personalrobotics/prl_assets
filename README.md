@@ -516,3 +516,19 @@ opening = parse(AssetManager(OBJECTS_DIR).get("recycle_bin")).openings[0]
 
 Reproduce the checks with `uv run --locked --all-extras pytest tests/test_placement.py -q`;
 `artifacts/placement.json` records each declared section next to its legacy fields.
+
+To place an object on a surface, hand its collision geometry to sstsr. With the
+`placement` extra, `prl_assets.shape.collision_shape` describes a body as MuJoCo collides
+it: each box, cylinder, sphere and capsule as itself, each mesh as its convex hull, and the
+compiled centre of mass. The caller never says what the object is made of:
+
+```python
+from prl_assets.shape import collision_shape
+from tsr.placement import StablePlacer
+
+rests = StablePlacer(table_x=0.3, table_y=0.2).place(collision_shape(model, data, "can_0"))
+# rests[0], the most stable, instantiated on a surface pose: rests[0].instantiate(T_world_table)
+```
+
+`tests/test_collision_shape.py` drops every catalog object onto a floor in the first rest
+`place` returns and writes how far it tilted and settled to `artifacts/collision_shape.json`.
