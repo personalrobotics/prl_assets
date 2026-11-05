@@ -316,19 +316,18 @@ Which objects declare regions (prl_assets#40):
 
 ## Placement (version 1)
 
-`placement` describes how an object rests on a level support, a container's usable
-opening, and the surfaces other objects may be placed on. It is separate from grasp
-regions and collision geometry, and nothing in it is derived from a primitive type.
+`placement` describes a container's usable opening and the surfaces other objects may
+be placed on: what a placement planner cannot work out from collision geometry alone. It
+is separate from grasp regions and collision geometry, and nothing in it is derived from
+a primitive type. How an object rests is not declared: sstsr's `StablePlacer` computes
+an object's stable rests, their heights and footprints from its collision geometry and
+centre of mass, and the model file's pose is the one it is modelled upright in.
 Every field is measured from the compiled model by `prl_assets.authoring`, written by
 `scripts/author_placement.py`, and checked against the model by `authoring.check`.
 
 ```yaml
 placement:
   version: 1
-  rests:
-  - name: upright
-    T_support_asset: [[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 1, 0], [0, 0, 0, 1]]
-    footprint_radius: 0.19169
   openings:
   - name: top
     shape: rectangle
@@ -342,33 +341,24 @@ placement:
     T_asset_support: [[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 1, 0.735], [0, 0, 0, 1]]
 ```
 
-The section requires `version` (integer 1) and a nonempty `rests` list, and may have
-`openings` and `supports` lists. A missing section means none is declared; an explicit
+The section requires `version` (integer 1) and `openings` or `supports` lists, together
+naming at least one entry. A missing section means none is declared; an explicit
 null or malformed section is an error. Names are unique within each list and match
 `[a-z][a-z0-9_]*`. Lengths are metres; transforms are row-major 4 by 4 rigid transforms
 validated as in grasp regions (1e-6 rotation and determinant, 1e-8 bottom row).
 
 | Entry | Fields | Meaning |
 | --- | --- | --- |
-| rest | `T_support_asset`, `footprint_radius` | The asset frame in a support frame whose origin lies on the support plane directly below the asset origin, z up, so its translation is `(0, 0, h)`; and the horizontal radius about that vertical that bounds every geom of the object. `rests[0]` is the canonical rest, the one the model file's pose gives. |
 | opening | `shape`, `size` or `radius`, `depth`, optional `T_asset_opening` | A rectangle (full `size: [x, y]`) or circle (`radius`) centred on the rim plane, z pointing out of the container, with the interior floor `depth` below it along -z. A circle's radius is the largest circle inside the rim. |
 | support | `shape: rectangle`, `size`, optional `T_asset_support` | A rectangular surface centred on itself, z its outward normal. Version 1 measures a support as its top's x-y bounds, so it has rectangles only. |
 
 Omitted opening and support frames are the identity. The object frame need not be
-centred on anything: a YCB-V object keeps its BOP frame, and its rest and opening frames
-say where it stands and opens relative to that frame.
+centred on anything: a YCB-V object keeps its BOP frame, and its opening frame says
+where it opens relative to that frame.
 
-A held object stands on a support at `T_world_support @ T_support_asset`, and lies wholly
-on a support whose edge is at least `footprint_radius` from its asset origin, at any yaw.
-For an upright, centred cylinder or box this is sstsr `StablePlacer`'s `-z` placement,
-which also frames the object at its centre.
+**Measurement** (`authoring.measure_opening`, `measure_support`), at the model file's
+pose, which rests the object on z = 0:
 
-**Measurement** (`authoring.measure_rest`, `measure_opening`, `measure_support`), at the
-model file's pose, which rests the object on z = 0:
-
-- A rest's height is the asset origin's height above the lowest collision point; its
-  footprint is each geom's exact horizontal reach (mesh vertices, box corners, sphere and
-  cylinder ends plus radius).
 - An opening's rim is the top of the collision geometry. Rays cast in the collision
   geometry 3 mm below the rim centre the interior between opposing walls, give a
   rectangle's wall-to-wall width along x and y, or a circle's shortest of 64 rays, and
@@ -378,15 +368,15 @@ model file's pose, which rests the object on z = 0:
 - A support is the top surface: the highest collision point, and the x-y bounds of the
   collision geoms that reach it.
 
-`check` fails an object whose declared rest, opening or support differs from its
-measurement by more than 2 mm, or 1e-3 in a rotation entry, and an object without a
-section. Rerun `scripts/author_placement.py <name>` after a collider change; it rewrites
+`check` fails an object whose declared opening or support differs from its measurement
+by more than 2 mm, or 1e-3 in a rotation entry, and an open object
+(`geometric_properties.open`) that declares no opening. Rerun `scripts/author_placement.py <name>` after a collider change; it rewrites
 the section only, and a rerun on an unchanged object changes nothing.
 
 `prl_assets.placement.parse(meta)` uses only NumPy and the standard library and returns
-immutable `Placement`, `Rest`, `Opening` and `Support` records. Unknown keys, bools,
-numeric strings, nonfinite or nonpositive sizes, a rest offset in x or y, the wrong
-parameter for a shape, duplicate names, nonrigid transforms and a missing or unsupported
+immutable `Placement`, `Opening` and `Support` records. Unknown keys (`rests` among
+them), bools, numeric strings, nonfinite or nonpositive sizes, an empty section, the
+wrong parameter for a shape, duplicate names, nonrigid transforms and a missing or unsupported
 version raise `PlacementError` naming the object, entry and field.
 
 **Legacy policy.** `geometric_properties.open`, `outer_size`, `inner_size`,
@@ -397,7 +387,6 @@ them. The recycle bin's opening equals its legacy `inner_size` and `outer_size` 
 their floors, not their tapered rims, and `artifacts/placement.json` records the
 difference. Which objects declare what:
 
-- Every object: its canonical `upright` rest.
 - Openings: recycle_bin, yellow_tote and wicker_tray (rectangles); plastic_bowl,
   ycb_bowl, plastic_glass, plastic_plate and mug (circles).
 - Supports: ada_table's top.

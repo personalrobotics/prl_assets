@@ -3,20 +3,22 @@
 
 """Measure and write objects' ``placement`` sections (docs/schema.md).
 
-Each object's canonical rest is measured from its compiled model, with the openings and
-supports it asks for, and written into its ``meta.yaml`` by
+The openings and supports an object asks for are measured from its compiled model and
+written into its ``meta.yaml`` by
 ``prl_assets.authoring.write_placement``: the section is replaced, or appended, and
 nothing else in the file changes. An object that already declares a section is
 re-measured with the openings and supports it declares, so a rerun after a collider
 change refreshes it, and a rerun on an unchanged object changes nothing.
 
 Usage:
-    uv run --extra authoring python scripts/author_placement.py can mug       # refresh, or a rest only
+    uv run --extra authoring python scripts/author_placement.py mug           # refresh what mug declares
     uv run --extra authoring python scripts/author_placement.py recycle_bin --opening top=rectangle
     uv run --extra authoring python scripts/author_placement.py ada_table --support top
     uv run --extra authoring python scripts/author_placement.py --all         # refresh every object
 
-Exits 2 for an unknown object name.
+How an object rests is not declared: a placement planner works it out from the
+collision geometry. Exits 2 for an unknown object name, and 1 when an object asks for
+no opening or support.
 """
 
 import argparse
@@ -49,6 +51,7 @@ def main() -> int:
     if unknown:
         print(f"Unknown objects: {', '.join(unknown)}. Available: {', '.join(sorted(known))}")
         return 2
+    status = 0
     for name in names:
         obj = authoring.load(name)
         declared = parse(obj.meta)
@@ -57,10 +60,15 @@ def main() -> int:
         openings |= dict(args.opening)
         supports = tuple(dict.fromkeys((*supports, *args.support)))
         placement = authoring.measure_placement(obj, openings, supports)
+        if placement is None:
+            if not args.all:
+                print(f"{name}: declares no opening or support; pass --opening or --support")
+                status = 1
+            continue
         before = obj.dir.joinpath("meta.yaml").read_text()
         path = authoring.write_placement(obj, placement)
         print(f"{name}: {'unchanged' if path.read_text() == before else 'written'}")
-    return 0
+    return status
 
 
 if __name__ == "__main__":

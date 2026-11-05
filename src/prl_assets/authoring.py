@@ -40,7 +40,7 @@ from scipy.spatial import ConvexHull
 
 from prl_assets import OBJECTS_DIR
 from prl_assets.grasp_regions import parse as parse_grasp_regions
-from prl_assets.placement import SHAPES, Opening, Placement, Rest, Support
+from prl_assets.placement import SHAPES, Opening, Placement, Support
 from prl_assets.placement import parse as parse_placement
 
 VISUAL_GROUP = 2
@@ -346,51 +346,16 @@ def floor_gap(obj: Compiled, xy: tuple[float, float] | None = None) -> float:
 # ---------------------------------------------------------------------- placement
 #
 # Every field of a ``placement`` section (docs/schema.md) is measured here from the
-# compiled model at the model file's pose, which rests the object on z = 0. ``check``
+# compiled model at the model file's pose, which rests the object on z = 0. How the
+# object itself rests is not declared: a placement planner works it out from the
+# collision geometry. ``check``
 # compares what an object declares with these measurements; ``measure_placement`` and
 # ``placement_yaml`` write them, so nothing in the section is typed by hand.
 
-_CORNERS = np.array([[x, y, z] for x in (-1, 1) for y in (-1, 1) for z in (-1, 1)])
 _RIM_BELOW = 0.003  # opening rays run this far below the rim, inside the walls
 _RAYS = 64  # directions sampled for a circular opening's inscribed radius
 _ROUND = 5  # lengths to 10 micrometres
 _ROUND_ROTATION = 10  # rotation entries: 1e-5 would break the 1e-6 rigid-transform check
-
-
-def _subtree_geoms(obj: Compiled) -> list[int]:
-    m = obj.model
-    return [g for g in range(m.ngeom) if m.body_rootid[m.geom_bodyid[g]] == obj.body]
-
-
-def _reach(obj: Compiled, g: int, origin: np.ndarray) -> float:
-    """How far geom ``g`` reaches horizontally from ``origin``: a mesh by its vertices and
-    a box by its corners, exactly; a sphere by its centre and radius, and a capsule or
-    cylinder by its two end centres and radius, at any orientation (exact for a capsule
-    and an upright cylinder, a tight bound for a tilted one). Anything else by the
-    corners of its bounding box."""
-    m, d = obj.model, obj.data
-    rotation = d.geom_xmat[g].reshape(3, 3)
-    centre = d.geom_xpos[g]
-    kind = int(m.geom_type[g])
-    geom = mujoco.mjtGeom
-    radius = float(m.geom_size[g][0])
-    if kind == int(geom.mjGEOM_SPHERE):
-        ends = centre[None, :]
-    elif kind in (int(geom.mjGEOM_CYLINDER), int(geom.mjGEOM_CAPSULE)):
-        half = float(m.geom_size[g][1]) * rotation[:, 2]
-        ends = np.stack([centre - half, centre + half])
-    else:
-        if kind == int(geom.mjGEOM_MESH):
-            mesh = m.geom_dataid[g]
-            start, count = m.mesh_vertadr[mesh], m.mesh_vertnum[mesh]
-            local = m.mesh_vert[start : start + count]
-        elif kind == int(geom.mjGEOM_BOX):
-            local = _CORNERS * m.geom_size[g]
-        else:
-            local = m.geom_aabb[g][:3] + _CORNERS * m.geom_aabb[g][3:]
-        world = local @ rotation.T + centre
-        return float(np.hypot(*(world[:, :2] - origin).T).max())
-    return float(np.hypot(*(ends[:, :2] - origin).T).max()) + radius
 
 
 def _asset_pose(obj: Compiled) -> np.ndarray:
@@ -436,18 +401,6 @@ def _rounded(T: np.ndarray) -> list[list[float]]:
 
 def _in_asset(obj: Compiled, T_world: np.ndarray) -> list[list[float]]:
     return _rounded(np.linalg.inv(_asset_pose(obj)) @ T_world)
-
-
-def measure_rest(obj: Compiled, name: str = "upright") -> Rest:
-    """The rest the model file's pose gives ``obj``: its orientation there, its asset
-    origin's height above the collision geometry's lowest point, and the horizontal
-    reach of every geom of the object about the asset origin's vertical."""
-    T = _asset_pose(obj)
-    origin = T[:2, 3].copy()
-    T[:2, 3] = 0.0
-    T[2, 3] -= float(_collision_vertices(obj)[:, 2].min())
-    reach = max(_reach(obj, g, origin) for g in _subtree_geoms(obj))
-    return Rest(name, _rounded(T), round(reach, _ROUND))
 
 
 def measure_opening(obj: Compiled, shape: str, name: str = "top") -> Opening:
@@ -506,11 +459,12 @@ def measure_support(obj: Compiled, name: str = "top") -> Support:
 
 def measure_placement(
     obj: Compiled, openings: dict[str, str] | None = None, supports: tuple[str, ...] = ()
-) -> Placement:
-    """``obj``'s canonical rest, and the openings (``{name: shape}``) and supports
-    (names) asked for, each measured."""
+) -> Placement | None:
+    """The openings (``{name: shape}``) and supports (names) asked for, each measured;
+    ``None`` when none is asked for."""
+    if not openings and not supports:
+        return None
     return Placement(
-        rests=(measure_rest(obj),),
         openings=tuple(measure_opening(obj, shape, name) for name, shape in (openings or {}).items()),
         supports=tuple(measure_support(obj, name) for name in supports),
     )
@@ -518,9 +472,9 @@ def measure_placement(
 
 def remeasure_placement(obj: Compiled, declared: Placement | None) -> Placement:
     """``measure_placement`` with the openings and supports ``declared`` names, as after a
-    collider change; with nothing declared, the canonical rest alone."""
+    collider change; ``None`` when nothing is declared."""
     if declared is None:
-        return measure_placement(obj)
+        return None
     return measure_placement(
         obj, {o.name: o.shape for o in declared.openings}, tuple(s.name for s in declared.supports)
     )
@@ -549,13 +503,7 @@ def placement_yaml(placement: Placement) -> str:
             return f"    size: [{n(entry.size[0])}, {n(entry.size[1])}]\n"
         return f"    radius: {n(entry.size)}\n"
 
-    lines = "placement:\n  version: 1\n  rests:\n"
-    for rest in placement.rests:
-        lines += (
-            f"  - name: {name(rest.name)}\n"
-            f"    T_support_asset: {matrix(rest.T_support_asset)}\n"
-            f"    footprint_radius: {n(rest.footprint_radius)}\n"
-        )
+    lines = "placement:\n  version: 1\n"
     if placement.openings:
         lines += "  openings:\n"
         for opening in placement.openings:
@@ -609,11 +557,6 @@ def _placement_failures(obj: Compiled, declared: Placement) -> list[str]:
         if np.abs(np.atleast_1d(a) - np.atleast_1d(b)).max() > tol:
             failures.append(f"{field} {a} differs from the measured {b}")
 
-    if len(declared.rests) > 1:
-        failures.append("placement.rests: only the canonical rest is measured; declare one")
-    rest, measured = declared.canonical, measure_rest(obj)
-    frames(f"placement.rests.{rest.name}.T_support_asset", rest.T_support_asset, measured.T_support_asset)
-    sizes(f"placement.rests.{rest.name}.footprint_radius", rest.footprint_radius, measured.footprint_radius)
     for opening in declared.openings:
         field = f"placement.openings.{opening.name}"
         try:
@@ -749,9 +692,9 @@ def check(obj: Compiled | str | Path) -> Report:
                 bounds = region.bounds_in_asset()
                 if np.any(bounds[0] < low) or np.any(bounds[1] > high):
                     failures.append(f"grasp_regions.{region.name}.bounds: outside visual bounds plus 10 mm")
-    if placement is None:
-        failures.append("no placement section: write it with scripts/author_placement.py")
-    else:
+    if is_open(obj) and not (placement and placement.openings):
+        failures.append("an open object declares no placement opening: write it with scripts/author_placement.py")
+    if placement is not None:
         failures += _placement_failures(obj, placement)
     fit = collision_fit(obj)
     limits = [("resting", abs(fit.resting), "the model file's pose does not rest the object on z = 0")]

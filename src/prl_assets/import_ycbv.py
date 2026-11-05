@@ -379,7 +379,8 @@ def _build(archive: zipfile.ZipFile, stage: Path, bop_id: int, recipe: dict | No
     compiled = authoring._compiled(name, stage, meta, spec)
     # Placement is measured from the model just built, like every catalog object's.
     placement = authoring.measure_placement(compiled, {"top": recipe["opening"]} if "opening" in recipe else None)
-    meta["placement"] = authoring.placement_section(placement)  # compiled.meta is this dict
+    if placement is not None:
+        meta["placement"] = authoring.placement_section(placement)  # compiled.meta is this dict
     report = authoring.check(compiled)
     if not report.ok:
         raise ValueError(f"{name} failed collision validation: {report.failures}")
@@ -387,7 +388,7 @@ def _build(archive: zipfile.ZipFile, stage: Path, bop_id: int, recipe: dict | No
     # No discoverable metadata exists until publication. A partial staged import
     # is therefore invisible even if output is inside the catalog being scanned.
     rest = yaml.safe_dump({k: v for k, v in meta.items() if k != "placement"}, sort_keys=False)
-    (stage / ".meta.yaml.pending").write_text(authoring.with_placement(rest, placement))
+    (stage / ".meta.yaml.pending").write_text(authoring.with_placement(rest, placement) if placement else rest)
     return dict(
         name=name,
         bop_id=bop_id,
@@ -508,9 +509,9 @@ def rebuild_collisions(objects: list[str], output: Path, archive: Path) -> dict:
 
     Only the collision parts are replaced: the collision mesh files, the collision
     geoms and resting body position in the model file, ``dimensions`` and a legacy box
-    ``geometric_properties.size`` that tracked them, ``provenance.conversion``, and
-    ``placement``, re-measured from the new collider with the openings and supports it
-    declares. Every other file and metadata section, including hand-authored ones such
+    ``geometric_properties.size`` that tracked them, ``provenance.conversion``, and any
+    ``placement`` section, re-measured from the new collider with the openings and
+    supports it declares. Every other file and metadata section, including hand-authored ones such
     as ``grasp_regions``, is kept. The regenerated visual mesh must equal the committed
     one, so the collider is derived from the geometry that is shown, and the model file
     must agree outside its collision geoms, including any collision-geom attribute a
@@ -588,9 +589,11 @@ def rebuild_collisions(objects: list[str], output: Path, archive: Path) -> dict:
                 spec = mujoco.MjSpec.from_file(str(stage / model_path.relative_to(directory.resolve())))
                 compiled = authoring._compiled(name, stage, meta, spec)
                 placement = authoring.remeasure_placement(compiled, parse_placement(old_meta))
-                meta["placement"] = authoring.placement_section(placement)  # compiled.meta is this dict
+                if placement is not None:
+                    meta["placement"] = authoring.placement_section(placement)  # compiled.meta is this dict
                 rest = _dump_like({k: v for k, v in meta.items() if k != "placement"}, previous)
-                (stage / ".meta.yaml.pending").write_text(authoring.with_placement(rest, placement))
+                text = authoring.with_placement(rest, placement) if placement else rest
+                (stage / ".meta.yaml.pending").write_text(text)
                 report = authoring.check(compiled)
                 if not report.ok:
                     raise ValueError(f"{name} failed collision validation: {report.failures}")

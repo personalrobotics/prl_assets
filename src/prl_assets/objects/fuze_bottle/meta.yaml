@@ -44,10 +44,3 @@ grasp_regions:
     radius: 0.037
     height: 0.215
     strategies: [side]
-
-placement:
-  version: 1
-  rests:
-  - name: upright
-    T_support_asset: [[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 1, 0.10757], [0, 0, 0, 1]]
-    footprint_radius: 0.03694

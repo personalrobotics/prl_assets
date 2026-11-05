@@ -209,11 +209,12 @@ with the `authoring` extra (`uv sync --extra authoring`).
    | Open box (tote, tray, bin) | `tapered_open_box` or `open_box`, and declare `open: true` |
    | Convex without a cavity, faces that bulge (a soft bag) | `hull_of` |
 
-4. Measure and write its `placement` section (how it rests, and a container's opening
-   or a surface's top; see [docs/schema.md](docs/schema.md#placement-version-1)):
-   `uv run --extra authoring python scripts/author_placement.py <name>`, adding
-   `--opening top=rectangle` (or `=circle`) for a container and `--support top` for a
-   surface. Rerun it after any collider change; it rewrites only that section.
+4. For a container or a surface, measure and write its `placement` section (its
+   opening or top; see [docs/schema.md](docs/schema.md#placement-version-1)):
+   `uv run --extra authoring python scripts/author_placement.py <name> --opening top=rectangle`
+   (or `=circle`), or `--support top`. Rerun it with just the name after any collider
+   change; it rewrites only that section. How an object rests needs nothing declared:
+   sstsr works that out from its collision geometry.
 5. Run `uv run --extra authoring python scripts/validate_objects.py <name>` until it
    passes, and look at the result with `scripts/inspect_object.py <name>`. Where a
    primitive deliberately departs from the scan, such as a box with flat faces for a
@@ -497,25 +498,21 @@ legacy metadata and all visual/collision resources are preserved byte-for-byte.
 
 ## Reading placement
 
-Every object declares how it rests, and containers and surfaces declare their opening
-or top, in `placement` ([docs/schema.md](docs/schema.md#placement-version-1)). Nothing in
-it is typed by hand: `scripts/author_placement.py` measures it from the compiled model,
-and CI checks each object's section against its model.
+Containers and surfaces declare their opening or top in `placement`
+([docs/schema.md](docs/schema.md#placement-version-1)). Nothing in it is typed by hand:
+`scripts/author_placement.py` measures it from the compiled model, and CI checks each
+object's section against its model. How an object rests on a surface is not declared;
+sstsr's `StablePlacer` works it out from the collision geometry.
 
 ```python
 from asset_manager import AssetManager
 from prl_assets import OBJECTS_DIR
 from prl_assets.placement import parse
 
-placement = parse(AssetManager(OBJECTS_DIR).get("recycle_bin"))
-rest, opening = placement.canonical, placement.openings[0]
-# Standing the bin on a support at T_world_support:
-# T_world_bin = T_world_support @ rest.frame()
-# Its opening, 0.238 m square at the rim, 0.757 m above the floor inside:
+opening = parse(AssetManager(OBJECTS_DIR).get("recycle_bin")).openings[0]
+# The bin's opening, 0.238 m square at the rim, 0.757 m above the floor inside:
 # T_world_opening = T_world_bin @ opening.frame(); opening.size, opening.depth
 ```
 
-A held object rests on a support at `T_world_support @ rest.frame()`, slid anywhere that
-keeps its asset origin `rest.footprint_radius` inside the support's edge, at any yaw.
 Reproduce the checks with `uv run --locked --all-extras pytest tests/test_placement.py -q`;
-`artifacts/placement.json` records every object's section next to its legacy fields.
+`artifacts/placement.json` records each declared section next to its legacy fields.

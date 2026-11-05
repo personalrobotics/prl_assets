@@ -1,10 +1,10 @@
 """Behavioral contract for placement metadata (docs/schema.md, "Placement").
 
 Parser controls isolate malformed ingress, each writing a rejection artifact. The
-compiled-model controls show that a declared opening, rest or support that disagrees with
-the model fails ``authoring.check``. The catalog integration shows every object's section
-is exactly what the measurers write, and that the recycle bin's opening is the legacy
-containment Geodude's drop zones read; it writes artifacts/placement.json. Reproduce
+compiled-model controls show that a declared opening or support that disagrees with the
+model fails ``authoring.check``. The catalog integration shows every open object declares
+an opening, and that the recycle bin's opening is the legacy containment Geodude's drop
+zones read; it writes artifacts/placement.json. Reproduce
 with uv run --locked --all-extras pytest tests/test_placement.py -q.
 """
 
@@ -26,12 +26,10 @@ IDENTITY = np.eye(4).tolist()
 
 
 def _meta():
-    rest = dict(name="upright", T_support_asset=[[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 1, 0.05], [0, 0, 0, 1]])
     return dict(
         name="probe",
         placement=dict(
             version=1,
-            rests=[dict(rest, footprint_radius=0.04)],
             openings=[dict(name="top", shape="circle", radius=0.03, depth=0.08, T_asset_opening=IDENTITY)],
             supports=[dict(name="top", shape="rectangle", size=[0.2, 0.1])],
         ),
@@ -41,7 +39,7 @@ def _meta():
 def _bad(case):
     meta = _meta()
     section = meta["placement"]
-    rest, opening, support = section["rests"][0], section["openings"][0], section["supports"][0]
+    opening, support = section["openings"][0], section["supports"][0]
     if case in ["bool", "numeric_string", "nan", "zero", "negative"]:
         opening["radius"] = {"bool": True, "numeric_string": "0.03", "nan": float("nan"), "zero": 0, "negative": -1}[
             case
@@ -54,12 +52,12 @@ def _bad(case):
         section["version"] = 2
     elif case == "section_key":
         section["stable_poses"] = ["upright"]
-    elif case == "no_rests":
-        section["rests"] = []
-    elif case == "missing_rests":
-        del section["rests"]
+    elif case == "empty":
+        section["openings"], section["supports"] = [], []
+    elif case == "rests":  # how an object rests is the planner's to work out
+        section["rests"] = [dict(name="upright", footprint_radius=0.04)]
     elif case == "duplicate":
-        section["rests"].append(copy.deepcopy(rest))
+        section["openings"].append(copy.deepcopy(opening))
     elif case == "name":
         opening["name"] = "Top Opening"
     elif case == "shape":
@@ -71,11 +69,7 @@ def _bad(case):
     elif case == "missing_depth":
         del opening["depth"]
     elif case == "unknown_key":
-        rest["mass"] = 1.0
-    elif case == "missing_footprint":
-        del rest["footprint_radius"]
-    elif case == "rest_offset":
-        rest["T_support_asset"] = [[1, 0, 0, 0.01], [0, 1, 0, 0], [0, 0, 1, 0.05], [0, 0, 0, 1]]
+        opening["mass"] = 1.0
     elif case == "reflection":
         opening["T_asset_opening"] = [[-1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 1, 0], [0, 0, 0, 1]]
     elif case == "string_pose":
@@ -97,8 +91,8 @@ CASES = [
     "missing_version",
     "wrong_version",
     "section_key",
-    "no_rests",
-    "missing_rests",
+    "empty",
+    "rests",
     "duplicate",
     "name",
     "shape",
@@ -106,8 +100,6 @@ CASES = [
     "rectangle_size",
     "missing_depth",
     "unknown_key",
-    "missing_footprint",
-    "rest_offset",
     "reflection",
     "string_pose",
     "bottom_row",
@@ -116,7 +108,6 @@ CASES = [
 
 def test_well_formed_placement_reads_back():
     placement = parse(_meta())
-    assert placement.canonical.height == 0.05
     assert placement.openings[0].size == 0.03 and placement.supports[0].size == (0.2, 0.1)
     np.testing.assert_array_equal(placement.supports[0].frame(), np.eye(4))  # omitted frame: identity
     assert parse(dict(name="probe")) is None
@@ -165,11 +156,6 @@ WRONG = {
         "plastic_bowl",
         lambda p: (p["openings"][0].pop("radius"), p["openings"][0].update(shape="rectangle", size=[0.16, 0.16])),
     ),
-    "can/rest_height": (
-        "can",
-        lambda p: p["rests"][0].update(T_support_asset=_shift(p["rests"][0]["T_support_asset"], 2, 0.01)),
-    ),
-    "can/footprint": ("can", lambda p: p["rests"][0].update(footprint_radius=0.02)),
     "ada_table/support_size": ("ada_table", lambda p: p["supports"][0].update(size=[1.9, 0.742])),
 }
 
@@ -190,13 +176,7 @@ def test_a_wrong_placement_fails_against_the_compiled_model(tmp_path, case):
 
 def _opening(placement):
     return [
-        dict(
-            name=o.name,
-            shape=o.shape,
-            size=o.size,
-            depth=o.depth,
-            rim_above_support=round(float(o.frame()[2, 3] + placement.canonical.height), 5),
-        )
+        dict(name=o.name, shape=o.shape, size=o.size, depth=o.depth, rim_in_asset=round(float(o.frame()[2, 3]), 5))
         for o in placement.openings
     ]
 
@@ -204,12 +184,12 @@ def _opening(placement):
 def test_rewriting_placement_keeps_every_other_line_and_is_idempotent(tmp_path):
     """The writer replaces only its section, so a following section and the comment that
     heads it survive, and a second write of the same measurement changes nothing."""
-    directory = _copy(tmp_path, "can")
+    directory = _copy(tmp_path, "recycle_bin")
     path = directory / "meta.yaml"
     tail = "\n# Notes for a later section\nnotes_section:\n  kept: true\n"
     path.write_text(path.read_text() + tail)
     obj = authoring.load(directory)
-    placement = authoring.measure_placement(obj)
+    placement = authoring.measure_placement(obj, {"top": "rectangle"})
     authoring.write_placement(obj, placement)
     first = path.read_text()
     authoring.write_placement(authoring.load(directory), placement)
@@ -217,38 +197,21 @@ def test_rewriting_placement_keeps_every_other_line_and_is_idempotent(tmp_path):
     assert first.endswith(tail) and parse(yaml.safe_load(first)) == placement
 
 
-def test_a_turned_rest_measures_as_a_valid_rigid_frame(tmp_path):
-    """A rest at a rotation off the axes (here the can's model file turned 30 degrees about
-    z) measures, writes and passes check: its rotation is a rigid transform to 1e-6."""
-    directory = _copy(tmp_path, "can")
-    xml = directory / "can.xml"
-    xml.write_text(
-        xml.read_text().replace(
-            '<body name="can" pos="0 0 0.0615">', '<body name="can" pos="0 0 0.0615" quat="0.96592583 0 0 0.25881905">'
-        )
-    )
-    obj = authoring.load(directory)
-    authoring.write_placement(obj, authoring.measure_placement(obj))
-    rest = parse(yaml.safe_load((directory / "meta.yaml").read_text())).canonical
-    np.testing.assert_allclose(rest.frame()[:2, :2], [[0.8660254, -0.5], [0.5, 0.8660254]], atol=1e-7)
-    report = authoring.check(directory)
-    assert report.ok, str(report)
-
-
 def test_catalog_placement_matches_legacy_containment():
-    """Every object declares a section (``check`` holds each to its model in
-    test_collision_fit), and the bin's opening is its legacy containment."""
+    """Every open object declares an opening (``check`` holds each section to its model
+    in test_collision_fit), and the bin's opening is its legacy containment."""
     rows = []
     for path in sorted(OBJECTS_DIR.rglob("meta.yaml")):
         meta = yaml.safe_load(path.read_text())
         declared = parse(meta)
-        assert declared is not None, f"{meta['name']}: no placement section"
         legacy = meta.get("geometric_properties") or {}
+        if legacy.get("open"):
+            assert declared is not None and declared.openings, f"{meta['name']}: open, with no opening"
+        if declared is None:
+            continue
         rows.append(
             dict(
                 name=meta["name"],
-                rest_height=declared.canonical.height,
-                footprint_radius=declared.canonical.footprint_radius,
                 openings=_opening(declared),
                 supports=[dict(name=s.name, size=s.size, height=s.frame()[2, 3]) for s in declared.supports],
                 legacy={k: legacy[k] for k in ("type", "outer_size", "inner_size", "wall_thickness") if k in legacy},
@@ -259,5 +222,6 @@ def test_catalog_placement_matches_legacy_containment():
     (bin_,) = [r for r in rows if r["name"] == "recycle_bin"]
     (opening,) = bin_["openings"]
     inner, outer = bin_["legacy"]["inner_size"], bin_["legacy"]["outer_size"]
-    np.testing.assert_allclose([*opening["size"], opening["depth"], opening["rim_above_support"]], [*inner, outer[2]])
+    # The bin's asset origin is on its base, so the rim's height in its frame is above the support.
+    np.testing.assert_allclose([*opening["size"], opening["depth"], opening["rim_in_asset"]], [*inner, outer[2]])
     write_json(ARTIFACTS / "placement.json", rows)

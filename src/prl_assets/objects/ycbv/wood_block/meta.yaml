@@ -189,10 +189,3 @@ provenance:
       mujoco: 3.17.0
       pillow: 13.0.0
       scipy: 1.17.1
-
-placement:
-  version: 1
-  rests:
-  - name: upright
-    T_support_asset: [[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 1, 0.10295], [0, 0, 0, 1]]
-    footprint_radius: 0.0608
