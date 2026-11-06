@@ -634,15 +634,18 @@ _MIN_ROI_POINTS = 200
 _MIN_ROI_EXTENT_M = 1e-3
 
 
-def select_points(points: np.ndarray, roi, exclude, name: str) -> np.ndarray:
+def select_points(points: np.ndarray, roi, exclude, name: str, yaw_deg: float = 0.0) -> np.ndarray:
     """``points`` (asset frame) inside ``roi``'s box (all of them when ``None``), less
     those inside any of ``exclude``'s ``(box, reason)``, refused when too few or flat to
-    measure a region ``name`` from."""
+    measure a region ``name`` from. The boxes are in the asset frame turned ``yaw_deg``
+    about its z."""
+    c, s = math.cos(math.radians(yaw_deg)), math.sin(math.radians(yaw_deg))
+    turned = points @ np.array([[c, -s, 0.0], [s, c, 0.0], [0.0, 0.0, 1.0]])  # R^T p, per row
     keep = np.ones(len(points), dtype=bool)
     if roi is not None:
-        keep &= np.all((points >= roi[0]) & (points <= roi[1]), axis=1)
+        keep &= np.all((turned >= roi[0]) & (turned <= roi[1]), axis=1)
     for box, _reason in exclude:
-        keep &= ~np.all((points >= box[0]) & (points <= box[1]), axis=1)
+        keep &= ~np.all((turned >= box[0]) & (turned <= box[1]), axis=1)
     return _measurable(points[keep], name)
 
 
@@ -814,7 +817,7 @@ def _measured(obj: Compiled) -> list:
     points = _visual_asset_points(obj)
     rows = []
     for recipe in GRASP_RECIPES[obj.name]:
-        selected = select_points(points, recipe.roi, recipe.exclude, recipe.name)
+        selected = select_points(points, recipe.roi, recipe.exclude, recipe.name, recipe.roi_yaw_deg)
         rows.append((recipe, selected, _fit(recipe, selected)))
     return rows
 
@@ -868,7 +871,8 @@ def grasp_region_evidence(obj: Compiled) -> dict:
             {
                 "name": recipe.name,
                 "roi": None if recipe.roi is None else _finite(recipe.roi),
-                "roi_frame": "asset",
+                "roi_frame": "asset" if not recipe.roi_yaw_deg else f"asset turned {recipe.roi_yaw_deg} deg about z",
+                "roi_yaw_deg": recipe.roi_yaw_deg,
                 "exclude": [{"box": _finite(box), "reason": why} for box, why in recipe.exclude],
                 "selected_points": int(len(selected)),
                 "fitted": _region_row(fitted),
@@ -895,7 +899,8 @@ def _corners(region: GraspRegion) -> np.ndarray:
 def _region_difference(declared: GraspRegion | None, measured: GraspRegion) -> dict | None:
     """How ``declared`` differs from ``measured`` as geometry, whatever frame each names
     it by: a box is the same box turned a half turn about its axis (or a quarter, when
-    both are near-square), and a cylinder the same with its axis reversed. ``geometry_m``
+    both are near-square and its strategies grip x and y alike: ``face_x`` with
+    ``face_y`` or neither), and a cylinder the same with its axis reversed. ``geometry_m``
     is the farthest a box corner, or a cylinder's end centre, lies from its nearest
     counterpart either way, or the radius difference if larger; ``turn_deg`` the angle
     between their axes (a box: their yaws, modulo its symmetry). None when nothing is
@@ -914,7 +919,7 @@ def _region_difference(declared: GraspRegion | None, measured: GraspRegion) -> d
     else:
         square = all(
             abs(r.params["size"][0] - r.params["size"][1]) < SIZE_TOLERANCE_MM / 1e3 for r in (declared, measured)
-        )
+        ) and ("face_x" in declared.strategies) == ("face_y" in declared.strategies)
         period = 90.0 if square else 180.0
         yaw = math.degrees(math.atan2(Rb[1, 0], Rb[0, 0]) - math.atan2(Ra[1, 0], Ra[0, 0])) % period
         turn = min(yaw, period - yaw)

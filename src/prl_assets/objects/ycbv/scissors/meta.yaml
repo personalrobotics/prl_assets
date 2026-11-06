@@ -90,3 +90,12 @@ provenance:
       mujoco: 3.17.0
       pillow: 13.0.0
       scipy: 1.18.1
+
+grasp_regions:
+  version: 1
+  regions:
+  - name: shank
+    primitive: box
+    size: [0.02498, 0.02981, 0.01536]
+    T_asset_region: [[0.0002536387, 0.9999999678, 0, 0.01471], [-0.9999999678, 0.0002536387, 0, 0.0025], [0, 0, 1, 0.00018], [0, 0, 0, 1]]
+    strategies: [top]

@@ -89,3 +89,12 @@ provenance:
       mujoco: 3.17.0
       pillow: 13.0.0
       scipy: 1.18.1
+
+grasp_regions:
+  version: 1
+  regions:
+  - name: handle
+    primitive: box
+    size: [0.04784, 0.04807, 0.0345]
+    T_asset_region: [[0.999982123, -0.0059794354, 0, 0.03889], [0.0059794354, 0.999982123, 0, -0.02605], [0, 0, 1, -0.00212], [0, 0, 0, 1]]
+    strategies: [top, face_x]
