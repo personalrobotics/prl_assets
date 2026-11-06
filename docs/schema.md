@@ -314,8 +314,9 @@ Which objects declare regions (prl_assets#40):
 - Fixtures (`category` includes `fixture`) declare none: they are never picked up.
 - **Measured by recipe.** The objects in `prl_assets.grasp_recipes.GRASP_RECIPES`. A
   recipe names each region's primitive and strategies and the part of the visual model it
-  is measured from (a box in the asset frame; outliers removed only by an explicit,
-  reasoned exclusion). `prl_assets.authoring.measure_grasp_regions` measures every number
+  is measured from (a box in the asset frame, or in that frame turned about its z, so
+  that a part on a diagonal, such as a clamp's handle, is selected apart from what it
+  joins; outliers removed only by an explicit, reasoned exclusion). `prl_assets.authoring.measure_grasp_regions` measures every number
   from the visual mesh's samples and vertices, and `scripts/author_grasp_regions.py`
   writes the section. A recipe object's asset z must be vertical at its model file's
   pose. The fits:
@@ -337,8 +338,10 @@ Which objects declare regions (prl_assets#40):
   with it. `tests/test_grasp_fitting.py` recovers known primitives with the fitters and
   writes `artifacts/grasp_regions_analytic.json`, which also records each catalog
   region's evidence.
-- The remaining YCB-V objects (handles, jaws and other framed parts) and the containers
-  (bowl, plate, tray, tote: rim and handle regions) get recipes in follow-up work.
+  Parts of an object are regions of their own: the bleach bottle's cap beside its body;
+  the banana's middle; the drill's, clamps' and pitcher's handles; the scissors' shank.
+- The containers (bowl, plate, tray, tote: rim and handle regions) get recipes in
+  follow-up work.
 
 ## Placement (version 1)
 

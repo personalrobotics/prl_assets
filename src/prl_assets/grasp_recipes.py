@@ -29,8 +29,10 @@ _ANY = float("inf")
 class Recipe:
     """One region: its ``name``, ``primitive`` (``cylinder`` or ``box``) and
     ``strategies``, measured from the visual points inside ``roi`` (all of them when
-    ``None``), less those inside each of ``exclude``'s boxes, each with its reason. A
-    cylinder stands ``upright`` or is ``lying`` (``authoring.fit_cylinder_region``)."""
+    ``None``), less those inside each of ``exclude``'s boxes, each with its reason; the
+    boxes are in the asset frame turned ``roi_yaw_deg`` about its z, so that a part lying
+    on a diagonal is selected apart from what it joins. A cylinder stands ``upright`` or
+    is ``lying`` (``authoring.fit_cylinder_region``)."""
 
     name: str
     primitive: str
@@ -38,10 +40,22 @@ class Recipe:
     roi: Bounds | None = None
     exclude: tuple[tuple[Bounds, str], ...] = ()
     axis: str = "upright"
+    roi_yaw_deg: float = 0.0
 
 
 def _below(z: float) -> Bounds:
     return ((-_ANY, -_ANY, -_ANY), (_ANY, _ANY, z))
+
+
+def _above(z: float) -> Bounds:
+    return ((-_ANY, -_ANY, z), (_ANY, _ANY, _ANY))
+
+
+def _box(x: tuple[float, float], y: tuple[float, float], z=(-_ANY, _ANY)) -> Bounds:
+    return ((x[0], y[0], z[0]), (x[1], y[1], z[1]))
+
+
+_ALL = (-_ANY, _ANY)
 
 
 _CAN = (Recipe("body", "cylinder", ("side", "top")),)
@@ -64,6 +78,42 @@ GRASP_RECIPES: dict[str, tuple[Recipe, ...]] = {
     # neck begin; 95 by 58 mm up to z = 0.048 m, above which the mustard bottle's
     # shoulder narrows to its 47 mm cap. The cap and spout are another interaction, and
     # the body's top face lies inside the bottle, so it is gripped on its faces only.
-    "bleach_cleanser": (Recipe("body", "box", ("face_x", "face_y"), roi=_below(0.038)),),
+    "bleach_cleanser": (
+        Recipe("body", "box", ("face_x", "face_y"), roi=_below(0.038)),
+        # Its cap: a 31 mm cylinder from z = 0.105 m, where the neck stops narrowing, to
+        # the top; gripped round it or across its top, the bottle hangs upright.
+        Recipe("cap", "cylinder", ("side", "top"), roi=_above(0.105)),
+    ),
     "mustard_bottle": (Recipe("body", "box", ("face_x", "face_y"), roi=_below(0.048)),),
+    # Parts of objects lying flat, each where its section is a solid bar, apart from what
+    # it joins, gripped from above or from beside it.
+    # The banana's middle, 65 mm along its length where it is nearly straight
+    # (y = -0.035 to 0.030 m), between the curve toward its stem and its narrowing tip.
+    "banana": (Recipe("middle", "box", ("top", "face_x"), roi=_box(_ALL, (-0.035, 0.030))),),
+    # The drill's grip, from just above its battery (y = -0.050 m) to just below its
+    # trigger (y = -0.002 m), where its section is a 48 by 34 mm bar.
+    "power_drill": (Recipe("handle", "box", ("top", "face_x"), roi=_box(_ALL, (-0.050, -0.002))),),
+    # A spring clamp's two handles, the open arms opposite its closed jaws: each a bar
+    # about 20 mm wide, selected in a frame turned along it (u along the arm), from
+    # where it leaves the spring's coil to its end, and within 20 mm of its axis, apart
+    # from the other arm.
+    "large_clamp": (
+        Recipe("handle_a", "box", ("top", "face_x"), roi=_box((0.030, _ANY), (-0.016, 0.024)), roi_yaw_deg=130),
+        Recipe("handle_b", "box", ("top", "face_x"), roi=_box((0.040, _ANY), (-0.044, -0.004)), roi_yaw_deg=70),
+    ),
+    "extra_large_clamp": (
+        Recipe("handle_a", "box", ("top", "face_x"), roi=_box((0.040, _ANY), (-0.018, 0.022)), roi_yaw_deg=45),
+        Recipe("handle_b", "box", ("top", "face_x"), roi=_box((0.040, _ANY), (-0.040, 0.000)), roi_yaw_deg=-30),
+    ),
+    # The scissors' shank, between where the handle loops join it (y = -0.010 m) and
+    # where the blades thin (y = 0.015 m): its solid 15 mm section. The loops are rings
+    # round their holes, and the blades 5 mm thick; gripped from above only.
+    "scissors": (Recipe("shank", "box", ("top",), roi=_box(_ALL, (-0.010, 0.015))),),
+    # The pitcher's handle: the upright bar of its loop, selected in a frame turned 45
+    # degrees along it, beyond the inner edge of the loop (u = 0.072 m), between its bends
+    # into the body (z = 0.000 to 0.080 m); gripped from beside it. Its body, 147 mm
+    # across, has no other grip.
+    "pitcher_base": (
+        Recipe("handle", "box", ("face_x", "face_y"), roi=_box((0.072, _ANY), _ALL, (0.000, 0.080)), roi_yaw_deg=45),
+    ),
 }

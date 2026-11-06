@@ -634,15 +634,18 @@ _MIN_ROI_POINTS = 200
 _MIN_ROI_EXTENT_M = 1e-3
 
 
-def select_points(points: np.ndarray, roi, exclude, name: str) -> np.ndarray:
+def select_points(points: np.ndarray, roi, exclude, name: str, yaw_deg: float = 0.0) -> np.ndarray:
     """``points`` (asset frame) inside ``roi``'s box (all of them when ``None``), less
     those inside any of ``exclude``'s ``(box, reason)``, refused when too few or flat to
-    measure a region ``name`` from."""
+    measure a region ``name`` from. The boxes are in the asset frame turned ``yaw_deg``
+    about its z."""
+    c, s = math.cos(math.radians(yaw_deg)), math.sin(math.radians(yaw_deg))
+    turned = points @ np.array([[c, -s, 0.0], [s, c, 0.0], [0.0, 0.0, 1.0]])  # R^T p, per row
     keep = np.ones(len(points), dtype=bool)
     if roi is not None:
-        keep &= np.all((points >= roi[0]) & (points <= roi[1]), axis=1)
+        keep &= np.all((turned >= roi[0]) & (turned <= roi[1]), axis=1)
     for box, _reason in exclude:
-        keep &= ~np.all((points >= box[0]) & (points <= box[1]), axis=1)
+        keep &= ~np.all((turned >= box[0]) & (turned <= box[1]), axis=1)
     return _measurable(points[keep], name)
 
 
@@ -814,7 +817,7 @@ def _measured(obj: Compiled) -> list:
     points = _visual_asset_points(obj)
     rows = []
     for recipe in GRASP_RECIPES[obj.name]:
-        selected = select_points(points, recipe.roi, recipe.exclude, recipe.name)
+        selected = select_points(points, recipe.roi, recipe.exclude, recipe.name, recipe.roi_yaw_deg)
         rows.append((recipe, selected, _fit(recipe, selected)))
     return rows
 
@@ -869,6 +872,7 @@ def grasp_region_evidence(obj: Compiled) -> dict:
                 "name": recipe.name,
                 "roi": None if recipe.roi is None else _finite(recipe.roi),
                 "roi_frame": "asset",
+                "roi_yaw_deg": recipe.roi_yaw_deg,
                 "exclude": [{"box": _finite(box), "reason": why} for box, why in recipe.exclude],
                 "selected_points": int(len(selected)),
                 "fitted": _region_row(fitted),

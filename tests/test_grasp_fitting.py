@@ -10,11 +10,13 @@ their horizontal hull, canonicalized so that unchanged inputs cannot flip it by 
 turn. The oracle is analytic: point sets of known boxes and cylinders, turned and off the
 origin, whose regions the fitters must recover within 0.5 mm and 0.5 degrees, including
 a near-square box, where only the tie rule decides its axes, and a handle selected from
-a body by its region of interest. A sparse or flat region of interest is refused.
+a body by its region of interest, beside it and on its diagonal, where only a region of
+interest turned along the handle selects it alone. A sparse or flat region of interest
+is refused.
 
 On the catalog, every recipe's region must cover every selected point (within the
-rounding of written values) and touch it on every face, and ``check`` holds each declared
-section to its re-measurement.
+rounding of written values) and touch it on every face (within that rounding), and
+``check`` holds each declared section to its re-measurement.
 
 Writes ``artifacts/grasp_regions_analytic.json`` (override the directory with
 PRL_ASSETS_ARTIFACTS): each analytic case's built and fitted region and each refusal;
@@ -40,6 +42,10 @@ from prl_assets.grasp_recipes import GRASP_RECIPES  # noqa: E402
 ARTIFACTS = Path(os.environ.get("PRL_ASSETS_ARTIFACTS", "artifacts"))
 ATOL_M = 5e-4
 ATOL_DEG = 0.5
+WITNESS_M = 0.5e-5 + math.sqrt(3) * 0.5e-5
+"""How far a written region's face may lie beyond the selected point nearest it: its
+size rounded up to 1e-5 m moves each face by up to half that, and its centre, each
+coordinate rounded to 1e-5 m, by up to sqrt(3) halves along a turned face's normal."""
 
 
 def _yawed(yaw_deg, centre):
@@ -131,6 +137,15 @@ def test_fitted_regions_recover_known_primitives_and_the_catalog_is_measured():
     _recovered(fitted, "box", dict(size=(0.012, 0.03, 0.05)), 0, (0.055, 0.0, 0.05))
     rows["analytic"]["handle_by_roi"] = dict(built=dict(size=[0.012, 0.03, 0.05], yaw=0), fitted=_row(fitted))
 
+    # The same handle on the body's 45-degree diagonal, selected in a frame turned along it.
+    centre = (0.055 * math.cos(math.radians(45)), 0.055 * math.sin(math.radians(45)), 0.05)
+    handle = _box((0.012, 0.03, 0.05), 45, centre)
+    points = _points(trimesh.util.concatenate([body, handle]))
+    selected = authoring.select_points(points, roi, (), "handle", yaw_deg=45)
+    fitted = authoring.fit_box_region(selected, "handle", ("face_x",))
+    _recovered(fitted, "box", dict(size=(0.012, 0.03, 0.05)), 45, centre)
+    rows["analytic"]["handle_by_turned_roi"] = dict(built=dict(size=[0.012, 0.03, 0.05], yaw=45), fitted=_row(fitted))
+
     refusals = {
         "sparse": lambda: authoring.select_points(points, ((0.06, 0.0, 0.07), (1, 1, 1)), (), "corner"),
         "flat": lambda: authoring.fit_box_region(
@@ -148,7 +163,7 @@ def test_fitted_regions_recover_known_primitives_and_the_catalog_is_measured():
         rows["catalog"][name] = evidence
         for region in evidence["regions"]:
             assert region["coverage_residual_m"] <= authoring.COVERAGE_TOLERANCE_M, (name, region)
-            assert max(region["face_gaps_m"].values()) <= authoring.COVERAGE_TOLERANCE_M, (name, region)
+            assert max(region["face_gaps_m"].values()) <= WITNESS_M, (name, region)
         assert not authoring.check(obj).failures, (name, authoring.check(obj).failures)
     write_json(ARTIFACTS / "grasp_regions_analytic.json", rows)
 
