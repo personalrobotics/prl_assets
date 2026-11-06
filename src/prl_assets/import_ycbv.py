@@ -381,14 +381,19 @@ def _build(archive: zipfile.ZipFile, stage: Path, bop_id: int, recipe: dict | No
     placement = authoring.measure_placement(compiled, {"top": recipe["opening"]} if "opening" in recipe else None)
     if placement is not None:
         meta["placement"] = authoring.placement_section(placement)  # compiled.meta is this dict
+    # An object with a grasp recipe gets its regions measured from the visual model too.
+    regions = authoring.measure_grasp_regions(compiled) if name in authoring.GRASP_RECIPES else ()
+    if regions:
+        meta["grasp_regions"] = authoring.grasp_regions_section(regions)
     report = authoring.check(compiled)
     if not report.ok:
         raise ValueError(f"{name} failed collision validation: {report.failures}")
     shutil.rmtree(source)
     # No discoverable metadata exists until publication. A partial staged import
     # is therefore invisible even if output is inside the catalog being scanned.
-    rest = yaml.safe_dump({k: v for k, v in meta.items() if k != "placement"}, sort_keys=False)
-    (stage / ".meta.yaml.pending").write_text(authoring.with_placement(rest, placement) if placement else rest)
+    rest = yaml.safe_dump({k: v for k, v in meta.items() if k not in ("placement", "grasp_regions")}, sort_keys=False)
+    text = authoring.with_placement(rest, placement) if placement else rest
+    (stage / ".meta.yaml.pending").write_text(authoring.with_grasp_regions(text, regions) if regions else text)
     return dict(
         name=name,
         bop_id=bop_id,
@@ -568,9 +573,12 @@ def rebuild_collisions(objects: list[str], output: Path, archive: Path) -> dict:
                 if gp.get("type") == "box" and gp.get("size") == old_meta.get("dimensions"):
                     gp["size"] = new_meta["dimensions"]
                 meta["geometric_properties"] = gp
-                if "grasp_regions" in old_meta and new_meta["dimensions"] != old_meta.get("dimensions"):
-                    # Regions are authored against the object's shape; refuse rather than
-                    # leave them describing a different one.
+                recipe = name in authoring.GRASP_RECIPES
+                if not recipe and "grasp_regions" in old_meta and new_meta["dimensions"] != old_meta.get("dimensions"):
+                    # Regions declared by hand describe the object's shape; refuse rather
+                    # than leave them describing a different one. A recipe object's regions
+                    # are measured from its visual model, which a rebuild leaves as it was,
+                    # and check re-measures them.
                     raise ValueError(
                         f"{name}: the rebuild changes dimensions, and the object declares "
                         "grasp_regions; re-author them with the new collider"

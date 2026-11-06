@@ -282,9 +282,10 @@ and field as applicable. No malformed value is coerced or ignored. Returned fram
 bounds arrays can be edited without mutating the record.
 
 Authoring checks parse this section before model construction and validate each region's
-exact asset-frame AABB against the visual mesh's vertex bounds plus 10 mm on every
-side. This is a coarse unit/frame plausibility guard, not a geometric fit, alignment
-certificate or grasp-success claim. Collision bounds are not used for this check.
+extent along its own axes against the visual mesh's vertices along those axes plus 10 mm
+on every side (a turned box is not held to the corners of an axis-aligned box it does
+not fill). This is a coarse unit/frame plausibility guard, not a geometric fit,
+alignment certificate or grasp-success claim. Collision bounds are not used for this check.
 A declared region requires a visual mesh. Physical and legacy dimensions retain their
 separate 2 mm collision-extent check.
 
@@ -311,8 +312,33 @@ Which objects declare regions (prl_assets#40):
   change. A collider rebuild that would change such an object's `dimensions` is refused
   until its regions are re-authored.
 - Fixtures (`category` includes `fixture`) declare none: they are never picked up.
-- The remaining YCB-V objects get regions measured from their scans, and the containers
-  (bowl, plate, tray, tote) their rim and handle regions, in follow-up work.
+- **Measured by recipe.** The objects in `prl_assets.grasp_recipes.GRASP_RECIPES`. A
+  recipe names each region's primitive and strategies and the part of the visual model it
+  is measured from (a box in the asset frame; outliers removed only by an explicit,
+  reasoned exclusion). `prl_assets.authoring.measure_grasp_regions` measures every number
+  from the visual mesh's samples and vertices, and `scripts/author_grasp_regions.py`
+  writes the section. A recipe object's asset z must be vertical at its model file's
+  pose. The fits:
+  - a `cylinder` stands `upright`, about the asset's vertical through the smallest
+    circle enclosing the points' xy, or is `lying`, along the long side of their xy's
+    minimum-area rectangle (its yaw in (-90°, 90°]), through the smallest circle
+    enclosing them across it; the region's z is the cylinder's axis, and lying, its x is
+    horizontal and its y up;
+  - a `box` is upright, from the minimum-area rectangle of the points' xy hull: x its
+    shorter side, the yaw in (-90°, 90°]; when the sides differ by less than 2 mm, x is
+    the side nearer asset x and the yaw is in (-45°, 45°], so unchanged inputs never
+    flip a near-square box by a quarter turn;
+  - every selected point lies inside its region within 10 µm, the rounding of written
+    values; sizes are rounded up so that a written region still covers.
+
+  `authoring.check` re-measures a recipe object and fails when its section is missing,
+  names other regions, or differs from the measurement by more than 2 mm or 0.5°. A
+  region of interest is chosen from the object's geometry, never from how a robot fared
+  with it. `tests/test_grasp_fitting.py` recovers known primitives with the fitters and
+  writes `artifacts/grasp_regions_analytic.json`, which also records each catalog
+  region's evidence.
+- The remaining YCB-V objects (handles, jaws and other framed parts) and the containers
+  (bowl, plate, tray, tote: rim and handle regions) get recipes in follow-up work.
 
 ## Placement (version 1)
 

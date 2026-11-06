@@ -78,3 +78,13 @@ provenance:
       mujoco: 3.17.0
       pillow: 13.0.0
       scipy: 1.17.1
+
+grasp_regions:
+  version: 1
+  regions:
+  - name: body
+    primitive: cylinder
+    radius: 0.04292
+    height: 0.03352
+    T_asset_region: [[1, 0, 0, -0.00002], [0, 1, 0, 0.00002], [0, 0, 1, 0], [0, 0, 0, 1]]
+    strategies: [side, top]
