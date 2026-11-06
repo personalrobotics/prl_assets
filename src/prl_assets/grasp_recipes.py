@@ -43,19 +43,20 @@ class Recipe:
     roi_yaw_deg: float = 0.0
 
 
-def _below(z: float) -> Bounds:
-    return ((-_ANY, -_ANY, -_ANY), (_ANY, _ANY, z))
+_ALL = (-_ANY, _ANY)
 
 
-def _above(z: float) -> Bounds:
-    return ((-_ANY, -_ANY, z), (_ANY, _ANY, _ANY))
-
-
-def _box(x: tuple[float, float], y: tuple[float, float], z=(-_ANY, _ANY)) -> Bounds:
+def _box(x=_ALL, y=_ALL, z=_ALL) -> Bounds:
+    """The box spanning ``x``, ``y`` and ``z``, each a (least, greatest) range."""
     return ((x[0], y[0], z[0]), (x[1], y[1], z[1]))
 
 
-_ALL = (-_ANY, _ANY)
+def _below(z: float) -> Bounds:
+    return _box(z=(-_ANY, z))
+
+
+def _above(z: float) -> Bounds:
+    return _box(z=(z, _ANY))
 
 
 _CAN = (Recipe("body", "cylinder", ("side", "top")),)
@@ -87,12 +88,15 @@ GRASP_RECIPES: dict[str, tuple[Recipe, ...]] = {
     "mustard_bottle": (Recipe("body", "box", ("face_x", "face_y"), roi=_below(0.048)),),
     # Parts of objects lying flat, each where its section is a solid bar, apart from what
     # it joins, gripped from above or from beside it.
-    # The banana's middle, 65 mm along its length where it is nearly straight
-    # (y = -0.035 to 0.030 m), between the curve toward its stem and its narrowing tip.
-    "banana": (Recipe("middle", "box", ("top", "face_x"), roi=_box(_ALL, (-0.035, 0.030))),),
+    # The banana's middle, 65 mm along its length where it is nearly straight, between
+    # the curve toward its stem and its narrowing tip: cut across it, in a frame turned
+    # -13 degrees, along its middle's axis.
+    "banana": (Recipe("middle", "box", ("top", "face_x"), roi=_box(y=(-0.041, 0.024)), roi_yaw_deg=-13),),
     # The drill's grip, from just above its battery (y = -0.050 m) to just below its
-    # trigger (y = -0.002 m), where its section is a 48 by 34 mm bar.
-    "power_drill": (Recipe("handle", "box", ("top", "face_x"), roi=_box(_ALL, (-0.050, -0.002))),),
+    # trigger (y = -0.002 m), where its section is a 48 by 34 mm bar. As long as it is
+    # wide, its x is the side nearer asset x by the tie rule: across the grip, so that
+    # face_x takes it from front and back, never through the battery or trigger.
+    "power_drill": (Recipe("handle", "box", ("top", "face_x"), roi=_box(y=(-0.050, -0.002))),),
     # A spring clamp's two handles, the open arms opposite its closed jaws: each a bar
     # about 20 mm wide, selected in a frame turned along it (u along the arm), from
     # where it leaves the spring's coil to its end, and within 20 mm of its axis, apart
@@ -108,12 +112,12 @@ GRASP_RECIPES: dict[str, tuple[Recipe, ...]] = {
     # The scissors' shank, between where the handle loops join it (y = -0.010 m) and
     # where the blades thin (y = 0.015 m): its solid 15 mm section. The loops are rings
     # round their holes, and the blades 5 mm thick; gripped from above only.
-    "scissors": (Recipe("shank", "box", ("top",), roi=_box(_ALL, (-0.010, 0.015))),),
+    "scissors": (Recipe("shank", "box", ("top",), roi=_box(y=(-0.010, 0.015))),),
     # The pitcher's handle: the upright bar of its loop, selected in a frame turned 45
     # degrees along it, beyond the inner edge of the loop (u = 0.072 m), between its bends
     # into the body (z = 0.000 to 0.080 m); gripped from beside it. Its body, 147 mm
     # across, has no other grip.
     "pitcher_base": (
-        Recipe("handle", "box", ("face_x", "face_y"), roi=_box((0.072, _ANY), _ALL, (0.000, 0.080)), roi_yaw_deg=45),
+        Recipe("handle", "box", ("face_x", "face_y"), roi=_box((0.072, _ANY), z=(0.000, 0.080)), roi_yaw_deg=45),
     ),
 }

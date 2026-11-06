@@ -871,7 +871,7 @@ def grasp_region_evidence(obj: Compiled) -> dict:
             {
                 "name": recipe.name,
                 "roi": None if recipe.roi is None else _finite(recipe.roi),
-                "roi_frame": "asset",
+                "roi_frame": "asset" if not recipe.roi_yaw_deg else f"asset turned {recipe.roi_yaw_deg} deg about z",
                 "roi_yaw_deg": recipe.roi_yaw_deg,
                 "exclude": [{"box": _finite(box), "reason": why} for box, why in recipe.exclude],
                 "selected_points": int(len(selected)),
@@ -899,7 +899,8 @@ def _corners(region: GraspRegion) -> np.ndarray:
 def _region_difference(declared: GraspRegion | None, measured: GraspRegion) -> dict | None:
     """How ``declared`` differs from ``measured`` as geometry, whatever frame each names
     it by: a box is the same box turned a half turn about its axis (or a quarter, when
-    both are near-square), and a cylinder the same with its axis reversed. ``geometry_m``
+    both are near-square and its strategies grip x and y alike: ``face_x`` with
+    ``face_y`` or neither), and a cylinder the same with its axis reversed. ``geometry_m``
     is the farthest a box corner, or a cylinder's end centre, lies from its nearest
     counterpart either way, or the radius difference if larger; ``turn_deg`` the angle
     between their axes (a box: their yaws, modulo its symmetry). None when nothing is
@@ -918,7 +919,7 @@ def _region_difference(declared: GraspRegion | None, measured: GraspRegion) -> d
     else:
         square = all(
             abs(r.params["size"][0] - r.params["size"][1]) < SIZE_TOLERANCE_MM / 1e3 for r in (declared, measured)
-        )
+        ) and ("face_x" in declared.strategies) == ("face_y" in declared.strategies)
         period = 90.0 if square else 180.0
         yaw = math.degrees(math.atan2(Rb[1, 0], Rb[0, 0]) - math.atan2(Ra[1, 0], Ra[0, 0])) % period
         turn = min(yaw, period - yaw)

@@ -45,7 +45,8 @@ ATOL_DEG = 0.5
 WITNESS_M = 0.5e-5 + math.sqrt(3) * 0.5e-5
 """How far a written region's face may lie beyond the selected point nearest it: its
 size rounded up to 1e-5 m moves each face by up to half that, and its centre, each
-coordinate rounded to 1e-5 m, by up to sqrt(3) halves along a turned face's normal."""
+coordinate rounded to 1e-5 m, by up to sqrt(3) halves along a face's normal, whichever
+way it points (a lying cylinder's side faces every way across its axis)."""
 
 
 def _yawed(yaw_deg, centre):
@@ -137,14 +138,26 @@ def test_fitted_regions_recover_known_primitives_and_the_catalog_is_measured():
     _recovered(fitted, "box", dict(size=(0.012, 0.03, 0.05)), 0, (0.055, 0.0, 0.05))
     rows["analytic"]["handle_by_roi"] = dict(built=dict(size=[0.012, 0.03, 0.05], yaw=0), fitted=_row(fitted))
 
-    # The same handle on the body's 45-degree diagonal, selected in a frame turned along it.
+    # The same handle on the body's 45-degree diagonal: selected in a frame turned along
+    # it, it is recovered; the unturned region of interest cuts it to too few points to
+    # measure. With the region of interest taking half the body too, an exclusion in the
+    # turned frame removes the body.
     centre = (0.055 * math.cos(math.radians(45)), 0.055 * math.sin(math.radians(45)), 0.05)
-    handle = _box((0.012, 0.03, 0.05), 45, centre)
-    points = _points(trimesh.util.concatenate([body, handle]))
-    selected = authoring.select_points(points, roi, (), "handle", yaw_deg=45)
-    fitted = authoring.fit_box_region(selected, "handle", ("face_x",))
-    _recovered(fitted, "box", dict(size=(0.012, 0.03, 0.05)), 45, centre)
-    rows["analytic"]["handle_by_turned_roi"] = dict(built=dict(size=[0.012, 0.03, 0.05], yaw=45), fitted=_row(fitted))
+    diagonal = _points(trimesh.util.concatenate([body, _box((0.012, 0.03, 0.05), 45, centre)]))
+    for case, roi_, exclude in (
+        ("handle_by_turned_roi", roi, ()),
+        (
+            "handle_by_turned_exclusion",
+            ((0.0, -1.0, -1.0), (1.0, 1.0, 1.0)),
+            ((((-1, -1, -1), (0.047, 1, 1)), "body"),),
+        ),
+    ):
+        selected = authoring.select_points(diagonal, roi_, exclude, "handle", yaw_deg=45)
+        fitted = authoring.fit_box_region(selected, "handle", ("face_x",))
+        _recovered(fitted, "box", dict(size=(0.012, 0.03, 0.05)), 45, centre)
+        rows["analytic"][case] = dict(built=dict(size=[0.012, 0.03, 0.05], yaw=45), fitted=_row(fitted))
+    with pytest.raises(ValueError, match="fewer than"):
+        authoring.select_points(diagonal, roi, (), "handle")
 
     refusals = {
         "sparse": lambda: authoring.select_points(points, ((0.06, 0.0, 0.07), (1, 1, 1)), (), "corner"),
@@ -194,7 +207,9 @@ def _turned(region, turn, size=None):
 def test_check_holds_a_region_to_its_geometry_whatever_frame_names_it(tmp_path):
     """A box turned a half turn about its axis, a cylinder with its axis reversed, and a
     near-square box turned a quarter turn with its sides swapped are each the region they
-    were: ``check`` accepts them. The same region moved 3 mm is not."""
+    were: ``check`` accepts them. The same region moved 3 mm is not, and neither is the
+    drill's near-square grip turned a quarter turn, whose ``face_x`` would then take it
+    through its battery and trigger."""
     half = np.diag([-1.0, -1.0, 1.0])  # a half turn about z
     flip = np.diag([1.0, -1.0, -1.0])  # a half turn about x: the axis reversed
     quarter = np.array([[0.0, -1.0, 0.0], [1.0, 0.0, 0.0], [0.0, 0.0, 1.0]])
@@ -215,4 +230,10 @@ def test_check_holds_a_region_to_its_geometry_whatever_frame_names_it(tmp_path):
         return GraspRegion(region.name, region.primitive, region.params, T, region.strategies)
 
     report = authoring.check(_rewritten(tmp_path / "moved", "foam_brick", moved))
+    assert any("differs from its measurement" in f for f in report.failures), report.failures
+
+    def swapped(r):
+        return _turned(r, quarter, (r.params["size"][1], r.params["size"][0], r.params["size"][2]))
+
+    report = authoring.check(_rewritten(tmp_path / "swapped", "power_drill", swapped))
     assert any("differs from its measurement" in f for f in report.failures), report.failures
