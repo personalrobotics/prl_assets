@@ -7,7 +7,7 @@
     <mesh name="collision_0" file="collision_000.obj" />
   </asset>
   <worldbody>
-    <body name="mustard_bottle" pos="0 0 0.0957040024">
+    <body name="mustard_bottle" pos="0 0 0.0952040024">
       <freejoint name="mustard_bottle_joint" />
       <geom name="visual" type="mesh" mesh="visual_mesh" material="visual_mat" group="2" mass="0" contype="0" conaffinity="0" />
       <geom name="mustard_bottle_collision_0" type="mesh" mesh="collision_0" mass="0.603" friction="0.6 0.005 0.0001" group="3" condim="4" />

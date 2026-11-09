@@ -5,13 +5,17 @@ category:
 - graspable
 mass: 0.729
 dimensions: &id001
-- 0.10395099639892579
-- 0.1035479965209961
+- 0.10738552003136999
+- 0.10695750078362112
 - 0.20588999938964844
 material: wood
 geometric_properties:
   type: box
   size: *id001
+  collision_tolerance_mm:
+    collision_excess: 3.5
+    reason: the scan rounds the box's edges; the box keeps flat faces for resting
+      and face grasps
 mujoco:
   xml_path: wood_block.xml
   scale: 1.0
@@ -178,17 +182,17 @@ provenance:
     friction: Unmeasured nominal contact parameters
   conversion:
     coacd: 1.0.14
-    method: hull
+    method: box
     settings: {}
     texture_size:
     - 1024
     - 1024
     environment:
-      numpy: 2.4.6
+      numpy: 2.5.4
       trimesh: 5.2.0
       mujoco: 3.17.0
       pillow: 13.0.0
-      scipy: 1.17.1
+      scipy: 1.18.1
 
 grasp_regions:
   version: 1

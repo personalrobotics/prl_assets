@@ -5,8 +5,8 @@ category:
 - graspable
 mass: 0.028
 dimensions: &id001
-- 0.05263000106811524
-- 0.07784200286865235
+- 0.052864424963980645
+- 0.07808269030016958
 - 0.051131000518798826
 material: foam
 geometric_properties:
@@ -82,17 +82,17 @@ provenance:
     friction: Unmeasured nominal contact parameters
   conversion:
     coacd: 1.0.14
-    method: hull
+    method: box
     settings: {}
     texture_size:
     - 1024
     - 1024
     environment:
-      numpy: 2.4.6
+      numpy: 2.5.4
       trimesh: 5.2.0
       mujoco: 3.17.0
       pillow: 13.0.0
-      scipy: 1.17.1
+      scipy: 1.18.1
 
 grasp_regions:
   version: 1
