@@ -362,6 +362,12 @@ published with `meta.yaml` last. A plain import never overwrites an existing dir
 The JSON report (`artifacts/ycbv_import.json`, configurable with `--report`) records
 source and output hashes, conversion settings, and collision measurements.
 
+A recipe's `collision` is `"decomposition"` (the default, with CoACD settings), `"hull"`
+(optionally `base_cut_mm`, to cut the hull flat that far above its lowest point), or
+`"box"` (an upright box primitive fitted to the scan); `collision_tolerance_mm` widens a
+check with its reason. `scripts/collider_rests.py` reports how objects rest on their
+colliders, by sstsr and in MuJoCo.
+
 To change an existing object's collision recipe, edit it in `RECIPES` and rebuild only
 its collider; visuals, identity, frames, mass and hand-authored sections such as
 `grasp_regions` are kept. Every requested object is validated before any is replaced,

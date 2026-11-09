@@ -33,15 +33,28 @@ MASS_SOURCE = "https://personalrobotics.cs.washington.edu/publications/calli2015
 # gaps, handle and scissor loops) open in verify_ycbv, and bridges the scan's
 # concavities by at most about 13 mm at the 99th percentile. It was chosen from a sweep
 # of thresholds, part caps and decimation (#42). The default 2 mm threshold traced scan
-# noise and produced up to 567 parts per object.
+# noise and produced up to 567 parts per object. A box product is a box primitive, and
+# a hull may be cut flat at its base (base_cut_mm), where the scan's flat face is not (#54).
+_ROUNDED_EDGES = "the scan rounds the box's edges; the box keeps flat faces for resting and face grasps"
 RECIPES = {
     1: dict(mass=0.414, material="metal", category=["food_package", "graspable"], collision="hull"),
     4: dict(mass=0.349, material="metal", category=["food_package", "graspable"], collision="hull"),
-    5: dict(mass=0.603, material="plastic", category=["food_package", "graspable"], collision="hull"),
+    # A bottle's scanned base is a recessed ring whose points differ by 1-2 mm, so its hull
+    # rests on one tilted triangle with the centre of mass near its edge (2.6 deg). Cut
+    # flat 0.5 mm up, it stands on its whole base (15-17 deg; #54).
+    5: dict(mass=0.603, material="plastic", category=["food_package", "graspable"], collision="hull", base_cut_mm=0.5),
     # A thin can at the bin-drop impact speed needs the 4 ms contact time
     # constant used by the bin floor; default softness lets it pass through.
     6: dict(mass=0.171, material="metal", category=["food_package", "graspable"], collision="hull", solref="0.004 1"),
-    7: dict(mass=0.187, material="cardboard", category=["food_package", "graspable"], collision="hull"),
+    # Boxes are boxes, as the retained cracker, sugar and gelatin boxes are: the scan's
+    # faces are warped by up to 4 mm, so its hull rested flat at a 0.6 deg margin (#54).
+    7: dict(
+        mass=0.187,
+        material="cardboard",
+        category=["food_package", "graspable"],
+        collision="box",
+        collision_tolerance_mm=dict(collision_excess=5.5, reason=_ROUNDED_EDGES),
+    ),
     10: dict(mass=0.066, material="unspecified", category=["food", "graspable"], decomposition=dict(threshold=0.02)),
     # The benchmark pitcher scan is capped across the top; it has no usable
     # open interior. Preserve its handle, but do not advertise it as fillable.
@@ -52,7 +65,7 @@ RECIPES = {
         category=["container", "tableware", "graspable"],
         decomposition=dict(threshold=0.01, max_convex_hull=16, decimate=False),
     ),
-    12: dict(mass=1.131, material="plastic", category=["household", "graspable"], collision="hull"),
+    12: dict(mass=1.131, material="plastic", category=["household", "graspable"], collision="hull", base_cut_mm=0.5),
     # 18 parts also pass, at a 2.35 mm floor gap against the 3 mm limit; 28 leave margin.
     13: dict(
         mass=0.147,
@@ -71,7 +84,13 @@ RECIPES = {
         decomposition=dict(threshold=0.01, max_convex_hull=32),
     ),
     15: dict(mass=0.895, material="unspecified", category=["tool", "graspable"], decomposition=dict(threshold=0.02)),
-    16: dict(mass=0.729, material="wood", category=["block", "graspable"], collision="hull"),
+    16: dict(
+        mass=0.729,
+        material="wood",
+        category=["block", "graspable"],
+        collision="box",
+        collision_tolerance_mm=dict(collision_excess=3.5, reason=_ROUNDED_EDGES),
+    ),
     17: dict(
         mass=0.082,
         material="unspecified",
@@ -92,7 +111,7 @@ RECIPES = {
         category=["tool", "graspable"],
         decomposition=dict(threshold=0.01, max_convex_hull=16),
     ),
-    21: dict(mass=0.028, material="foam", category=["block", "graspable"], collision="hull"),
+    21: dict(mass=0.028, material="foam", category=["block", "graspable"], collision="box"),
 }
 DECOMPOSITION = dict(
     threshold=0.002,
@@ -209,6 +228,24 @@ def _check_contained(directory: Path) -> Path:
     return model_path
 
 
+def _cut_below(hull, height: float):
+    """``hull`` without the part less than ``height`` above its lowest point, so it rests
+    on a flat face: its vertices above that plane and its edges' crossings of it, hulled
+    again. trimesh's own slicing needs shapely, which the importer does not depend on."""
+    import numpy as np
+    import trimesh
+
+    v = np.asarray(hull.vertices)
+    z = float(v[:, 2].min()) + height
+    a, b = hull.edges_unique.T
+    above_a, above_b = v[a, 2] - z, v[b, 2] - z
+    crossing = above_a * above_b < 0
+    t = above_a[crossing] / (above_a[crossing] - above_b[crossing])
+    points = v[a[crossing]] + t[:, None] * (v[b[crossing]] - v[a[crossing]])
+    points[:, 2] = z  # exactly on the plane, so the cut is one face
+    return trimesh.Trimesh(vertices=np.vstack([v[v[:, 2] >= z], points]), process=True).convex_hull
+
+
 def _obj(mesh, path: Path, textured: bool) -> None:
     import trimesh
 
@@ -276,8 +313,21 @@ def _build(archive: zipfile.ZipFile, stage: Path, bop_id: int, recipe: dict | No
         settings["preprocess_resolution"] = 100
     settings.update(recipe.get("decomposition", {}))
     method = recipe.get("collision", "decomposition")
-    if method == "hull":
+    box = None
+    if method == "box":
+        # Upright, so the model file's pose rests on a face: yawed about z only, the
+        # minimum-area rectangle of the scan's xy over its z range.
+        yaw, (sx, sy), (cx, cy) = authoring._min_rectangle(np.asarray(mesh.vertices)[:, :2])
+        z0, z1 = float(mesh.vertices[:, 2].min()), float(mesh.vertices[:, 2].max())
+        box = dict(size=(sx / 2, sy / 2, (z1 - z0) / 2), pos=(cx, cy, (z0 + z1) / 2), yaw=math.radians(yaw))
+        solid = trimesh.creation.box(extents=(sx, sy, z1 - z0))
+        solid.apply_transform(trimesh.transformations.rotation_matrix(box["yaw"], (0, 0, 1)))
+        solid.apply_translation(box["pos"])
+        hulls = [solid]
+    elif method == "hull":
         hulls = [collision_input.convex_hull]
+        if "base_cut_mm" in recipe:
+            hulls = [_cut_below(hulls[0], recipe["base_cut_mm"] / 1e3)]
     else:
         coacd.set_log_level("warn")
         parts = coacd.run_coacd(coacd.Mesh(collision_input.vertices, collision_input.faces), **settings)
@@ -309,6 +359,23 @@ def _build(archive: zipfile.ZipFile, stage: Path, bop_id: int, recipe: dict | No
         contype="0",
         conaffinity="0",
     )
+    if box is not None:
+        # The box's own pose in the body: the body is lifted so its bottom rests on z = 0.
+        ET.SubElement(
+            body,
+            "geom",
+            name=f"{name}_collision",
+            type="box",
+            size=" ".join(f"{v:.9g}" for v in box["size"]),
+            pos=" ".join(f"{v:.9g}" for v in box["pos"]),
+            quat=" ".join(f"{v:.9g}" for v in (math.cos(box["yaw"] / 2), 0.0, 0.0, math.sin(box["yaw"] / 2))),
+            mass=f"{recipe['mass']:.12g}",
+            friction="0.6 0.005 0.0001",
+            group="3",
+            condim="4",
+            **({"solref": recipe["solref"]} if "solref" in recipe else {}),
+        )
+        hulls = []  # no mesh files: MuJoCo collides the primitive
     for index, hull in enumerate(hulls):
         filename = f"collision_{index:03d}.obj"
         _obj(hull, stage / filename, False)
@@ -334,7 +401,12 @@ def _build(archive: zipfile.ZipFile, stage: Path, bop_id: int, recipe: dict | No
         mass=recipe["mass"],
         dimensions=extents,
         material=recipe["material"],
-        geometric_properties=dict(type="box", size=extents, **({"open": True} if recipe.get("open") else {})),
+        geometric_properties=dict(
+            type="box",
+            size=extents,
+            **({"open": True} if recipe.get("open") else {}),
+            **{k: recipe[k] for k in ("collision_tolerance_mm",) if k in recipe},
+        ),
         mujoco=dict(xml_path=f"{name}.xml", scale=1.0, friction=[0.6, 0.005, 0.0001]),
         perception=dict(aliases=[BOP_YCB_NAMES[bop_id], "YCB " + name.replace("_", " ")]),
         dataset=dict(ycbv=dict(bop_id=bop_id, ycb_name=BOP_YCB_NAMES[bop_id])),
@@ -367,7 +439,9 @@ def _build(archive: zipfile.ZipFile, stage: Path, bop_id: int, recipe: dict | No
             conversion=dict(
                 coacd=COACD_VERSION,
                 method=method,
-                settings=settings if method == "decomposition" else {},
+                settings=settings
+                if method == "decomposition"
+                else ({"base_cut_mm": recipe["base_cut_mm"]} if "base_cut_mm" in recipe else {}),
                 texture_size=[1024, 1024],
                 environment={
                     name: importlib.metadata.version(name) for name in ("numpy", "trimesh", "mujoco", "pillow", "scipy")
@@ -492,7 +566,9 @@ def _dump_like(meta: dict, previous: str) -> str:
 
 def _collision_parts(path: Path) -> tuple[bytes, frozenset]:
     """A model file without its collision meshes, collision geoms and resting position,
-    and the set of attribute sets its collision geoms carry beyond name, mesh and mass."""
+    and the set of attribute sets its collision geoms carry beyond their geometry: name,
+    mesh, mass, and a primitive's type, size and pose. A collider may change between a
+    mesh and a primitive; an attribute tuned by hand, such as solref, may not."""
     import xml.etree.ElementTree as ET
 
     tree = ET.parse(path).getroot()
@@ -501,11 +577,13 @@ def _collision_parts(path: Path) -> tuple[bytes, frozenset]:
         for child in list(parent):
             if child.tag == "mesh" and child.get("name", "").startswith("collision_"):
                 parent.remove(child)
-            elif child.tag == "geom" and child.get("mesh", "").startswith("collision_"):
-                attributes.add(frozenset((k, v) for k, v in child.attrib.items() if k not in ("name", "mesh", "mass")))
+            elif child.tag == "geom" and child.get("group") == "3":
+                geometry = ("name", "mesh", "mass", "type", "size", "pos", "quat")
+                attributes.add(frozenset((k, v) for k, v in child.attrib.items() if k not in geometry))
                 parent.remove(child)
     for body in tree.iter("body"):
         body.attrib.pop("pos", None)
+    ET.indent(tree)  # a primitive has no mesh asset, so the stripped files' layout differs
     return ET.tostring(tree), frozenset(attributes)
 
 
@@ -530,6 +608,7 @@ def rebuild_collisions(objects: list[str], output: Path, archive: Path) -> dict:
     import yaml
 
     from prl_assets import authoring
+    from prl_assets.grasp_regions import parse as parse_grasp_regions
     from prl_assets.placement import parse as parse_placement
 
     allowed = {canonical_name(i): i for i in BOP_YCB_NAMES}
@@ -572,6 +651,8 @@ def rebuild_collisions(objects: list[str], output: Path, archive: Path) -> dict:
                 gp = dict(meta.get("geometric_properties") or {})
                 if gp.get("type") == "box" and gp.get("size") == old_meta.get("dimensions"):
                     gp["size"] = new_meta["dimensions"]
+                if "collision_tolerance_mm" in new_meta["geometric_properties"]:
+                    gp["collision_tolerance_mm"] = new_meta["geometric_properties"]["collision_tolerance_mm"]
                 meta["geometric_properties"] = gp
                 recipe = name in authoring.GRASP_RECIPES
                 if not recipe and "grasp_regions" in old_meta and new_meta["dimensions"] != old_meta.get("dimensions"):
@@ -599,8 +680,12 @@ def rebuild_collisions(objects: list[str], output: Path, archive: Path) -> dict:
                 placement = authoring.remeasure_placement(compiled, parse_placement(old_meta))
                 if placement is not None:
                     meta["placement"] = authoring.placement_section(placement)  # compiled.meta is this dict
-                rest = _dump_like({k: v for k, v in meta.items() if k != "placement"}, previous)
+                # Placement and grasp regions are written by their own writers, as an import
+                # writes them, so a rebuild leaves the regions' text as it was.
+                regions = parse_grasp_regions(old_meta)
+                rest = _dump_like({k: v for k, v in meta.items() if k not in ("placement", "grasp_regions")}, previous)
                 text = authoring.with_placement(rest, placement) if placement else rest
+                text = authoring.with_grasp_regions(text, regions) if regions else text
                 (stage / ".meta.yaml.pending").write_text(text)
                 report = authoring.check(compiled)
                 if not report.ok:
