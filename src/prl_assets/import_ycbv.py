@@ -564,6 +564,28 @@ def _dump_like(meta: dict, previous: str) -> str:
     return "\n".join(out) + "\n"
 
 
+def _keep_section(text: str, previous: str, key: str) -> str:
+    """``text`` with its top-level ``key`` section replaced by ``previous``'s, verbatim. A
+    section ends at the next line that starts in column 0, as ``authoring.with_placement``
+    takes it, less trailing blank lines."""
+    import re
+
+    def bounds(lines):
+        start = next((i for i, line in enumerate(lines) if line.startswith(f"{key}:")), None)
+        if start is None:
+            return None
+        end = next((i for i in range(start + 1, len(lines)) if re.match(r"\S", lines[i])), len(lines))
+        while end > start + 1 and not lines[end - 1].strip():
+            end -= 1
+        return start, end
+
+    new, old = text.splitlines(keepends=True), previous.splitlines(keepends=True)
+    here, there = bounds(new), bounds(old)
+    if here is None or there is None:
+        return text
+    return "".join(new[: here[0]] + old[there[0] : there[1]] + new[here[1] :])
+
+
 def _collision_parts(path: Path) -> tuple[bytes, frozenset]:
     """A model file without its collision meshes, collision geoms and resting position,
     and the set of attribute sets its collision geoms carry beyond their geometry: name,
@@ -608,7 +630,6 @@ def rebuild_collisions(objects: list[str], output: Path, archive: Path) -> dict:
     import yaml
 
     from prl_assets import authoring
-    from prl_assets.grasp_regions import parse as parse_grasp_regions
     from prl_assets.placement import parse as parse_placement
 
     allowed = {canonical_name(i): i for i in BOP_YCB_NAMES}
@@ -680,12 +701,10 @@ def rebuild_collisions(objects: list[str], output: Path, archive: Path) -> dict:
                 placement = authoring.remeasure_placement(compiled, parse_placement(old_meta))
                 if placement is not None:
                     meta["placement"] = authoring.placement_section(placement)  # compiled.meta is this dict
-                # Placement and grasp regions are written by their own writers, as an import
-                # writes them, so a rebuild leaves the regions' text as it was.
-                regions = parse_grasp_regions(old_meta)
-                rest = _dump_like({k: v for k, v in meta.items() if k not in ("placement", "grasp_regions")}, previous)
+                rest = _dump_like({k: v for k, v in meta.items() if k != "placement"}, previous)
                 text = authoring.with_placement(rest, placement) if placement else rest
-                text = authoring.with_grasp_regions(text, regions) if regions else text
+                # A rebuild keeps grasp regions, written by hand or by recipe, as written.
+                text = _keep_section(text, previous, "grasp_regions")
                 (stage / ".meta.yaml.pending").write_text(text)
                 report = authoring.check(compiled)
                 if not report.ok:
