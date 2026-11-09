@@ -590,8 +590,11 @@ def _collision_parts(path: Path) -> tuple[bytes, frozenset]:
     """A model file without its collision meshes, collision geoms and resting position,
     and the set of attribute sets its collision geoms carry beyond their geometry: name,
     mesh, mass, and a primitive's type, size and pose. A collider may change between a
-    mesh and a primitive; an attribute tuned by hand, such as solref, may not."""
+    mesh and a primitive; an attribute tuned by hand, such as solref or a mesh geom's
+    pose, may not."""
     import xml.etree.ElementTree as ET
+
+    from prl_assets.authoring import COLLISION_GROUP
 
     tree = ET.parse(path).getroot()
     attributes = set()
@@ -599,8 +602,13 @@ def _collision_parts(path: Path) -> tuple[bytes, frozenset]:
         for child in list(parent):
             if child.tag == "mesh" and child.get("name", "").startswith("collision_"):
                 parent.remove(child)
-            elif child.tag == "geom" and child.get("group") == "3":
-                geometry = ("name", "mesh", "mass", "type", "size", "pos", "quat")
+            elif child.tag == "geom" and child.get("group") == str(COLLISION_GROUP):
+                # A primitive's type, size and pose are fitted; a mesh's pose is not.
+                geometry = (
+                    ("name", "mesh", "mass")
+                    if "mesh" in child.attrib
+                    else ("name", "mass", "type", "size", "pos", "quat")
+                )
                 attributes.add(frozenset((k, v) for k, v in child.attrib.items() if k not in geometry))
                 parent.remove(child)
     for body in tree.iter("body"):
@@ -630,6 +638,7 @@ def rebuild_collisions(objects: list[str], output: Path, archive: Path) -> dict:
     import yaml
 
     from prl_assets import authoring
+    from prl_assets.grasp_regions import parse as parse_grasp_regions
     from prl_assets.placement import parse as parse_placement
 
     allowed = {canonical_name(i): i for i in BOP_YCB_NAMES}
@@ -672,6 +681,8 @@ def rebuild_collisions(objects: list[str], output: Path, archive: Path) -> dict:
                 gp = dict(meta.get("geometric_properties") or {})
                 if gp.get("type") == "box" and gp.get("size") == old_meta.get("dimensions"):
                     gp["size"] = new_meta["dimensions"]
+                # An imported object's widened checks are its recipe's, and go with it.
+                gp.pop("collision_tolerance_mm", None)
                 if "collision_tolerance_mm" in new_meta["geometric_properties"]:
                     gp["collision_tolerance_mm"] = new_meta["geometric_properties"]["collision_tolerance_mm"]
                 meta["geometric_properties"] = gp
@@ -705,6 +716,8 @@ def rebuild_collisions(objects: list[str], output: Path, archive: Path) -> dict:
                 text = authoring.with_placement(rest, placement) if placement else rest
                 # A rebuild keeps grasp regions, written by hand or by recipe, as written.
                 text = _keep_section(text, previous, "grasp_regions")
+                if parse_grasp_regions(yaml.safe_load(text)) != parse_grasp_regions(old_meta):
+                    raise ValueError(f"{name}: the kept grasp_regions section would not read back as declared")
                 (stage / ".meta.yaml.pending").write_text(text)
                 report = authoring.check(compiled)
                 if not report.ok:

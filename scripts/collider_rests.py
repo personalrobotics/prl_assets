@@ -106,7 +106,7 @@ def measure(directory: Path, name: str, min_margin: float, tilt: bool) -> dict:
             }
     if tilt and rests:
         scene, body, _ = _scene(xml, name, "plane")
-        t = rests[0]
+        t = max(rests, key=lambda r: r.stability_margin)  # a primitive's come in face order
         R = Rotation.from_euler("x", TILT_DEG, degrees=True).as_matrix() @ t.Tw_e[:3, :3]
         lowest = min(float((R @ p)[2]) for p in shape.surface())
         _, _, R1 = _settle(scene, body, R, -lowest)
@@ -134,7 +134,7 @@ def main() -> int:
     args.out.parent.mkdir(parents=True, exist_ok=True)
     args.out.write_text(json.dumps(report, indent=2) + "\n")
     for name, row in report["objects"].items():
-        still = all(r["plane"]["still"] and r["bin"]["still"] for r in row["rests"])
+        still = bool(row["rests"]) and all(r["plane"]["still"] and r["bin"]["still"] for r in row["rests"])
         tilted = row["tilted"]
         print(
             f"{name:16s} {len(row['rests'])} rests >= {args.min_margin:g} deg "
