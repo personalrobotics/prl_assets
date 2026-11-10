@@ -7,7 +7,7 @@ mass: 0.603
 dimensions: &id001
 - 0.09715000152587891
 - 0.06662000274658203
-- 0.19140800476074218
+- 0.19090800476074218
 material: plastic
 geometric_properties:
   type: box
@@ -67,7 +67,8 @@ provenance:
   conversion:
     coacd: 1.0.14
     method: hull
-    settings: {}
+    settings:
+      base_cut_mm: 0.5
     texture_size:
     - 1024
     - 1024

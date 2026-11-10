@@ -4,13 +4,12 @@
     <texture name="visual_tex" type="2d" file="foam_brick_texture.png" />
     <material name="visual_mat" texture="visual_tex" />
     <mesh name="visual_mesh" file="foam_brick_visual.obj" />
-    <mesh name="collision_0" file="collision_000.obj" />
   </asset>
   <worldbody>
     <body name="foam_brick" pos="0 0 0.0255655003">
       <freejoint name="foam_brick_joint" />
       <geom name="visual" type="mesh" mesh="visual_mesh" material="visual_mat" group="2" mass="0" contype="0" conaffinity="0" />
-      <geom name="foam_brick_collision_0" type="mesh" mesh="collision_0" mass="0.028" friction="0.6 0.005 0.0001" group="3" condim="4" />
+      <geom name="foam_brick_collision" type="box" size="0.0260521893 0.0387871232 0.0255655003" pos="-8.88964807e-05 -8.8809516e-05 0" quat="0.999987921 0 0 -0.00491511768" mass="0.028" friction="0.6 0.005 0.0001" group="3" condim="4" />
     </body>
   </worldbody>
 </mujoco>

@@ -140,8 +140,10 @@ def test_real_archive_import_and_failed_requests_preserve_assets(tmp_path):
 def test_collision_rebuild_reproduces_the_committed_colliders_and_is_all_or_nothing(tmp_path):
     """--rebuild-collision regenerates only an object's collider (#42). On the platform
     the committed colliders were built on, rebuilding a committed object reproduces it
-    byte for byte. A request in which one object fails replaces none of them and leaves
-    no staged or retired copy that a registry could discover."""
+    byte for byte: a decomposed mug, a box primitive and a hull cut flat at its base
+    (#54), with the latter two's grasp regions as written. A collision attribute tuned by
+    hand still blocks a rebuild. A request in which one object fails replaces none of
+    them and leaves no staged or retired copy that a registry could discover."""
     source = os.environ.get("PRL_ASSETS_YCBV_ARCHIVE")
     if not source:
         pytest.skip("real-archive authoring check; run in the cached YCB-V audit job")
@@ -153,7 +155,7 @@ def test_collision_rebuild_reproduces_the_committed_colliders_and_is_all_or_noth
     archive = Path(source).expanduser().resolve(strict=True)
     collection = tmp_path / "collection"
     collection.mkdir()
-    for name in ("mug", "banana"):
+    for name in ("mug", "banana", "pudding_box", "bleach_cleanser"):
         shutil.copytree(YCBV_OBJECTS_DIR / name, collection / name)
 
     def inventory():
@@ -185,10 +187,17 @@ def test_collision_rebuild_reproduces_the_committed_colliders_and_is_all_or_noth
         )
 
     committed = inventory()
-    result = rebuild("mug")
+    result = rebuild("mug", "pudding_box", "bleach_cleanser")
     assert result.returncode == 0, result.stderr
     if platform.system() == "Linux" and platform.machine() == "x86_64":
-        assert inventory() == committed, "rebuilding the committed mug changed it"
+        assert inventory() == committed, "rebuilding the committed objects changed them"
+
+    model = collection / "pudding_box" / "pudding_box.xml"
+    model.write_text(model.read_text().replace('type="box"', 'type="box" solref="0.004 1"'))
+    before = inventory()
+    result = rebuild("pudding_box")
+    assert result.returncode != 0 and "attributes the recipe does not reproduce" in result.stderr, result.stderr
+    assert inventory() == before
 
     # A visual mesh that no longer matches the archive makes the banana fail; the mug,
     # requested first and valid, must not be replaced either.
@@ -199,4 +208,4 @@ def test_collision_rebuild_reproduces_the_committed_colliders_and_is_all_or_noth
     result = rebuild("mug", "banana")
     assert result.returncode != 0 and "visual mesh differs" in result.stderr, result.stderr
     assert inventory() == before
-    assert set(authoring.object_dirs(collection)) == {"mug", "banana"}
+    assert set(authoring.object_dirs(collection)) == {"mug", "banana", "pudding_box", "bleach_cleanser"}

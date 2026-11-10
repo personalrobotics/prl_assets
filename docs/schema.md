@@ -180,8 +180,13 @@ dimensions match the collision bounds. New grasp readers use only `grasp_regions
 the importer and catalog-wide migration remain follow-up work after consumers migrate.
 This legacy approximation is not a claim of solid box collision geometry. Concave collision pieces remain separate mesh geoms in MuJoCo.
 
-Collision models are as coarse as their interactions allow. A closed, nearly convex
-object is one convex hull. Each decomposed object uses the coarsest CoACD setting in
+Collision models are as coarse as their interactions allow. A box product is a box
+primitive, upright (yawed about z only) and fitted to the scan, with `collision_excess`
+widened where the scanner rounded its edges. A closed, nearly convex object is one
+convex hull, cut flat just above its lowest point where the scanned base is not flat: a
+bottle's recessed base is a ring whose points differ by a millimetre or two, and its hull
+otherwise rests on one tilted triangle, barely stable, in sstsr and in MuJoCo alike
+(#54). Each decomposed object uses the coarsest CoACD setting in
 its recipe that passes `authoring.check`, including the floor probe of an open
 interior, keeps the reference silhouette's apertures open (below), and bridges the
 scan's concavities by at most about 13 mm at the 99th percentile. Collision cost grows

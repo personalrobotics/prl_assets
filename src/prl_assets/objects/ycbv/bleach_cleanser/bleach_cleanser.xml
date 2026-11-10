@@ -7,7 +7,7 @@
     <mesh name="collision_0" file="collision_000.obj" />
   </asset>
   <worldbody>
-    <body name="bleach_cleanser" pos="0 0 0.12532">
+    <body name="bleach_cleanser" pos="0 0 0.12482">
       <freejoint name="bleach_cleanser_joint" />
       <geom name="visual" type="mesh" mesh="visual_mesh" material="visual_mat" group="2" mass="0" contype="0" conaffinity="0" />
       <geom name="bleach_cleanser_collision_0" type="mesh" mesh="collision_0" mass="1.131" friction="0.6 0.005 0.0001" group="3" condim="4" />
